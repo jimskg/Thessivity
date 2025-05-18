@@ -43,7 +43,7 @@
           if (sheetName === "First") {
             rows.forEach(row => {
               const [value] = row; // Map columns based on the sheet structure
-              console.log('dimitris: ' + value);
+              console.log('dimitris2: ' + value);
                 if (testEnvironment){
                   console.log('here');
                 }
