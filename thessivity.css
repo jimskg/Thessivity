@@ -254,7 +254,7 @@
   }
 
   .footer-list {
-    display: block !important;
+    /* display: block !important; */
   }
 
   .footer-list li {
@@ -280,6 +280,11 @@
     align-items: center;
     gap: 16px;
     width: 100%;
+  }
+  
+  .social-img{
+    height: 25px;
+    width: 25px;
   }
 
   .footer-copyright {
