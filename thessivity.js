@@ -118,6 +118,36 @@
         }
       }
     });
+
+    $('#lang-button').on('click', function () {
+        openLanguageMenu();
+    });
+
+    function openLanguageMenu(){
+      const listLanguageMenu = document.getElementById("list-language-menu");
+      listLanguageMenu.classList.remove("display-none");
+    }
+    
+    function closeLanguageMenu(){
+      const listLanguageMenu = document.getElementById("list-language-menu");
+      listLanguageMenu.classList.add("display-none");
+    }
+
+    $('#gr-li').on('click', function () {
+      closeLanguageMenu();
+      if (currentLanguage == 'gr') return;
+      currentLanguage = 'gr';
+      createProducts();
+      createOffers();
+    });
+
+    $('#en-li').on('click', function () {
+      closeLanguageMenu();
+      if (currentLanguage == 'en') return;
+      currentLanguage = 'en';
+      createProducts();
+      createOffers();
+    });
     
   });
 
@@ -129,5 +159,15 @@
       //carouselModal.style.display = "none";
     }
   } 
+
+  window.onclick = function(event) {
+    const listLangMenu = document.getElementById('list-language-menu');
+    const langButton = document.getElementById('lang-button');
+    const langButtonImg = document.getElementById('lang-button-img');
+    if (!(listLangMenu.contains(event.target) || langButton.contains(event.target) || langButtonImg.contains(event.target)) ){
+      const listLanguageMenu = document.getElementById("list-language-menu");
+      listLanguageMenu.classList.add("display-none");
+    }
+  }
   
 })(jQuery);

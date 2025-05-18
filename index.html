@@ -4,8 +4,11 @@
   <title>Thessivity</title>
   <head>
     <link rel="stylesheet" href="thessivity.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script type="text/javascript" src="thessivity.js"></script>
     <style>
       @import url('http://fonts.cdnfonts.com/css/la-belle-aurore');
@@ -13,27 +16,123 @@
   </head>
 
   <body>
-    Thessivity
-    <div class="custom-body">
-      <div class="menu">
-        <ul id="navigationId" class="navigation-items">
-        </ul>
+    <div class="container">
+      <div class="container-inside">
+
+        <div class="topnav z-index-20 flex justify-between sticky">
+          <div class="logo">
+              <img src="images/thessivity_logo.jpg" alt="Thessivity" class="logo_size">
+          </div>
+
+          <nav>
+              <ul>
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Activities</a></li>
+              </ul>
+          </nav>
+
+          <div>
+            <div class="lang-icon p-05 bg-primary" id="lang-button">
+                <img src="images/lang.png" class="lang-img" id="lang-button-img"></img>
+            </div>
+            <ul class="list-language-menu display-none" id="list-language-menu">
+              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="gr-li">GR</li>
+              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="en-li">ENG</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
-      <div id="timeline-id" class="ag-timeline-block ag-timeline-block-padding tab" >
-      </div>
-      <div id="map-id" class="map-class tab" >
-        <div class="map-zone">
-          <div class="mapouter">
-            <div class="gmap_canvas">
-              <iframe class="iframe-style" id="gmap_canvas" src="https://maps.google.com/maps?q=Episkopou%20Amvrosiou%208%20Thessaloniki&t=&z=13&ie=UTF8&iwloc=&output=embed&z=15" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-              <br>
-              <style>.mapouter{position:relative;text-align:right;height:100%;width:100%;}</style>
-              <style>.gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}</style>
+    </div>
+    
+
+
+  </body>
+
+  <footer role="footer-info" itemscope="" itemtype="http://schema.org/WPFooter">
+    <div id="footer">
+      <div class="footer-container">
+        <div class="footer-fluid">
+          <div class="footer-second-row">
+            <!-- Left Column -->
+            <div class="footer-left-column footer-space-between">
+                <div class="footer-top">
+                    <!-- Country & Language Selection -->
+                    <div class="footer-country">
+                        <img src="your-country-flag.png" alt="Country Flag" class="country-flag">
+                        <a href="#" class="footer-title">Greece</a>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="footer-contact">
+                        <a href="tel:+302117700000" class="footer-title">
+                            <img src="phone-icon.png" alt="Phone">
+                            Phone reservations
+                        </a>
+                        <div>
+                            <a href="tel:+302117700000" class="footer-text">+30 2117700000</a>
+                            <span class="footer-text-secondary">Mon - Fri 10:00 - 18:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Physical Spots -->
+                    <ul class="footer-list">
+                        <li>
+                            <img src="location-icon.png" alt="Location">
+                            <a href="/physical-spots" class="footer-title">Physical spots</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="footer-right-column">
+                <!-- Information Links -->
+                <div class="footer-info">
+                    <span class="footer-title">Information</span>
+                    <ul class="footer-list">
+                        <li><a href="/careers" class="footer-link">Careers</a></li>
+                        <li><a href="/cooperation" class="footer-link">Cooperation</a></li>
+                        <li><a href="/terms" class="footer-link">Terms of use</a></li>
+                        <li><a href="/security-policy" class="footer-link">Security and data protection policy</a></li>
+                        <li><a href="/legal-notice" class="footer-link">Legal notice</a></li>
+                        <li><a href="/community-guidelines" class="footer-link">Community guidelines</a></li>
+                        <li><a href="/financial-statements" class="footer-link">Financial statements</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Links -->
+                <div class="footer-info">
+                    <span class="footer-title">Support</span>
+                    <ul class="footer-list">
+                        <li><a href="javascript:" class="footer-link">Contact</a></li>
+                        <li><a href="/faq" class="footer-link">FAQ</a></li>
+                        <li><a href="/digital-services-act" class="footer-link">Digital Services Act</a></li>
+                        <li><a href="/reseller-login" class="footer-link">Reseller login</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="footer-info">
+                    <span class="footer-title">Stay Connected</span>
+                    <ul class="footer-list social-media">
+                        <li><a href="https://www.facebook.com" target="_blank"><img src="facebook-icon.png" alt="Facebook"></a></li>
+                        <li><a href="https://www.instagram.com" target="_blank"><img src="instagram-icon.png" alt="Instagram"></a></li>
+                        <li><a href="https://www.tiktok.com" target="_blank"><img src="tiktok-icon.png" alt="TikTok"></a></li>
+                        <li><a href="https://www.youtube.com" target="_blank"><img src="youtube-icon.png" alt="YouTube"></a></li>
+                        <li><a href="https://www.linkedin.com" target="_blank"><img src="linkedin-icon.png" alt="LinkedIn"></a></li>
+                    </ul>
+                </div>
             </div>
           </div>
         </div>
+        <!-- Copyright -->
+        <div class="footer-copyright">
+            © 2025 Thessivity.gr
+        </div>
       </div>
+        
     </div>
-  </body>
+  </footer>
 
 </html>
