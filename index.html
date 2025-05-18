@@ -1,0 +1,127 @@
+<html>
+  <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thessivity</title>
+  <head>
+    <link rel="stylesheet" href="thessivity.css" />
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="thessivity.js"></script>
+    <style>
+      @import url('http://fonts.cdnfonts.com/css/la-belle-aurore');
+    </style>
+  </head>
+
+  <body>
+    <div class="custom-body">
+      <div class="menu">
+        <ul id="navigationId" class="navigation-items">
+          <li id="back-id-li" class="nav-item" style="display:none; border-left: 1px solid #282828;" ><a id="back-id-button"  href="#home">Back</a></li>
+          <!-- <li id="site-id-li" class="nav-item" style="background:rgb(223 193 113); border-left: 1px solid #282828;" ><a id="site-id-button" href="https://jimskg.github.io/menu/" target="_blank">Nutri Spot</a></li> -->
+          <li id="birthday-id-li" class="nav-item" style="border-left: 1px solid #282828;" ><a id="birthday-id-button" href="#birthday">New Year</a></li>
+          <li id="caht-id-li" class="nav-item" style="border-left: 1px solid #282828;" ><a id="chat-id-button" href="#chat">Chat</a></li>
+        </ul>
+      </div>
+      <div id="timeline-id" class="ag-timeline-block ag-timeline-block-padding tab" >
+        <div class="ag-timeline_title-box">
+          <div class="ag-timeline_tagline">"Suddenly, our paths crossed, and from that moment, you showed me what it means to truly live."</div>
+          <!-- <div class="ag-timeline_title">No Flex</div> -->
+          <!-- <div class="ag-timeline_tagline_disclaimer">This site was powered by love. The owner's sun has started fading away, and so is this site. For each cloudy day that passes, this site will fade away until it is completely gone.</div>
+          <div style="display:flex; justify-content:center; align-items: center;">
+            <div>❤️</div>
+            <div id="loading-bar-container">
+              <div id="loading-bar"></div>
+            </div>
+            <div>💔</div>
+          </div> -->
+        </div>
+
+        <section class="ag-section">
+          <div class="ag-format-container">
+            <div class="js-timeline ag-timeline">
+              <div class="js-timeline_line ag-timeline_line">
+                <div class="js-timeline_line-progress ag-timeline_line-progress"></div>
+              </div>
+              <div class="ag-timeline_list" id="content-events-id">
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="chat-id" class="birthday-class tab" style="overflow: hidden;">
+        <div class="chat-container">
+          <div class="message left">Χει εγώ είμαι πάλι...</div>
+          <div class="message right">Τι θέλεις πάλι? Δεν τα έχουμε συζητήσει ξανά και ξανά?</div>
+          <div class="message left">Ναι έχεις δίκιο. Αυτή είναι η τελευταία φορά που σε ενοχλώ. Αν συνεχίσω θα γίνω κουραστικός και δεν θα σέβομαι τις επιλογές σου.</div>
+          <div class="message right">Ωραία, τι θέλεις?</div>
+          <div class="message left">Ξέρεις είναι λίγο ☁ οι τελευταίες μέρες και μου λείπει ο ☀ μου!</div>
+          <div class="message left">Θέλω να σου πω ότι θα γίνω πιο εκδηλωτικός και θα παίρνω πρωτοβουλίες χωρίς να μου το ζητήσεις. Το ξέρω ότι μπορώ να το κάνω. Εδώ το κάπνισμα έχω κόψει σχεδόν 😅. Θα βγω απο το comfort zone μου. Και δεν θα το κάνω επειδή μου το ζήτησες, θα το κάνω για μας, γιατί θέλω να πετύχει αυτή η σχέση, θέλω να έχουμε μέλλον. Ένα μέλλον που και οι δύο θα είμαστε χαρούμενοι!</div>
+          <div class="message left">Και να συγκατοικήσουμε θέλω και κάθε μέρα θέλω να την περνάω μαζί σου!</div>
+          <div class="message left">Η αλήθεια είναι ότι σε αυτά τα δύο χρόνια δεν σου έχω ζητήσει σχεδόν τίποτα. Τώρα όμως σου ζητάω μια δεύτερη ευκαιρία.</div>
+          <div class="message right">Φοβάμαι ρε Δημήτρη, και αν δεν πετύχει?</div>
+          <div class="message left">Αν δεν πετύχει, θα προσπαθήσω περισσότερο μέχρι να πετύχει!</div>
+        </div>
+      </div>
+      <div id="birthday-id" class="birthday-class tab" style="overflow: hidden;">
+        <div id="confetti-container"></div>
+        <div id="countdown">
+          <div id="cdDays">
+            <div class="spacer"></div>
+            <div id="daysNum"></div>
+            <div id="days-id" class="label"></div>
+          </div>
+          <div id="cdHours">
+            <div class="spacer"></div>
+            <div id="hoursNum"></div>
+            <div class="label">HOURS</div>
+          </div>
+          <div id="cdMins">
+            <div class="spacer"></div>
+            <div id="minsNum"></div>
+            <div class="label">MINS</div>
+          </div>
+          <div id="cdSecs">
+            <div class="spacer"></div>
+            <div id="secsNum"></div>
+            <div class="label">SECS</div>
+          </div>
+          <div id="text">UNTIL NEW YEAR</div>
+          <div class="password-container">
+            <input type="password" id="password" placeholder="Enter the password you have on your keys">
+            <span id="show-password-button-id" >🙈</span>
+          </div>
+          <div style="display: inline-grid;">
+            <button class="check-button-id" id="check-password-button-id">Check</button>
+            <!-- <button class="check-button-id" style="margin-top:1rem; font-size: 14px;" id="excited-button-id">If you are as excited as me and can't wait click here</button> -->
+          </div>
+        </div>
+      </div>
+      <div id="map-id" class="map-class tab" >
+        <div class="contact-card ag-contact-card-margin">
+          <div class="contact-card-column ag-contact-card-column-margin">
+          </div>
+          <div class="contact-card-column ag-contact-card-column-margin">
+            <p style="text-align:center!important; font-size:30px!important;">You have a date!</p>
+            <div>Where</div>
+            <p>Extravaganza</p>
+            <div>Who</div>
+            <p>You & Me</p>
+            <div>When</div>
+            <p>Saturday, 10th of February at 21:00</p>
+          </div>
+        </div>
+        <div class="map-zone">
+          <div class="mapouter">
+            <div class="gmap_canvas">
+              <iframe class="iframe-style" id="gmap_canvas" src="https://maps.google.com/maps?q=Episkopou%20Amvrosiou%208%20Thessaloniki&t=&z=13&ie=UTF8&iwloc=&output=embed&z=15" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+              <br>
+              <style>.mapouter{position:relative;text-align:right;height:100%;width:100%;}</style>
+              <style>.gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}</style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
