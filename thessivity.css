@@ -97,10 +97,6 @@ li.nav-item a:hover:not(.active) {
   letter-spacing: 0.15em;
 }
 
-.map-class {
-  background-color:#1d1d1d
-}
-
 .map-zone {
   position: relative;
   top: 0;
