@@ -168,7 +168,6 @@
     });
 
     $('#activities-li').on('click', function () {
-      element.classList.toggle('item-menu-hover');
       closeMenu();
       if (currentPage == 'activities') return;
       currentPage = 'activities';
