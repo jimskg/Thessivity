@@ -124,6 +124,7 @@
     });
 
     function openLanguageMenu(){
+      closeMenu();
       const listLanguageMenu = document.getElementById("list-language-menu");
       listLanguageMenu.classList.remove("display-none");
     }
@@ -137,37 +138,86 @@
       closeLanguageMenu();
       if (currentLanguage == 'gr') return;
       currentLanguage = 'gr';
-      createProducts();
-      createOffers();
     });
 
     $('#en-li').on('click', function () {
       closeLanguageMenu();
       if (currentLanguage == 'en') return;
       currentLanguage = 'en';
-      createProducts();
-      createOffers();
+    });
+
+    $('#menu-button').on('click', function () {
+        openMenu();
+    });
+
+    function openMenu(){
+      closeLanguageMenu();
+      const listMenu = document.getElementById("list-menu");
+      listMenu.classList.remove("display-none");
+    }
+    
+    function closeMenu(){
+      const listMenu = document.getElementById("list-menu");
+      listMenu.classList.add("display-none");
+    }
+
+    $('#home-li').on('click', function () {
+      closeMenu();
+      if (currentPage == 'home') return;
+      currentPage = 'home';
+    });
+
+    $('#activities-li').on('click', function () {
+      element.classList.toggle('item-menu-hover');
+      closeMenu();
+      if (currentPage == 'activities') return;
+      currentPage = 'activities';
+    });
+
+    const swiper = new Swiper('.card-wrapper', {
+      // autoplay: {
+      //   delay: 5000, // 5 seconds
+      //   disableOnInteraction: false, // Continue autoplay after user swipes
+      // },
+      loop: true,
+      spaceBetween: 30,
+
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+          0: {
+              slidesPerView: 1
+          },
+          768: {
+              slidesPerView: 2
+          },
+          1024: {
+              slidesPerView: 3
+          }
+      },
     });
     
   });
 
-  
-  window.onclick = function(event) {
-    var carouselModal = document.getElementById("carousel-modal-id");
-    if (event.target == carouselModal) {
-      carouselModal.remove();
-      //carouselModal.style.display = "none";
-    }
-  } 
-
-  window.onclick = function(event) {
+  window.addEventListener('click', function(event) {
     const listLangMenu = document.getElementById('list-language-menu');
     const langButton = document.getElementById('lang-button');
     const langButtonImg = document.getElementById('lang-button-img');
+    
     if (!(listLangMenu.contains(event.target) || langButton.contains(event.target) || langButtonImg.contains(event.target)) ){
-      const listLanguageMenu = document.getElementById("list-language-menu");
-      listLanguageMenu.classList.add("display-none");
+      listLangMenu.classList.add("display-none");
     }
-  }
+  });
+
+  window.addEventListener('click', function(event) {
+    const listMenu = document.getElementById('list-menu');
+    const menuButton = document.getElementById('lang-button');
+    const menuButtonImg = document.getElementById('menu-button-img');
+    if (!(listMenu.contains(event.target) || menuButton.contains(event.target) || menuButtonImg.contains(event.target)) ){
+      listMenu.classList.add("display-none");
+    }
+  });
   
 })(jQuery);

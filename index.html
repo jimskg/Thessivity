@@ -1,15 +1,17 @@
 <html>
   <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="UTF-8">
   <title>Thessivity</title>
   <head>
     <link rel="stylesheet" href="thessivity.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/freeps2/a7rarpress@main/swiper-bundle.min.css">
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script type="text/javascript" src="thessivity.js"></script>
     <style>
       @import url('http://fonts.cdnfonts.com/css/la-belle-aurore');
     </style>
@@ -24,22 +26,119 @@
               <img src="images/thessivity_logo.jpg" alt="Thessivity" class="logo_size">
           </div>
 
-          <nav>
-              <ul>
-                  <li><a href="#">Home</a></li>
-                  <li><a href="#">Activities</a></li>
-              </ul>
-          </nav>
+          <div class="full-screen-menu">
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Activities</a></li>
+                </ul>
+            </nav>
+          </div>
 
-          <div>
+          <div class="topnav-buttons">
+            <div class="small-screen-menu p-05 bg-primary" id="menu-button">
+              <img src="images/menus_logo.png" class="menu-img" id="menu-button-img"></img>
+            </div>
+            <ul class="list-menu display-none" id="list-menu">
+              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="home-li">Home</li>
+              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="activities-li">Activities</li>
+            </ul>
             <div class="lang-icon p-05 bg-primary" id="lang-button">
-                <img src="images/lang.png" class="lang-img" id="lang-button-img"></img>
+              <img src="images/lang.png" class="lang-img" id="lang-button-img"></img>
             </div>
             <ul class="list-language-menu display-none" id="list-language-menu">
               <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="gr-li">GR</li>
               <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="en-li">ENG</li>
             </ul>
           </div>
+        </div>
+
+        <div class="footer-second-row">
+          <div class="description-container">
+            <div>
+              <h2 class="description-main">Δραστηριότητες με άποψη</h2>
+            </div>
+            <div>
+              <h2 class="description-secondary">Είτε ονειρεύεστε μακρινούς προορισμούς είτε κρυμμένα διαμάντια, είμαστε εδώ για να κάνουμε το ταξίδι σας αξέχαστο. Ετοιμαστείτε για την επόμενη περιπέτειά σας!</h2>
+            </div>
+            <div>
+
+            </div>
+          </div>
+          
+          <!-- CAROUSEL START -->
+          <div class="card-wrapper ">
+            <!-- Card slides container -->
+            <ul class="card-list swiper-wrapper">
+              <li class="card-item swiper-slide">
+                <a href="#" class="card-link">
+                  <div>
+                    <img src="images/cooking.jpg" alt="Card Image" class="card-image">
+                  </div>
+                  <div style="padding: 18px;">
+                    <p class="badge badge-designer">Designer</p>
+                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                    <button class="card-button material-symbols-rounded">arrow_forward</button>
+                  </div>
+                </a>
+              </li>
+              <li class="card-item swiper-slide">
+                <a href="#" class="card-link">
+                  <div>
+                    <img src="images/painting.jpg" alt="Card Image" class="card-image">
+                  </div>
+                  <div style="padding: 18px;">
+                    <p class="badge badge-developer">Developer</p>
+                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                    <button class="card-button material-symbols-rounded">arrow_forward</button>
+                  </div>
+                </a>
+              </li>
+              <li class="card-item swiper-slide">
+                <a href="#" class="card-link">
+                  <div>
+                    <img src="images/hiking.jpg" alt="Card Image" class="card-image">
+                  </div>
+                  <div style="padding: 18px;">
+                    <p class="badge badge-marketer">Marketer</p>
+                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                    <button class="card-button material-symbols-rounded">arrow_forward</button>
+                  </div>
+                </a>
+              </li>
+              <li class="card-item swiper-slide">
+                <a href="#" class="card-link">
+                  <div>
+                    <img src="images/cooking.jpg" alt="Card Image" class="card-image">
+                  </div>
+                  <div style="padding: 18px;">
+                    <p class="badge badge-gamer">Gamer</p>
+                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                    <button class="card-button material-symbols-rounded">arrow_forward</button>
+                  </div>
+                </a>
+              </li>
+              <li class="card-item swiper-slide">
+                <a href="#" class="card-link">
+                  <div>
+                    <img src="images/painting.jpg" alt="Card Image" class="card-image">
+                  </div>
+                  <div style="padding: 18px;">
+                    <p class="badge badge-editor">Editor</p>
+                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                    <button class="card-button material-symbols-rounded">arrow_forward</button>
+                  </div>
+                </a>
+              </li>
+            </ul>
+
+            <!-- Navigation Buttons -->
+            <div class="swiper-button-container">
+              <div class="swiper-slide-button swiper-button-prev"></div>
+              <div class="swiper-slide-button swiper-button-next"></div>
+            </div>
+          </div>
+          <!-- CAROUSEL END -->
         </div>
 
       </div>
@@ -59,29 +158,23 @@
                 <div class="footer-top">
                     <!-- Country & Language Selection -->
                     <div class="footer-country">
-                        <img src="your-country-flag.png" alt="Country Flag" class="country-flag">
+                        <img src="images/greece_logo.png" alt="Country Flag" class="country-img">
                         <a href="#" class="footer-title">Greece</a>
                     </div>
 
                     <!-- Contact Info -->
                     <div class="footer-contact">
                         <a href="tel:+302117700000" class="footer-title">
-                            <img src="phone-icon.png" alt="Phone">
+                            <img src="images/phone_logo.png" alt="Phone" class="phone-img">
                             Phone reservations
                         </a>
                         <div>
-                            <a href="tel:+302117700000" class="footer-text">+30 2117700000</a>
-                            <span class="footer-text-secondary">Mon - Fri 10:00 - 18:00</span>
+                          <ul class="footer-list">
+                            <li><a href="tel:+123-456-7890" class="footer-link">+30 123-456-7890</a></li>
+                            <li class="footer-no-link">Mon - Fri 10:00 - 18:00</li>
+                          </ul>
                         </div>
                     </div>
-
-                    <!-- Physical Spots -->
-                    <ul class="footer-list">
-                        <li>
-                            <img src="location-icon.png" alt="Location">
-                            <a href="/physical-spots" class="footer-title">Physical spots</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
 
@@ -91,9 +184,9 @@
                 <div class="footer-info">
                     <span class="footer-title">Information</span>
                     <ul class="footer-list">
-                        <li class="footer-link">Phone: 123-456-7890</li>
-                        <li class="footer-link">Email: info@mysite.com</li>
-                        <li class="footer-link">Thessaloniki, Greece</li>
+                        <li><a href="tel:+123-456-7890" class="footer-link">Phone: 123-456-7890</a></li>
+                        <li><a href="mailto:info@mysite.com"  class="footer-link">Email: info@mysite.com</a></li>
+                        <li class="footer-no-link">Thessaloniki, Greece</li>
                     </ul>
                 </div>
 
@@ -128,5 +221,14 @@
         
     </div>
   </footer>
+
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- Linking SwiperJS script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Linking custom script -->
+  <script src="swiper-init.js"></script>
+  <script src="thessivity.js"></script>
 
 </html>
