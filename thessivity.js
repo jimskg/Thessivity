@@ -173,7 +173,6 @@
       if (currentPage == 'activities') return;
       currentPage = 'activities';
     });
-    
 
     const swiper = new Swiper('.card-wrapper', {
       autoplay: {
