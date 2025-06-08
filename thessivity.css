@@ -36,6 +36,7 @@
   html {box-sizing: border-box;}
   .p-05 {padding: 0.5rem;}
   .display-none {display:none;}
+  .display-block {display:block!important;}
   .z-index-20 {z-index: 20;}
   .flex {display: flex;}
   .justify-between {justify-content: space-between;}
@@ -206,7 +207,18 @@
     height: auto;
     overflow: hidden;
     position: relative;
-    min-width: 320px !important;
+    /* min-width: 320px !important; */
+    flex: 1;
+    /* max-width: 240px; */
+  }
+
+  .footer-info-a-tag {
+    text-decoration: none; 
+    color: #646587;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
   }
 
   .footer-container {
@@ -225,7 +237,7 @@
     justify-content: space-between;
   }
 
-  .footer-second-row {
+  .footer-row, .body-row {
     width: 100%;
     margin: 0 auto;
     color: #444545;
@@ -240,7 +252,7 @@
     padding: 16px 0;
     width: 304px;
     border-right: 1px solid var(--color-footer-separator);
-    min-height: 270px;
+    /* min-height: 270px; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -255,11 +267,6 @@
     display: flex;
     justify-content: space-between;
     gap: 16px;
-  }
-
-  .footer-info {
-    flex: 1;
-    max-width: 240px;
   }
 
   .footer-title {
@@ -292,8 +299,11 @@
     filter: brightness(0) saturate(100%) invert(64%) sepia(6%) saturate(574%) hue-rotate(201deg) brightness(94%) contrast(90%);
   }
 
-  .footer-list {
-    /* display: block !important; */
+  .arrow-img{
+    display: none;
+    margin-bottom: 12px;
+    height: 20px;
+    width: 20px;
   }
 
   .footer-list li {
@@ -347,7 +357,7 @@
 
   .footer-copyright {
     text-align: center;
-    margin-bottom: 16px;
+    padding-bottom: 16px;
     font: normal 15px pf_highway_sans_prolightRg, arial, sans-serif;
     color: var(--color-footer-text);
   }
@@ -521,11 +531,37 @@
       margin: 0 10px 25px;
     }
 
+    .arrow-img {
+      display: block !important;
+    }
+
     .card-wrapper .swiper-slide-button {
       display: none;
     }
 
-    .footer-second-row {
+    .footer-row {    
+      flex-direction: column-reverse;
+    }
+
+    .footer-right-column {    
+      flex-direction: column;
+    }
+
+    .footer-left-column {    
+      border-top: 1px solid var(--color-footer-separator);
+      border-right: 0;
+      width: unset;
+    }
+
+    .footer-info .footer-list {
+      display: none;
+    }
+
+    .social-media {
+      margin-bottom: 0 !important;
+    }
+
+    .body-row {
       flex-direction: column;
     }
 

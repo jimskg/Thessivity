@@ -173,6 +173,34 @@
       currentPage = 'activities';
     });
 
+    $('#footer-info-dropdown').on('click', function () {
+      const infoImageArrow = document.getElementById('footer-info-dropdown-img');
+      const isHidden = window.getComputedStyle(infoImageArrow).display === 'none';
+      if (isHidden) return;
+
+      const footerListInfo = document.getElementById('footer-list-info');
+      footerListInfo.classList.toggle("display-block");
+      changeArrowDirectionIcon(infoImageArrow);
+    });
+
+    $('#footer-support-dropdown').on('click', function () {
+      const supportImageArrow = document.getElementById('footer-support-dropdown-img');
+      const isHidden = window.getComputedStyle(supportImageArrow).display === 'none';
+      if (isHidden) return;
+
+      const footerListSupport = document.getElementById('footer-list-support');
+      footerListSupport.classList.toggle("display-block");
+      changeArrowDirectionIcon(supportImageArrow);
+    });
+
+    function changeArrowDirectionIcon(arrowImg){
+      if (arrowImg.src.includes('down_arrow_logo.png')) {
+        arrowImg.src = 'images/up_arrow_logo.png';
+      } else {
+        arrowImg.src = 'images/down_arrow_logo.png';
+      }
+    }
+
     const swiper = new Swiper('.card-wrapper', {
       autoplay: {
         delay: 5000, // 5 seconds
