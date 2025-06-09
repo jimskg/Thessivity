@@ -1,12 +1,18 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   let currentLanguage = 'gr';
   let breakIfDownForMaintenance = false;
   let testEnvironment = window.location.href.includes('Thessivity/index.html');
   let outputData = {};
+
   const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
   //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
   const sheetId = '1LPjh1COe8CRUiLgGqf2wQA64IbOx4q2vuZcTJtwATFs'; // Google Sheet ID
   //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
+
+  let startDate = null;
+  let endDate = null;
+  let calendarPopup = null;
+  let secondaryDesc = null;
 
   async function fetchSheetData(sheetId, apiKey) {
     try {
@@ -36,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  fetchSheetData(sheetId, apiKey);
+  await fetchSheetData(sheetId, apiKey);
 
   function changeArrowDirectionIcon(arrowImg) {
     if (arrowImg.src.includes('down_arrow_logo.png')) {
@@ -85,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeMenu();
     }
   });
-  
+
   document.getElementById('gr-li')?.addEventListener('click', () => {
     closeLanguageMenu();
     if (currentLanguage !== 'gr') {
@@ -139,13 +145,13 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       document.querySelectorAll('.down-arrow-img').forEach(img => {
-        collapseArrowIcon(img); // sets it to "down" arrow
+        collapseArrowIcon(img); // sets to down arrow
       });
 
-      // If it wasn't open, now open it and rotate the arrow
       if (!isOpen) {
         dropdown.classList.remove('display-none');
-        changeArrowDirectionIcon(arrow); // sets it to "up" arrow
+        changeArrowDirectionIcon(arrow); // sets to up arrow
+        initCustomCheckboxListener(parent);
       }
     });
   });
@@ -190,8 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Swiper init
   const swiper = new Swiper('.card-wrapper', {
     // autoplay: {
-    //   delay: 5000, // 5 seconds
-    //   disableOnInteraction: false, // Continue autoplay after user swipes
+    //   delay: 5000,
+    //   disableOnInteraction: false,
     // },
     loop: true,
     spaceBetween: 30,
@@ -206,41 +212,243 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 
-  // Outside click handlers
-  
-  // Outside click handlers
+  // Unified outside click handler for menus, language menu, and filter dropdowns including calendars
   window.addEventListener('click', function (event) {
+    // Close language menu
     closePopUps('list-language-menu', 'lang-button', 'lang-button-img', event);
+
+    // Close main menu
     closePopUps('list-menu', 'menu-button', 'menu-button-img', event);
-    closeAllFilterDropdowns(event);
+
+    // Close filter dropdowns and calendars
+    closeAllFilterDropdownsAndCalendars(event);
   });
 
-  function closePopUps(tempMenu, tempButton, tempImg, event) {
-    const menu = document.getElementById(tempMenu);
-    const button = document.getElementById(tempButton);
-    const img = document.getElementById(tempImg);
-    if (!(menu.contains(event.target) || button.contains(event.target) || img.contains(event.target))) {
+  function closePopUps(menuId, buttonId, imgId, event) {
+    const menu = document.getElementById(menuId);
+    const button = document.getElementById(buttonId);
+    const img = document.getElementById(imgId);
+    if (!(menu.contains(event.target) || button.contains(event.target) || (img && img.contains(event.target)))) {
       menu.classList.add("display-none");
     }
   }
 
-  function closeAllFilterDropdowns(event) {
-    let clickedInsideDropdown = false;
+  function closeAllFilterDropdownsAndCalendars(event) {
+    let clickedInsideDropdownOrCalendar = false;
 
     document.querySelectorAll('.filter-button-container').forEach(container => {
       if (container.contains(event.target)) {
-        clickedInsideDropdown = true;
+        clickedInsideDropdownOrCalendar = true;
       }
     });
 
-    if (!clickedInsideDropdown) {
+    if (!clickedInsideDropdownOrCalendar) {
+      // Hide all dropdown panels
       document.querySelectorAll('.filter-dropdown-panel').forEach(panel => {
         panel.classList.add('display-none');
       });
 
-      document.querySelectorAll('.down-arrow-img').forEach(img => {
-        collapseArrowIcon(img); // Set arrow to down
+      // Hide all calendar popups
+      document.querySelectorAll('.calendar-popup').forEach(popup => {
+        popup.classList.add('display-none');
       });
+
+      // Collapse all arrows
+      document.querySelectorAll('.down-arrow-img').forEach(img => {
+        collapseArrowIcon(img);
+      });
+
+      // Reset all custom-checkboxes and date selection states
+      // document.querySelectorAll('.filter-button-container').forEach(container => {
+      //   const customCheckbox = container.querySelector('.custom-checkbox');
+      //   if (customCheckbox) {
+      //     customCheckbox.checked = false;
+      //   }
+      // });
+
+      // startDate = null;
+      // endDate = null;
+      // secondaryDesc && (secondaryDesc.textContent = 'Custom');
+    }
+  }
+
+  function initCustomCheckboxListener(container) {
+    const customCheckbox = container.querySelector('.custom-checkbox');
+    if (customCheckbox && !customCheckbox.hasListener) {
+      customCheckbox.addEventListener('change', () => {
+        calendarPopup = container.querySelector('.calendar-popup');
+        secondaryDesc = container.querySelector('.filter-button-secondary-description');
+
+        if (customCheckbox.checked) {
+          renderCalendarForContainer(container);
+        } else {
+          hideCalendarForContainer(container);
+        }
+      });
+      customCheckbox.hasListener = true;
+    }
+  }
+
+  function createCalendar(month, year) {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const daysInWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const calendarMonth = document.createElement('div');
+    calendarMonth.classList.add('calendar-month');
+
+    const header = document.createElement('h4');
+    header.textContent = `${monthNames[month]} ${year}`;
+    calendarMonth.appendChild(header);
+
+    const grid = document.createElement('div');
+    grid.classList.add('calendar-grid');
+
+    // Append days of the week header inside grid
+    daysInWeek.forEach(day => {
+      const dayEl = document.createElement('div');
+      dayEl.textContent = day;
+      dayEl.style.fontWeight = 'bold';
+      dayEl.style.textAlign = 'center';
+      grid.appendChild(dayEl);
+    });
+
+    // Add blank cells for first day offset
+    for (let i = 0; i < firstDay; i++) {
+      const blankCell = document.createElement('div');
+      blankCell.classList.add('calendar-day', 'blank');
+      grid.appendChild(blankCell);
+    }
+
+    // Days cells
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayEl = document.createElement('div');
+      dayEl.classList.add('calendar-day');
+      dayEl.textContent = day;
+
+      const thisDate = new Date(year, month, day);
+      dayEl.dataset.date = thisDate.toISOString();
+
+      // Disable days before today if in current month & year
+      const today = new Date();
+      const isPastDayInCurrentMonth = (year === today.getFullYear() && month === today.getMonth() && day < today.getDate());
+
+      if (isPastDayInCurrentMonth) {
+        dayEl.classList.add('disabled-day');
+      } else {
+        dayEl.addEventListener('click', () => {
+          handleDateClick(dayEl);
+        });
+      }
+
+      grid.appendChild(dayEl);
+    }
+
+    calendarMonth.appendChild(grid);
+
+    return calendarMonth;
+  }
+
+  function renderCalendarForContainer(container) {
+    const calendarPopup = container.querySelector('.calendar-popup');
+  const dropdownPanel = container.querySelector('.filter-dropdown-panel');
+  calendarPopup.innerHTML = '';
+
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
+
+  calendarPopup.appendChild(createCalendar(currentMonth, currentYear));
+
+  let nextMonth = currentMonth + 1;
+  let nextYear = currentYear;
+  if (nextMonth > 11) {
+    nextMonth = 0;
+    nextYear++;
+  }
+  calendarPopup.appendChild(createCalendar(nextMonth, nextYear));
+
+  calendarPopup.classList.remove('display-none');
+  }
+
+  function hideCalendarForContainer(container) {
+    calendarPopup = container.querySelector('.calendar-popup');
+    secondaryDesc = container.querySelector('.filter-button-secondary-description');
+    const customCheckbox = container.querySelector('.custom-checkbox');
+
+    if (calendarPopup) {
+      calendarPopup.classList.add('display-none');
+      calendarPopup.innerHTML = '';
+    }
+
+    if (customCheckbox) {
+      customCheckbox.checked = false;
+    }
+
+    startDate = null;
+    endDate = null;
+
+    if (secondaryDesc) {
+      secondaryDesc.textContent = 'Custom';
+    }
+  }
+
+  function handleDateClick(dayEl) {
+    const clickedDate = new Date(dayEl.dataset.date);
+
+    if (!startDate || (startDate && endDate)) {
+      // Reset selection if both dates are set or startDate missing
+      startDate = clickedDate;
+      endDate = null;
+      clearDateSelection();
+      dayEl.classList.add('selected-start');
+    } else if (clickedDate < startDate) {
+      // If clicked before startDate, make it new startDate
+      clearDateSelection();
+      startDate = clickedDate;
+      dayEl.classList.add('selected-start');
+    } else {
+      // Set endDate
+      endDate = clickedDate;
+      highlightRange(startDate, endDate);
+    }
+
+    updateSecondaryDesc();
+  }
+
+  function clearDateSelection() {
+    document.querySelectorAll('.calendar-day').forEach(dayEl => {
+      dayEl.classList.remove('selected-start', 'selected-end', 'in-range');
+    });
+  }
+
+  function highlightRange(start, end) {
+    clearDateSelection();
+
+    document.querySelectorAll('.calendar-day').forEach(dayEl => {
+      const dayDate = new Date(dayEl.dataset.date);
+      if (dayDate.getTime() === start.getTime()) {
+        dayEl.classList.add('selected-start');
+      } else if (dayDate.getTime() === end.getTime()) {
+        dayEl.classList.add('selected-end');
+      } else if (dayDate > start && dayDate < end) {
+        dayEl.classList.add('in-range');
+      }
+    });
+  }
+
+  function updateSecondaryDesc() {
+    if (!secondaryDesc) return;
+
+    if (startDate && endDate) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      secondaryDesc.textContent = `${startDate.toLocaleDateString(undefined, options)} - ${endDate.toLocaleDateString(undefined, options)}`;
+    } else if (startDate) {
+      secondaryDesc.textContent = `${startDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`;
+    } else {
+      secondaryDesc.textContent = 'Custom';
     }
   }
 });

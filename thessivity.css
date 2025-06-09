@@ -14,6 +14,7 @@
     --color-footer-title: #646567;
     --color-main: #17839d;
     --color-secondary-main: #e0f1f3;
+    --color-third-main: #a6d7df;
   }
   
   body {
@@ -34,7 +35,7 @@
   }
 
   html {box-sizing: border-box;}
-  .display-none {display:none;}
+  .display-none {display:none!important;}
   .display-block {display:block!important;}
 
   .container {
@@ -801,6 +802,80 @@
   
   /* CAROUSEL END */
 
+  /* CALENDAR START */
+
+  .calendar-popup {
+    position: absolute;
+    top: 100%;
+    right: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    background-color: white;
+    padding: 16px;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+
+  .calendar-month {
+    user-select: none;
+  }
+
+  .calendar-month h4 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 30px);
+    gap: 3px;
+    justify-content: center;
+  }
+
+  .calendar-day {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .calendar-day.disabled {
+    color: #ccc;
+    cursor: default;
+  }
+
+  .calendar-day.selected-start,
+  .calendar-day.selected-end {
+    /* background-color: #4caf50; */
+    background-color: var(--color-main);
+    color: white;
+  }
+
+  .calendar-day.in-range {
+    /* background-color: #a5d6a7; */
+    background-color: var(--color-secondary-main);
+  }
+
+  .calendar-day:hover:not(.disabled):not(.selected-start):not(.selected-end) {
+    /* background-color: #c8e6c9; */
+    background-color: var(--color-third-main);
+  }
+
+  .disabled-day {
+    color: #999;            
+    text-decoration: line-through;
+    pointer-events: none;
+    opacity: 0.5;
+    user-select: none;
+  }
+
+  /* CALENDAR END */
+
   /* Responsive media query code for small screens */
   @media (max-width: 768px) {
 
@@ -887,11 +962,6 @@
       width: 100%;
     }
 
-    .filter-search-input {
-      height: 40px;
-      max-height: 40px;
-    }
-
     /* FILTER MEDIA END */
 
     /* DESCRIPTION MEDIA START */
@@ -926,5 +996,18 @@
     }
     
     /* MENU MEDIA END */
+
+    /* CALENDAR MEDIA START */
+
+    .calendar-popup {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      left: 10px;
+      top: calc(100% + 300px);
+      width: calc(100% - 20px);
+    }
+
+    /* CALENDAR MEDIA END */
   }
   
