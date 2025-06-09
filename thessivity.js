@@ -193,6 +193,18 @@
       changeArrowDirectionIcon(supportImageArrow);
     });
 
+    $('#filter-tag-id-for-kids').on('click', function () {
+      const supportImageArrow = document.getElementById('footer-support-dropdown-img');
+      const isHidden = window.getComputedStyle(supportImageArrow).display === 'none';
+      if (isHidden) return;
+
+      const footerListSupport = document.getElementById('footer-list-support');
+      footerListSupport.classList.toggle("display-block");
+      changeArrowDirectionIcon(supportImageArrow);
+    });
+
+
+
     function changeArrowDirectionIcon(arrowImg){
       if (arrowImg.src.includes('down_arrow_logo.png')) {
         arrowImg.src = 'images/up_arrow_logo.png';
@@ -202,10 +214,10 @@
     }
 
     const swiper = new Swiper('.card-wrapper', {
-      autoplay: {
-        delay: 5000, // 5 seconds
-        disableOnInteraction: false, // Continue autoplay after user swipes
-      },
+      // autoplay: {
+      //   delay: 5000, // 5 seconds
+      //   disableOnInteraction: false, // Continue autoplay after user swipes
+      // },
       loop: true,
       spaceBetween: 30,
 
@@ -245,6 +257,69 @@
     if (!(listMenu.contains(event.target) || menuButton.contains(event.target) || menuButtonImg.contains(event.target)) ){
       listMenu.classList.add("display-none");
     }
+  });
+
+  const links = document.querySelectorAll('.filter-tag-list a');
+  const selectedFilters = new Set();
+  //const eventList = document.getElementById('event-list');
+  links.forEach(link => {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const filter = this.dataset.filter;
+
+      if (selectedFilters.has(filter)) {
+        selectedFilters.delete(filter);
+        this.classList.remove('filter-tag-selected');
+      } else {
+        selectedFilters.add(filter);
+        this.classList.add('filter-tag-selected');
+      }
+
+      /*let combinedEvents = [];
+      selectedFilters.forEach(f => {
+        combinedEvents = combinedEvents.concat(eventData[f] || []);
+      });
+
+      eventList.innerHTML = combinedEvents.length
+        ? `<ul>${combinedEvents.map(event => `<li>${event}</li>`).join('')}</ul>`
+        : `<p>Select a tag to see events.</p>`;*/
+    });
+  });
+
+  document.querySelectorAll('.filter-button').forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+
+      const currentDropDown = btn.parentElement.querySelector('.filter-dropdown-panel');
+
+      document.querySelectorAll('.filter-dropdown-panel').forEach(dropDownPanel => {
+        if (dropDownPanel != currentDropDown){
+          dropDownPanel.classList.add('display-none');
+        } 
+      });
+
+      currentDropDown.classList.toggle('display-none');
+    });
+  });
+
+  // Search filter
+  document.querySelectorAll('.filter-search-input').forEach(input => {
+    input.addEventListener('input', function () {
+      const filter = this.value.toLowerCase();
+      const eventLis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-events li');
+
+      eventLis.forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? 'block' : 'none';
+      });
+    });
+  });
+
+
+  document.querySelectorAll('.filter-list-events-item input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', (event) => {
+      console.log('Clicked checkbox data-id:', event.target.getAttribute('data-id'));
+      console.log('Checked:', event.target.checked);
+    });
   });
   
 })(jQuery);

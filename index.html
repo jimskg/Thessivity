@@ -53,92 +53,364 @@
           </div>
         </div>
 
-        <div class="body-row">
-          <div class="description-container">
-            <div>
-              <h2 class="description-main">Δραστηριότητες με άποψη</h2>
-            </div>
-            <div>
-              <h2 class="description-secondary">Είτε ονειρεύεστε μακρινούς προορισμούς είτε κρυμμένα διαμάντια, είμαστε εδώ για να κάνουμε το ταξίδι σας αξέχαστο. Ετοιμαστείτε για την επόμενη περιπέτειά σας!</h2>
-            </div>
-            <div>
+        <div>
+          <div class="body-row">
+            <div class="description-container">
+              <div>
+                <h2 class="description-main">Δραστηριότητες με άποψη</h2>
+              </div>
+              <div>
+                <h2 class="description-secondary">Είτε ονειρεύεστε μακρινούς προορισμούς είτε κρυμμένα διαμάντια, είμαστε εδώ για να κάνουμε το ταξίδι σας αξέχαστο. Ετοιμαστείτε για την επόμενη περιπέτειά σας!</h2>
+              </div>
+              <div>
 
+              </div>
+            </div>
+            
+            <!-- CAROUSEL START -->
+            <div class="card-wrapper ">
+              <!-- Card slides container -->
+              <ul class="card-list swiper-wrapper">
+                <li class="card-item swiper-slide">
+                  <a href="#" class="card-link">
+                    <div>
+                      <img src="images/cooking.jpg" alt="Card Image" class="card-image">
+                    </div>
+                    <div style="padding: 18px;">
+                      <p class="badge badge-designer">Designer</p>
+                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                    </div>
+                  </a>
+                </li>
+                <li class="card-item swiper-slide">
+                  <a href="#" class="card-link">
+                    <div>
+                      <img src="images/painting.jpg" alt="Card Image" class="card-image">
+                    </div>
+                    <div style="padding: 18px;">
+                      <p class="badge badge-developer">Developer</p>
+                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                    </div>
+                  </a>
+                </li>
+                <li class="card-item swiper-slide">
+                  <a href="#" class="card-link">
+                    <div>
+                      <img src="images/hiking.jpg" alt="Card Image" class="card-image">
+                    </div>
+                    <div style="padding: 18px;">
+                      <p class="badge badge-marketer">Marketer</p>
+                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                    </div>
+                  </a>
+                </li>
+                <li class="card-item swiper-slide">
+                  <a href="#" class="card-link">
+                    <div>
+                      <img src="images/cooking.jpg" alt="Card Image" class="card-image">
+                    </div>
+                    <div style="padding: 18px;">
+                      <p class="badge badge-gamer">Gamer</p>
+                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                    </div>
+                  </a>
+                </li>
+                <li class="card-item swiper-slide">
+                  <a href="#" class="card-link">
+                    <div>
+                      <img src="images/painting.jpg" alt="Card Image" class="card-image">
+                    </div>
+                    <div style="padding: 18px;">
+                      <p class="badge badge-editor">Editor</p>
+                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
+                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+
+              <!-- Navigation Buttons -->
+              <div class="swiper-button-container">
+                <div class="swiper-slide-button swiper-button-prev"></div>
+                <div class="swiper-slide-button swiper-button-next"></div>
+              </div>
+            </div>
+            <!-- CAROUSEL END -->
+          </div>
+
+          <!-- FILTERS START -->
+          <div class="filter-row">
+            <div class="filter-container-top">
+              <div class="filter-description">Activities in Thessaloniki</div>
+              <ul class="filter-tag-list">
+                <li><a href="#" data-filter="kids" id="filter-tag-id-for-kids">For Kids</a></li>
+                <li><a href="#" data-filter="offers" id="filter-tag-id-offers">Offers</a></li>
+                <li><a href="#" data-filter="festivals" id="filter-tag-id-festivals">Festivals</a></li>
+              </ul>
+            </div>
+            <div class="filter-container-bottom">
+              <div class="filter-button-container">
+                <a class="filter-button">
+                  <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div>
+                      <div class="filter-button-main-description">Category</div>
+                      <div class="filter-button-secondary-description">All</div>
+                    </div>
+                    <div class="filter-button-img-conainer">
+                      <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
+                    </div>
+                  </div>
+                </a>
+                <!-- DROPDOWN START -->
+                <div class="filter-dropdown-panel display-none">
+                  <div class="filter-search-bar">
+                    <input type="text" class="filter-search-input" placeholder="Search"/>
+                  </div>
+                  <ul class="filter-list-events">
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input data-id="all" type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">All</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option A</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option B</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option C</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option D</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option E</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option F</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option G</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option H</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <!-- DROPDOWN START -->
+              </div>
+              <div class="filter-button-container">
+                <a class="filter-button">
+                  <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div>
+                      <div class="filter-button-main-description">Where</div>
+                      <div class="filter-button-secondary-description">Everywhere</div>
+                    </div>
+                    <div class="filter-button-img-conainer">
+                      <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
+                    </div>
+                  </div>
+                </a>
+                <!-- DROPDOWN START -->
+                <div class="filter-dropdown-panel display-none">
+                  <div class="filter-search-bar">
+                    <input type="text" class="filter-search-input" placeholder="Search"/>
+                  </div>
+                  <ul class="filter-list-events">
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input data-id="all" type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">All</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option A</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option B</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option C</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option D</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option E</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option F</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option G</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option H</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <!-- DROPDOWN START -->
+              </div>
+              <div class="filter-button-container">
+                <a class="filter-button">
+                  <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div>
+                      <div class="filter-button-main-description">When</div>
+                      <div class="filter-button-secondary-description">Anytime</div>
+                    </div>
+                    <div class="filter-button-img-conainer">
+                      <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
+                    </div>
+                  </div>
+                </a>
+                <!-- DROPDOWN START -->
+                <div class="filter-dropdown-panel display-none">
+                  <div class="filter-search-bar">
+                    <input type="text" class="filter-search-input" placeholder="Search"/>
+                  </div>
+                  <ul class="filter-list-events">
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input data-id="all" type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">All</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option A</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option B</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option C</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option D</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option E</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option F</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option G</span>
+                      </label>
+                    </li>
+                    <li>
+                      <label class="filter-list-events-item">
+                        <input type="checkbox" />
+                        <span class="filter-list-events-item-checkmark"></span>
+                        <span class="filter-list-events-item-text">Option H</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <!-- DROPDOWN START -->
+              </div>
             </div>
           </div>
-          
-          <!-- CAROUSEL START -->
-          <div class="card-wrapper ">
-            <!-- Card slides container -->
-            <ul class="card-list swiper-wrapper">
-              <li class="card-item swiper-slide">
-                <a href="#" class="card-link">
-                  <div>
-                    <img src="images/cooking.jpg" alt="Card Image" class="card-image">
-                  </div>
-                  <div style="padding: 18px;">
-                    <p class="badge badge-designer">Designer</p>
-                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                    <button class="card-button material-symbols-rounded">arrow_forward</button>
-                  </div>
-                </a>
-              </li>
-              <li class="card-item swiper-slide">
-                <a href="#" class="card-link">
-                  <div>
-                    <img src="images/painting.jpg" alt="Card Image" class="card-image">
-                  </div>
-                  <div style="padding: 18px;">
-                    <p class="badge badge-developer">Developer</p>
-                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                    <button class="card-button material-symbols-rounded">arrow_forward</button>
-                  </div>
-                </a>
-              </li>
-              <li class="card-item swiper-slide">
-                <a href="#" class="card-link">
-                  <div>
-                    <img src="images/hiking.jpg" alt="Card Image" class="card-image">
-                  </div>
-                  <div style="padding: 18px;">
-                    <p class="badge badge-marketer">Marketer</p>
-                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                    <button class="card-button material-symbols-rounded">arrow_forward</button>
-                  </div>
-                </a>
-              </li>
-              <li class="card-item swiper-slide">
-                <a href="#" class="card-link">
-                  <div>
-                    <img src="images/cooking.jpg" alt="Card Image" class="card-image">
-                  </div>
-                  <div style="padding: 18px;">
-                    <p class="badge badge-gamer">Gamer</p>
-                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                    <button class="card-button material-symbols-rounded">arrow_forward</button>
-                  </div>
-                </a>
-              </li>
-              <li class="card-item swiper-slide">
-                <a href="#" class="card-link">
-                  <div>
-                    <img src="images/painting.jpg" alt="Card Image" class="card-image">
-                  </div>
-                  <div style="padding: 18px;">
-                    <p class="badge badge-editor">Editor</p>
-                    <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                    <button class="card-button material-symbols-rounded">arrow_forward</button>
-                  </div>
-                </a>
-              </li>
-            </ul>
-
-            <!-- Navigation Buttons -->
-            <div class="swiper-button-container">
-              <div class="swiper-slide-button swiper-button-prev"></div>
-              <div class="swiper-slide-button swiper-button-next"></div>
-            </div>
-          </div>
-          <!-- CAROUSEL END -->
+          <!-- FILTERS END -->
         </div>
 
       </div>
