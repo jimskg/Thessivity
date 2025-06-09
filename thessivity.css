@@ -241,13 +241,13 @@
   /* FILTER START */
   
   .filter-row-container {
-    /* padding: 20px 12px; */
+    padding: 20px 12px;
     display: flex;
     justify-content: center;
   }
 
   .filter-row-card {
-    /* padding: 20px; */
+    padding: 20px;
     width: 80%;
     background-color: white;
     border-radius: 10px;
@@ -331,6 +331,7 @@
     justify-content: end;
     align-items: center;
     padding: 10px 0 10px;
+    flex-wrap: wrap;
   }
 
   .filter-tag-list li {
@@ -864,11 +865,14 @@
     .filter-tag-list {
       justify-content: unset;
       padding: 10px;
+      flex-wrap: wrap;
     }
 
     .filter-tag-list li {
       padding-left: 0;
       padding-right: .625rem;
+      padding-top: 10px;
+      padding-bottom: 10px;
     }
 
     .filter-container-top {
@@ -881,6 +885,11 @@
 
     .filter-row-card {
       width: 100%;
+    }
+
+    .filter-search-input {
+      height: 40px;
+      max-height: 40px;
     }
 
     /* FILTER MEDIA END */
