@@ -13,6 +13,7 @@
     --color-footer-text: #9897A9;
     --color-footer-title: #646567;
     --color-main: #17839d;
+    --color-secondary-main: #e0f1f3;
   }
   
   body {
@@ -85,7 +86,6 @@
     text-decoration: none;
     font-size: 17px;
     display: block;
-    border-radius: .375rem;
     cursor: pointer;
   }
 
@@ -114,7 +114,6 @@
     text-decoration: none;
     font-size: 17px;
     display: block;
-    border-radius: .375rem;
     cursor: pointer;
   }
     
@@ -142,7 +141,7 @@
     text-align: center;
     --tw-bg-opacity: 1;
     background-color: rgb(255 255 255/var(--tw-bg-opacity,1));
-    border-radius: .375rem;
+    border-radius: 10px;
     min-width: 5rem;
     /* margin-top: 1rem;
     right: 2.5rem; */
@@ -214,7 +213,6 @@
     align-items: flex-start;
     justify-content: space-between;
     padding: 20px 0 10px 0 !important;
-    border-radius: 5px !important;
     flex-direction: row;
     width: 100% !important;
   }
@@ -234,9 +232,9 @@
     /* font: bold 1.45em pf_highway_sans_pro_lightRg,Arial,sans-serif; */
     line-height: normal;
     background: #e8e8e8 !important;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;  
-    border-radius: 12px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;  
+    border-radius: 10px;
     cursor: pointer;
   }
 
@@ -389,7 +387,7 @@
   }
 
   .filter-list-events li:hover {
-    background-color: #f0e6d8;
+    background-color: var(--color-secondary-main);
   }
 
   .filter-list-events-item input[type="checkbox"] {
@@ -399,7 +397,7 @@
   .filter-list-events-item-checkmark {
     width: 20px;
     height: 20px;
-    border: 2px solid #a68f6c;
+    border: 2px solid var(--color-main);
     border-radius: 6px;
     margin-right: 12px;
     display: flex;
@@ -409,8 +407,8 @@
   }
 
   .filter-list-events-item input[type="checkbox"]:checked + .filter-list-events-item-checkmark {
-    background-color: #a68f6c;
-    border-color: #a68f6c;
+    background-color: var(--color-main);
+    border-color: var(--color-main);
   }
 
   .filter-list-events-item input[type="checkbox"]:checked + .filter-list-events-item-checkmark::after {
@@ -485,7 +483,7 @@
     padding: 20px;
     width: 80%;
     background-color: white;
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
   }
 
@@ -545,15 +543,6 @@
     margin-bottom: 12px;
     height: 20px;
     width: 20px;
-  }
-
-  .search-img {
-    padding: 6px 10px;
-    background-color: #ddd;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 0 6px 6px 0;
-    font-size: 16px;
   }
 
   .footer-list li {
@@ -682,7 +671,7 @@
     background: #fff;
     /* padding: 18px; */
     user-select: none;
-    border-radius: 12px;
+    border-radius: 10px;
     text-decoration: none;
     /* border: 2px solid transparent; */
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
@@ -813,7 +802,7 @@
       width: unset;
     }
 
-    .footer-info .footer-list {
+    .footer-info .footer-list:not(.social-media) {
       display: none;
     }
 

@@ -214,10 +214,10 @@
     }
 
     const swiper = new Swiper('.card-wrapper', {
-      autoplay: {
-        delay: 5000, // 5 seconds
-        disableOnInteraction: false, // Continue autoplay after user swipes
-      },
+      // autoplay: {
+      //   delay: 5000, // 5 seconds
+      //   disableOnInteraction: false, // Continue autoplay after user swipes
+      // },
       loop: true,
       spaceBetween: 30,
 
