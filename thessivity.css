@@ -241,13 +241,13 @@
   /* FILTER START */
   
   .filter-row-container {
-    padding: 20px 12px;
+    /* padding: 20px 12px; */
     display: flex;
     justify-content: center;
   }
 
   .filter-row-card {
-    padding: 20px;
+    /* padding: 20px; */
     width: 80%;
     background-color: white;
     border-radius: 10px;
