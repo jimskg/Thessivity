@@ -1,268 +1,170 @@
-(function ($) {
-  $(function () {
+document.addEventListener("DOMContentLoaded", function () {
+  let currentLanguage = 'gr';
+  let breakIfDownForMaintenance = false;
+  let testEnvironment = window.location.href.includes('Thessivity/index.html');
+  let outputData = {};
+  const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
+  //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
+  const sheetId = '1LPjh1COe8CRUiLgGqf2wQA64IbOx4q2vuZcTJtwATFs'; // Google Sheet ID
+  //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
 
-    let currentLanguage = 'gr';
-    let breakIfDownForMaintenance = false;
-    let testEnvironment = window.location.href.includes('Thessivity/index.html');
-    let outputData = {};
-    const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
-    //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
-    const sheetId = '1LPjh1COe8CRUiLgGqf2wQA64IbOx4q2vuZcTJtwATFs'; // Google Sheet ID
-    //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
+  async function fetchSheetData(sheetId, apiKey) {
+    try {
+      const gids = {
+        First: '413577439'
+      };
 
-    
-    async function fetchSheetData(sheetId, apiKey) {
-      try {
-        // Define the gids for each sheet (Category, Products, Translations)
-        const gids = {
-          First: '413577439'
-        };
-    
-        // Create an object to store the categories, products, and translations
-        const categories = [];
-        const products = [];
-        const translations = { 
-          gr: { categories: {}, offers: {}, products: {}, offerProducts: {} }, 
-          en: { categories: {}, offers: {}, products: {}, offerProducts: {} } 
-        };
-        const offers = [];
-        const offerProducts = [];
+      for (let sheetName in gids) {
+        if (breakIfDownForMaintenance) break;
+        const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+        const response = await fetch(sheetUrl);
+        const json = await response.json();
+        const rows = json.values.slice(1);
 
-        // Fetch data for Categories, Products, and Translations sheets
-        for (let sheetName in gids) {
-          if (breakIfDownForMaintenance) break;
-          const gid = gids[sheetName];
-          const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-
-          const response = await fetch(sheetUrl);
-          const json = await response.json();
-
-          // Skip headers by starting from the second row
-          const rows = json.values.slice(1);
-          // Process each sheet based on its name (maintenance, categories, products, translations)
-          if (sheetName === "First") {
-            rows.forEach(row => {
-              const [value] = row; // Map columns based on the sheet structure
-              console.log('dimitris2: ' + value);
-                if (testEnvironment){
-                  console.log('here');
-                }
-            });
-          }
+        if (sheetName === "First") {
+          rows.forEach(row => {
+            const [value] = row;
+            console.log('dimitris2: ' + value);
+            if (testEnvironment) {
+              console.log('here');
+            }
+          });
         }
-        
-      } catch (error) {
-        console.log('error: ' + error);
       }
+    } catch (error) {
+      console.log('error: ' + error);
     }
+  }
 
-    fetchSheetData(sheetId, apiKey);
+  fetchSheetData(sheetId, apiKey);
 
-    function navigateTo(tabId, buttonId) {
-      const tabs = document.getElementsByClassName('tab');
-      const buttons = document.getElementsByClassName('nav-item');
-      for (currentButtons of buttons) {
-        if (buttonId == 'back-id-li'){
-          if (currentButtons.id == 'back-id-li') currentButtons.style.display = 'block';
-          else currentButtons.style.display = 'none';
-        } else {
-          if (currentButtons.id == 'back-id-li') currentButtons.style.display = 'none';
-          else currentButtons.style.display = 'block';
-        }
-      }
-
-      for (currentTab of tabs) {
-        currentTab.style.display = 'none';
-        if (currentTab.id == tabId){
-           if (currentTab.id == 'birthday-id') currentTab.style.display = 'flex';
-           else currentTab.style.display = 'block';
-        }
-      }
+  function changeArrowDirectionIcon(arrowImg) {
+    if (arrowImg.src.includes('down_arrow_logo.png')) {
+      arrowImg.src = 'images/up_arrow_logo.png';
+    } else {
+      arrowImg.src = 'images/down_arrow_logo.png';
     }
+  }
+
+  function collapseArrowIcon(arrowImg) {
+    arrowImg.src = 'images/down_arrow_logo.png';
+  }
+
+  function openLanguageMenu() {
+    closeMenu();
+    document.getElementById("list-language-menu").classList.remove("display-none");
+  }
+
+  function closeLanguageMenu() {
+    document.getElementById("list-language-menu").classList.add("display-none");
+  }
+
+  function openMenu() {
+    closeLanguageMenu();
+    document.getElementById("list-menu").classList.remove("display-none");
+  }
+
+  function closeMenu() {
+    document.getElementById("list-menu").classList.add("display-none");
+  }
+
+  document.getElementById('lang-button')?.addEventListener('click', () => {
+    const langMenu = document.getElementById('list-language-menu');
+    if (langMenu.classList.contains('display-none')) {
+      openLanguageMenu();
+    } else {
+      closeLanguageMenu();
+    }
+  });
+
+  document.getElementById('menu-button')?.addEventListener('click', () => {
+    const menu = document.getElementById('list-menu');
+    if (menu.classList.contains('display-none')) {
+      openMenu();
+    } else {
+      closeMenu();
+    }
+  });
   
-    $('#back-id-button').on('click', function () {
-      navigateTo('timeline-id', 'birthday-id-li');
-    });
-
-    $('#birthday-id-button').on('click', function () {
-      navigateTo('birthday-id', 'back-id-li'); 
-    });
-
-    $('#chat-id-button').on('click', function () {
-      navigateTo('chat-id', 'back-id-li'); 
-    });
-    
-    function togglePasswordVisibility() {
-      const passwordInput = document.getElementById('password');
-      const showPasswordBtn = document.getElementById('show-password-button-id');
-      const enteredPassword = passwordInput.value;
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        showPasswordBtn.textContent = '🙉';
-      } else {
-        passwordInput.type = 'password';
-        showPasswordBtn.textContent = '🙈';
-      }
-    }
-
-    document.addEventListener('keydown', function(event) {
-      let carouselElement = document.getElementById("carousel-modal-id");
-      if (carouselElement){
-        switch (event.keyCode) {
-          case 37:
-              SlideShow(slidePosition += -1);
-              break;
-          case 39:
-              SlideShow(slidePosition += +1);
-              break;
-        }
-      }
-    });
-
-    $('#lang-button').on('click', function () {
-        openLanguageMenu();
-    });
-
-    function openLanguageMenu(){
-      closeMenu();
-      const listLanguageMenu = document.getElementById("list-language-menu");
-      listLanguageMenu.classList.remove("display-none");
-    }
-    
-    function closeLanguageMenu(){
-      const listLanguageMenu = document.getElementById("list-language-menu");
-      listLanguageMenu.classList.add("display-none");
-    }
-
-    $('#gr-li').on('click', function () {
-      closeLanguageMenu();
-      if (currentLanguage == 'gr') return;
+  document.getElementById('gr-li')?.addEventListener('click', () => {
+    closeLanguageMenu();
+    if (currentLanguage !== 'gr') {
       currentLanguage = 'gr';
-    });
+    }
+  });
 
-    $('#en-li').on('click', function () {
-      closeLanguageMenu();
-      if (currentLanguage == 'en') return;
+  document.getElementById('en-li')?.addEventListener('click', () => {
+    closeLanguageMenu();
+    if (currentLanguage !== 'en') {
       currentLanguage = 'en';
-    });
-
-    $('#menu-button').on('click', function () {
-        openMenu();
-    });
-
-    function openMenu(){
-      closeLanguageMenu();
-      const listMenu = document.getElementById("list-menu");
-      listMenu.classList.remove("display-none");
     }
-    
-    function closeMenu(){
-      const listMenu = document.getElementById("list-menu");
-      listMenu.classList.add("display-none");
-    }
+  });
 
-    $('#home-li').on('click', function () {
-      closeMenu();
-      if (currentPage == 'home') return;
-      currentPage = 'home';
-    });
+  document.getElementById('home-li')?.addEventListener('click', () => {
+    closeMenu();
+    window.currentPage = 'home';
+  });
 
-    $('#activities-li').on('click', function () {
-      closeMenu();
-      if (currentPage == 'activities') return;
-      currentPage = 'activities';
-    });
+  document.getElementById('activities-li')?.addEventListener('click', () => {
+    closeMenu();
+    window.currentPage = 'activities';
+  });
 
-    $('#footer-info-dropdown').on('click', function () {
-      const infoImageArrow = document.getElementById('footer-info-dropdown-img');
-      const isHidden = window.getComputedStyle(infoImageArrow).display === 'none';
-      if (isHidden) return;
+  document.getElementById('footer-info-dropdown')?.addEventListener('click', () => {
+    const arrow = document.getElementById('footer-info-dropdown-img');
+    if (getComputedStyle(arrow).display === 'none') return;
+    document.getElementById('footer-list-info').classList.toggle("display-block");
+    changeArrowDirectionIcon(arrow);
+  });
 
-      const footerListInfo = document.getElementById('footer-list-info');
-      footerListInfo.classList.toggle("display-block");
-      changeArrowDirectionIcon(infoImageArrow);
-    });
+  document.getElementById('footer-support-dropdown')?.addEventListener('click', () => {
+    const arrow = document.getElementById('footer-support-dropdown-img');
+    if (getComputedStyle(arrow).display === 'none') return;
+    document.getElementById('footer-list-support').classList.toggle("display-block");
+    changeArrowDirectionIcon(arrow);
+  });
 
-    $('#footer-support-dropdown').on('click', function () {
-      const supportImageArrow = document.getElementById('footer-support-dropdown-img');
-      const isHidden = window.getComputedStyle(supportImageArrow).display === 'none';
-      if (isHidden) return;
+  // Dropdown filter open/close and arrow toggle
+  document.querySelectorAll('.filter-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('.filter-button-container');
+      const dropdown = parent.querySelector('.filter-dropdown-panel');
+      const arrow = btn.querySelector('.down-arrow-img');
 
-      const footerListSupport = document.getElementById('footer-list-support');
-      footerListSupport.classList.toggle("display-block");
-      changeArrowDirectionIcon(supportImageArrow);
-    });
+      const isOpen = !dropdown.classList.contains('display-none');
 
-    $('#filter-tag-id-for-kids').on('click', function () {
-      const supportImageArrow = document.getElementById('footer-support-dropdown-img');
-      const isHidden = window.getComputedStyle(supportImageArrow).display === 'none';
-      if (isHidden) return;
+      // Close all dropdowns and reset all arrows
+      document.querySelectorAll('.filter-dropdown-panel').forEach(panel => {
+        panel.classList.add('display-none');
+      });
 
-      const footerListSupport = document.getElementById('footer-list-support');
-      footerListSupport.classList.toggle("display-block");
-      changeArrowDirectionIcon(supportImageArrow);
-    });
+      document.querySelectorAll('.down-arrow-img').forEach(img => {
+        collapseArrowIcon(img); // sets it to "down" arrow
+      });
 
-
-
-    function changeArrowDirectionIcon(arrowImg){
-      if (arrowImg.src.includes('down_arrow_logo.png')) {
-        arrowImg.src = 'images/up_arrow_logo.png';
-      } else {
-        arrowImg.src = 'images/down_arrow_logo.png';
+      // If it wasn't open, now open it and rotate the arrow
+      if (!isOpen) {
+        dropdown.classList.remove('display-none');
+        changeArrowDirectionIcon(arrow); // sets it to "up" arrow
       }
-    }
-
-    const swiper = new Swiper('.card-wrapper', {
-      // autoplay: {
-      //   delay: 5000, // 5 seconds
-      //   disableOnInteraction: false, // Continue autoplay after user swipes
-      // },
-      loop: true,
-      spaceBetween: 30,
-
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      breakpoints: {
-          0: {
-              slidesPerView: 1
-          },
-          768: {
-              slidesPerView: 2
-          },
-          1024: {
-              slidesPerView: 3
-          }
-      },
     });
-    
   });
 
-  window.addEventListener('click', function(event) {
-    const listLangMenu = document.getElementById('list-language-menu');
-    const langButton = document.getElementById('lang-button');
-    const langButtonImg = document.getElementById('lang-button-img');
-    
-    if (!(listLangMenu.contains(event.target) || langButton.contains(event.target) || langButtonImg.contains(event.target)) ){
-      listLangMenu.classList.add("display-none");
-    }
+  // Filter search
+  document.querySelectorAll('.filter-search-input').forEach(input => {
+    input.addEventListener('input', function () {
+      const filter = this.value.toLowerCase();
+      const lis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-events li');
+      lis.forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? 'block' : 'none';
+      });
+    });
   });
 
-  window.addEventListener('click', function(event) {
-    const listMenu = document.getElementById('list-menu');
-    const menuButton = document.getElementById('lang-button');
-    const menuButtonImg = document.getElementById('menu-button-img');
-    if (!(listMenu.contains(event.target) || menuButton.contains(event.target) || menuButtonImg.contains(event.target)) ){
-      listMenu.classList.add("display-none");
-    }
-  });
-
-  const links = document.querySelectorAll('.filter-tag-list a');
+  // Filter tag selection
   const selectedFilters = new Set();
-  //const eventList = document.getElementById('event-list');
-  links.forEach(link => {
+  document.querySelectorAll('.filter-tag-list a').forEach(link => {
     link.addEventListener('click', function (e) {
       e.preventDefault();
       const filter = this.dataset.filter;
@@ -274,52 +176,71 @@
         selectedFilters.add(filter);
         this.classList.add('filter-tag-selected');
       }
-
-      /*let combinedEvents = [];
-      selectedFilters.forEach(f => {
-        combinedEvents = combinedEvents.concat(eventData[f] || []);
-      });
-
-      eventList.innerHTML = combinedEvents.length
-        ? `<ul>${combinedEvents.map(event => `<li>${event}</li>`).join('')}</ul>`
-        : `<p>Select a tag to see events.</p>`;*/
     });
   });
 
-  document.querySelectorAll('.filter-button').forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-
-      const currentDropDown = btn.parentElement.querySelector('.filter-dropdown-panel');
-
-      document.querySelectorAll('.filter-dropdown-panel').forEach(dropDownPanel => {
-        if (dropDownPanel != currentDropDown){
-          dropDownPanel.classList.add('display-none');
-        } 
-      });
-
-      currentDropDown.classList.toggle('display-none');
-    });
-  });
-
-  // Search filter
-  document.querySelectorAll('.filter-search-input').forEach(input => {
-    input.addEventListener('input', function () {
-      const filter = this.value.toLowerCase();
-      const eventLis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-events li');
-
-      eventLis.forEach(li => {
-        const text = li.textContent.toLowerCase();
-        li.style.display = text.includes(filter) ? 'block' : 'none';
-      });
-    });
-  });
-
-
+  // Checkbox handling
   document.querySelectorAll('.filter-list-events-item input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
       console.log('Clicked checkbox data-id:', event.target.getAttribute('data-id'));
       console.log('Checked:', event.target.checked);
     });
   });
+
+  // Swiper init
+  const swiper = new Swiper('.card-wrapper', {
+    // autoplay: {
+    //   delay: 5000, // 5 seconds
+    //   disableOnInteraction: false, // Continue autoplay after user swipes
+    // },
+    loop: true,
+    spaceBetween: 30,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    },
+  });
+
+  // Outside click handlers
   
-})(jQuery);
+  // Outside click handlers
+  window.addEventListener('click', function (event) {
+    closePopUps('list-language-menu', 'lang-button', 'lang-button-img', event);
+    closePopUps('list-menu', 'menu-button', 'menu-button-img', event);
+    closeAllFilterDropdowns(event);
+  });
+
+  function closePopUps(tempMenu, tempButton, tempImg, event) {
+    const menu = document.getElementById(tempMenu);
+    const button = document.getElementById(tempButton);
+    const img = document.getElementById(tempImg);
+    if (!(menu.contains(event.target) || button.contains(event.target) || img.contains(event.target))) {
+      menu.classList.add("display-none");
+    }
+  }
+
+  function closeAllFilterDropdowns(event) {
+    let clickedInsideDropdown = false;
+
+    document.querySelectorAll('.filter-button-container').forEach(container => {
+      if (container.contains(event.target)) {
+        clickedInsideDropdown = true;
+      }
+    });
+
+    if (!clickedInsideDropdown) {
+      document.querySelectorAll('.filter-dropdown-panel').forEach(panel => {
+        panel.classList.add('display-none');
+      });
+
+      document.querySelectorAll('.down-arrow-img').forEach(img => {
+        collapseArrowIcon(img); // Set arrow to down
+      });
+    }
+  }
+});

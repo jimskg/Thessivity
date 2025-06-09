@@ -21,9 +21,9 @@
     <div class="container">
       <div class="container-inside">
 
-        <div class="topnav z-index-20 flex justify-between sticky">
-          <div class="logo">
-              <img src="images/thessivity_logo.jpg" alt="Thessivity" class="logo_size">
+        <div class="topnav">
+          <div class="logo-icon">
+              <img src="images/thessivity_logo.jpg" alt="Thessivity" class="logo-img">
           </div>
 
           <div class="full-screen-menu">
@@ -36,19 +36,19 @@
           </div>
 
           <div class="topnav-buttons">
-            <div class="small-screen-menu p-05 bg-primary" id="menu-button">
+            <div class="small-screen-menu" id="menu-button">
               <img src="images/menus_logo.png" class="menu-img" id="menu-button-img"></img>
             </div>
             <ul class="list-menu display-none" id="list-menu">
-              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="home-li">Home</li>
-              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="activities-li">Activities</li>
+              <li class="item-language-menu" id="home-li">Home</li>
+              <li class="item-language-menu" id="activities-li">Activities</li>
             </ul>
-            <div class="lang-icon p-05 bg-primary" id="lang-button">
+            <div class="lang-icon" id="lang-button">
               <img src="images/lang.png" class="lang-img" id="lang-button-img"></img>
             </div>
             <ul class="list-language-menu display-none" id="list-language-menu">
-              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="gr-li">GR</li>
-              <li class="text-thirdContent p-05 bg-white item-language-menu cursor-pointer" id="en-li">ENG</li>
+              <li class="item-language-menu" id="gr-li">GR</li>
+              <li class="item-language-menu" id="en-li">ENG</li>
             </ul>
           </div>
         </div>
@@ -76,7 +76,7 @@
                     <div>
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
-                    <div style="padding: 18px;">
+                    <div class="card-link-body">
                       <p class="badge badge-designer">Designer</p>
                       <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
                       <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -88,7 +88,7 @@
                     <div>
                       <img src="images/painting.jpg" alt="Card Image" class="card-image">
                     </div>
-                    <div style="padding: 18px;">
+                    <div class="card-link-body">
                       <p class="badge badge-developer">Developer</p>
                       <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
                       <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -100,7 +100,7 @@
                     <div>
                       <img src="images/hiking.jpg" alt="Card Image" class="card-image">
                     </div>
-                    <div style="padding: 18px;">
+                    <div class="card-link-body">
                       <p class="badge badge-marketer">Marketer</p>
                       <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
                       <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -112,7 +112,7 @@
                     <div>
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
-                    <div style="padding: 18px;">
+                    <div class="card-link-body">
                       <p class="badge badge-gamer">Gamer</p>
                       <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
                       <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -124,7 +124,7 @@
                     <div>
                       <img src="images/painting.jpg" alt="Card Image" class="card-image">
                     </div>
-                    <div style="padding: 18px;">
+                    <div class="card-link-body">
                       <p class="badge badge-editor">Editor</p>
                       <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
                       <button class="card-button material-symbols-rounded">arrow_forward</button>
@@ -157,7 +157,7 @@
               <div class="filter-container-bottom">
                 <div class="filter-button-container">
                   <a class="filter-button">
-                    <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div class="filter-button-body">
                       <div>
                         <div class="filter-button-main-description">Category</div>
                         <div class="filter-button-secondary-description">All</div>
@@ -242,7 +242,7 @@
                 </div>
                 <div class="filter-button-container">
                   <a class="filter-button">
-                    <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div class="filter-button-body">
                       <div>
                         <div class="filter-button-main-description">Where</div>
                         <div class="filter-button-secondary-description">Everywhere</div>
@@ -327,7 +327,7 @@
                 </div>
                 <div class="filter-button-container">
                   <a class="filter-button">
-                    <div style="display:flex; justify-content:space-between;align-items: center;">
+                    <div class="filter-button-body">
                       <div>
                         <div class="filter-button-main-description">When</div>
                         <div class="filter-button-secondary-description">Anytime</div>
@@ -431,8 +431,8 @@
         <div class="footer-fluid">
           <div class="footer-row">
             <!-- Left Column -->
-            <div class="footer-left-column footer-space-between">
-                <div class="footer-top">
+            <div class="footer-left-column">
+                <div>
                     <!-- Country & Language Selection -->
                     <div class="footer-country">
                         <img src="images/greece_logo.png" alt="Country Flag" class="country-img">
@@ -440,7 +440,7 @@
                     </div>
 
                     <!-- Contact Info -->
-                    <div class="footer-contact">
+                    <div>
                         <a href="tel:+302117700000" class="footer-title">
                             <img src="images/phone_logo.png" alt="Phone" class="phone-img">
                             Phone reservations
