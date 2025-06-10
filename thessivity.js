@@ -37,12 +37,29 @@ document.addEventListener("DOMContentLoaded", async function () {
           });
         }
       }
+      closeLoadingSpinner();
+      openHomeBody();
     } catch (error) {
       console.log('error: ' + error);
+      closeLoadingSpinner();
     }
   }
 
   await fetchSheetData(sheetId, apiKey);
+  
+  /* SPINNER START */
+
+  function closeLoadingSpinner(){
+    const spinner = document.getElementById("loading-container");
+    spinner.classList.add("hidden");
+  }
+
+  /* SPINNER END */
+
+  function openHomeBody(){
+    const home = document.getElementById("home-body");
+    home.classList.remove("hidden");
+  }
 
   function changeArrowDirectionIcon(arrowImg) {
     if (arrowImg.src.includes('down_arrow_logo.png')) {
@@ -212,10 +229,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Swiper init
   const swiper = new Swiper('.card-wrapper', {
-    // autoplay: {
-    //   delay: 5000,
-    //   disableOnInteraction: false,
-    // },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
     loop: true,
     spaceBetween: 30,
     navigation: {
@@ -283,6 +300,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  /* CALENDAR START */
   function initCustomCheckboxListener(container) {
     const customCheckbox = container.querySelector('.custom-checkbox');
     if (customCheckbox && !customCheckbox.hasListener) {
@@ -462,4 +480,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       secondaryDesc.textContent = 'Custom';
     }
   }
+  /* CALENDAR END */
+
 });
