@@ -56,64 +56,81 @@ document.addEventListener("DOMContentLoaded", async function () {
     arrowImg.src = 'images/down_arrow_logo.png';
   }
 
-  function openLanguageMenu() {
-    closeMenu();
-    document.getElementById("list-language-menu").classList.remove("display-none");
-  }
-
-  function closeLanguageMenu() {
-    document.getElementById("list-language-menu").classList.add("display-none");
-  }
-
-  function openMenu() {
-    closeLanguageMenu();
-    document.getElementById("list-menu").classList.remove("display-none");
-  }
-
-  function closeMenu() {
-    document.getElementById("list-menu").classList.add("display-none");
+  function openCloseDynamicMenu(menu) {
+    if (menu.classList.contains('display-none')) {
+      menu.classList.remove("display-none");
+    } else {
+      menu.classList.add("display-none");
+    }
   }
 
   document.getElementById('lang-button')?.addEventListener('click', () => {
-    const langMenu = document.getElementById('list-language-menu');
-    if (langMenu.classList.contains('display-none')) {
-      openLanguageMenu();
-    } else {
-      closeLanguageMenu();
-    }
+    const menu = document.getElementById('list-language-menu');
+    openCloseDynamicMenu(menu);
   });
 
   document.getElementById('menu-button')?.addEventListener('click', () => {
     const menu = document.getElementById('list-menu');
-    if (menu.classList.contains('display-none')) {
-      openMenu();
-    } else {
-      closeMenu();
-    }
+    openCloseDynamicMenu(menu);
+  });
+
+  document.getElementById('sort-by-selection')?.addEventListener('click', () => {
+    const menu = document.getElementById('sort-by-menu');
+    const arrow = document.getElementById('sort-by-dropdown-img');
+    openCloseDynamicMenu(menu);
+    changeArrowDirectionIcon(arrow);
   });
 
   document.getElementById('gr-li')?.addEventListener('click', () => {
-    closeLanguageMenu();
+    const menu = document.getElementById('list-language-menu');
+    openCloseDynamicMenu(menu);
     if (currentLanguage !== 'gr') {
       currentLanguage = 'gr';
     }
   });
 
   document.getElementById('en-li')?.addEventListener('click', () => {
-    closeLanguageMenu();
+    const menu = document.getElementById('list-language-menu');
+    openCloseDynamicMenu(menu);
     if (currentLanguage !== 'en') {
       currentLanguage = 'en';
     }
   });
 
   document.getElementById('home-li')?.addEventListener('click', () => {
-    closeMenu();
+    const menu = document.getElementById('list-menu');
+    openCloseDynamicMenu(menu);
     window.currentPage = 'home';
   });
 
   document.getElementById('activities-li')?.addEventListener('click', () => {
-    closeMenu();
+    const menu = document.getElementById('list-menu');
+    openCloseDynamicMenu(menu);
     window.currentPage = 'activities';
+  });
+
+  document.getElementById('sort-default-li')?.addEventListener('click', () => {
+    const menu = document.getElementById('sort-by-menu');
+    const arrow = document.getElementById('sort-by-dropdown-img');
+    openCloseDynamicMenu(menu);
+    changeArrowDirectionIcon(arrow);
+    let sortBy = 'default';
+  });
+
+  document.getElementById('sort-date-li')?.addEventListener('click', () => {
+    const menu = document.getElementById('sort-by-menu');
+    const arrow = document.getElementById('sort-by-dropdown-img');
+    openCloseDynamicMenu(menu);
+    changeArrowDirectionIcon(arrow);
+    let sortBy = 'date';
+  });
+
+  document.getElementById('sort-populatity-li')?.addEventListener('click', () => {
+    const menu = document.getElementById('sort-by-menu');
+    const arrow = document.getElementById('sort-by-dropdown-img');
+    openCloseDynamicMenu(menu);
+    changeArrowDirectionIcon(arrow);
+    let sortBy = 'popularity';
   });
 
   document.getElementById('footer-info-dropdown')?.addEventListener('click', () => {
@@ -195,10 +212,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Swiper init
   const swiper = new Swiper('.card-wrapper', {
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
+    // autoplay: {
+    //   delay: 5000,
+    //   disableOnInteraction: false,
+    // },
     loop: true,
     spaceBetween: 30,
     navigation: {
@@ -220,6 +237,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Close main menu
     closePopUps('list-menu', 'menu-button', 'menu-button-img', event);
 
+    // Close sort by menu
+    closePopUps('sort-by-menu', 'sort-by-selection', 'sort-by-dropdown-img', event);
+
     // Close filter dropdowns and calendars
     closeAllFilterDropdownsAndCalendars(event);
   });
@@ -230,6 +250,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const img = document.getElementById(imgId);
     if (!(menu.contains(event.target) || button.contains(event.target) || (img && img.contains(event.target)))) {
       menu.classList.add("display-none");
+      if (img && img.src.includes('up_arrow_logo.png')) collapseArrowIcon(img);
     }
   }
 
@@ -253,22 +274,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         popup.classList.add('display-none');
       });
 
-      // Collapse all arrows
-      document.querySelectorAll('.down-arrow-img').forEach(img => {
-        collapseArrowIcon(img);
-      });
-
-      // Reset all custom-checkboxes and date selection states
-      // document.querySelectorAll('.filter-button-container').forEach(container => {
-      //   const customCheckbox = container.querySelector('.custom-checkbox');
-      //   if (customCheckbox) {
-      //     customCheckbox.checked = false;
-      //   }
-      // });
-
-      // startDate = null;
-      // endDate = null;
-      // secondaryDesc && (secondaryDesc.textContent = 'Custom');
+      // Collapse all filter arrows
+      document.querySelectorAll('.filter-button').forEach(filterButton => {
+        filterButton.querySelectorAll('.down-arrow-img').forEach(img => {
+          collapseArrowIcon(img);
+        });
+      })
     }
   }
 
@@ -353,24 +364,24 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function renderCalendarForContainer(container) {
     const calendarPopup = container.querySelector('.calendar-popup');
-  const dropdownPanel = container.querySelector('.filter-dropdown-panel');
-  calendarPopup.innerHTML = '';
+    const dropdownPanel = container.querySelector('.filter-dropdown-panel');
+    calendarPopup.innerHTML = '';
 
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
+    const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
 
-  calendarPopup.appendChild(createCalendar(currentMonth, currentYear));
+    calendarPopup.appendChild(createCalendar(currentMonth, currentYear));
 
-  let nextMonth = currentMonth + 1;
-  let nextYear = currentYear;
-  if (nextMonth > 11) {
-    nextMonth = 0;
-    nextYear++;
-  }
-  calendarPopup.appendChild(createCalendar(nextMonth, nextYear));
+    let nextMonth = currentMonth + 1;
+    let nextYear = currentYear;
+    if (nextMonth > 11) {
+      nextMonth = 0;
+      nextYear++;
+    }
+    calendarPopup.appendChild(createCalendar(nextMonth, nextYear));
 
-  calendarPopup.classList.remove('display-none');
+    calendarPopup.classList.remove('display-none');
   }
 
   function hideCalendarForContainer(container) {
