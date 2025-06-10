@@ -46,12 +46,39 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   await fetchSheetData(sheetId, apiKey);
+
+  /* ARROW TO TOP START */
+
+  window.onscroll = function(event) {
+    const scrollBtn = document.getElementById("arrow-to-top-button");
+    window.scrollY > window.innerHeight - 500
+      ? scrollBtn.classList.add("show")
+      : scrollBtn.classList.remove("show");
+  }
+
+  document.getElementById('arrow-to-top-button')?.addEventListener('click', () => {
+    scrollToTop();
+  });
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    }); 
+  }
+  
+  /* ARROW TO TOP END */
   
   /* SPINNER START */
 
   function closeLoadingSpinner(){
     const spinner = document.getElementById("loading-container");
     spinner.classList.add("hidden");
+  }
+
+  function openLoadingSpinner(){
+    const productModal = document.getElementById("loading-container");
+    productModal.classList.remove("hidden");
   }
 
   /* SPINNER END */
@@ -229,10 +256,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Swiper init
   const swiper = new Swiper('.card-wrapper', {
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
+    // autoplay: {
+    //   delay: 5000,
+    //   disableOnInteraction: false,
+    // },
     loop: true,
     spaceBetween: 30,
     navigation: {

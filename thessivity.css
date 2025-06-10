@@ -114,6 +114,45 @@
 
   /* SPINNER END */
 
+  /* ARROW TO TOP START */
+
+  .arrow-to-top-button-container {
+    display: flex;
+    flex-direction: column;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    position: fixed;
+    opacity: 0;
+    z-index: 20;
+  }
+
+  .arrow-to-top-button {
+    background-color: var(--color-main);
+    color: rgb(255 255 255/var(--tw-text-opacity,1));
+     display: flex;
+    align-items: center;
+    gap: .5rem;
+    border-radius: .375rem;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .2s;
+    cursor:pointer;
+    padding: 0.5rem;
+  }
+
+  .arrow-to-top-button-transform {
+    transform: rotate(270deg);
+  }
+
+  .show {
+    opacity: 1; 
+    transition: opacity 1s, transform 1s;
+  }
+
+  /* ARROW TO TOP END */
+
   /* NAVGIATION START */
 
   .topnav {
