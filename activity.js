@@ -73,7 +73,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
-    }); 
+    });
+    checkButtonBarStop();
   }
   
   /* ARROW TO TOP END */
