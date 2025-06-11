@@ -148,6 +148,7 @@
   
   /* ACTIVITY MOVING BUTTON START */
 
+  
   .card-link-button-activity {
     position: fixed;
     bottom: 0;
@@ -165,9 +166,11 @@
     margin: 0;
     will-change: transform;
   }
-
+  
   .card-link-button-activity.card-link-button-activity-stopped {
-    transform: translateY(100%);
+    position: absolute;
+    bottom: auto;
+    top: auto; 
   }
 
   .card-link-button-a-activity {
@@ -202,10 +205,5 @@
   }
 
   /* CARD END */
-
-  /* body-row maybe issue with the other css
-  to remove borders but issue in the other html
-  card-image-activity
-  card-link */
 
 }

@@ -85,20 +85,38 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function checkButtonBarStop() {
-    const markerBottom = stopMarker.getBoundingClientRect().bottom;
-    const buttonBarHeight = buttonBar.offsetHeight;
-    const viewportHeight = window.innerHeight;
+    const stopRect = stopMarker.getBoundingClientRect();
+    const stopTop = stopRect.top + window.scrollY;
+    const stopHeight = stopMarker.offsetHeight;
+    const buttonHeight = buttonBar.offsetHeight;
 
-    if (markerBottom <= viewportHeight - buttonBarHeight) {
+    const scrollBottom = window.scrollY + window.innerHeight;
+
+    // Trigger absolute only when the entire stop-marker + button would fit in view
+    const fullStopPoint = stopTop + stopHeight + buttonHeight;
+
+    if (scrollBottom >= fullStopPoint) {
+
+      // Switch to absolute and set exact top position
       buttonBar.classList.add('card-link-button-activity-stopped');
+      buttonBar.style.position = 'absolute';
+      buttonBar.style.top = `${stopTop + stopHeight}px`;
+      buttonBar.style.left = '0';
+      buttonBar.style.right = '0';
+      buttonBar.style.bottom = 'auto';
     } else {
+      // Restore to fixed position
       buttonBar.classList.remove('card-link-button-activity-stopped');
+      buttonBar.style.position = 'fixed';
+      buttonBar.style.bottom = '0';
+      buttonBar.style.top = 'auto';
     }
   }
 
   if (isMobileDevice()) {
     window.addEventListener('scroll', checkButtonBarStop);
-    window.addEventListener('resize', checkButtonBarStop);
+    window.addEventListener('resize', checkButtonBarStop);// Run on load to set correct state initially
+    checkButtonBarStop();
   }
 
   /* ACTIVITY MOVING BUTTON END */
