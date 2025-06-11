@@ -49,12 +49,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   /* ARROW TO TOP START */
 
-  window.onscroll = function(event) {
+  window.addEventListener('scroll', function () {
     const scrollBtn = document.getElementById("arrow-to-top-button");
+    if (!scrollBtn) return;
     window.scrollY > window.innerHeight - 500
       ? scrollBtn.classList.add("show")
       : scrollBtn.classList.remove("show");
-  }
+  });
 
   document.getElementById('arrow-to-top-button')?.addEventListener('click', () => {
     scrollToTop();
@@ -77,11 +78,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   function openLoadingSpinner(){
-    const productModal = document.getElementById("loading-container");
-    productModal.classList.remove("hidden");
+    const spinner = document.getElementById("loading-container");
+    spinner.classList.remove("hidden");
   }
 
   /* SPINNER END */
+
+  function redirectToActivity(activityId){
+    window.location.href = `activity.html?buttonId=${encodeURIComponent(activityId)}`;
+  }
 
   function openHomeBody(){
     const home = document.getElementById("home-body");
@@ -107,6 +112,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       menu.classList.add("display-none");
     }
   }
+
+  document.getElementById('home-a')?.addEventListener('click', function () {
+    redirectToActivity();
+  });
+
+  document.getElementById('activities-a')?.addEventListener('click', function () {
+    redirectToActivity();
+  });
 
   document.getElementById('lang-button')?.addEventListener('click', () => {
     const menu = document.getElementById('list-language-menu');
@@ -144,7 +157,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById('home-li')?.addEventListener('click', () => {
     const menu = document.getElementById('list-menu');
     openCloseDynamicMenu(menu);
-    window.currentPage = 'home';
   });
 
   document.getElementById('activities-li')?.addEventListener('click', () => {
@@ -221,7 +233,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.querySelectorAll('.filter-search-input').forEach(input => {
     input.addEventListener('input', function () {
       const filter = this.value.toLowerCase();
-      const lis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-events li');
+      const lis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-activities li');
       lis.forEach(li => {
         const text = li.textContent.toLowerCase();
         li.style.display = text.includes(filter) ? 'block' : 'none';
@@ -247,7 +259,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   // Checkbox handling
-  document.querySelectorAll('.filter-list-events-item input[type="checkbox"]').forEach(checkbox => {
+  document.querySelectorAll('.filter-list-activities-item input[type="checkbox"]').forEach(checkbox => {
     checkbox.addEventListener('change', (event) => {
       console.log('Clicked checkbox data-id:', event.target.getAttribute('data-id'));
       console.log('Checked:', event.target.checked);

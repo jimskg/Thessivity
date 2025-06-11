@@ -36,8 +36,8 @@
           <div class="full-screen-menu">
             <nav>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Activities</a></li>
+                    <li><a id="home-a">Home</a></li>
+                    <li><a id="activities-a">Activities</a></li>
                 </ul>
             </nav>
           </div>
@@ -96,9 +96,12 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
+                      <!-- <p class="badge badge-designer">Designer</p> -->
+                      <!-- <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2> -->
+                      <!-- <button class="card-button material-symbols-rounded">arrow_forward</button> -->
                     </div>
                   </a>
                 </li>
@@ -108,9 +111,9 @@
                       <img src="images/painting.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-developer">Developer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -120,9 +123,9 @@
                       <img src="images/hiking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-marketer">Marketer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -132,9 +135,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-gamer">Gamer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -144,9 +147,9 @@
                       <img src="images/painting.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-editor">Editor</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -195,68 +198,68 @@
                     <div class="filter-search-bar">
                       <input type="text" class="filter-search-input" placeholder="Search"/>
                     </div>
-                    <ul class="filter-list-events">
+                    <ul class="filter-list-activities">
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input data-id="all" type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">All</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">All</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option A</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option A</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option B</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option B</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option C</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option C</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option D</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option D</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option E</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option E</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option F</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option F</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option G</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option G</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option H</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option H</span>
                         </label>
                       </li>
                     </ul>
@@ -280,68 +283,68 @@
                     <div class="filter-search-bar">
                       <input type="text" class="filter-search-input" placeholder="Search"/>
                     </div>
-                    <ul class="filter-list-events">
+                    <ul class="filter-list-activities">
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input data-id="all" type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">All</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">All</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option A</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option A</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option B</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option B</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option C</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option C</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option D</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option D</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option E</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option E</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option F</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option F</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option G</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option G</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Option H</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Option H</span>
                         </label>
                       </li>
                     </ul>
@@ -366,47 +369,47 @@
                       <input type="text" class="filter-search-input" placeholder="Search"/>
                     </div>
                     
-                    <ul class="filter-list-events">
+                    <ul class="filter-list-activities">
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input data-id="all" type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Anytime</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Anytime</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Today</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Today</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Tomorrow</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Tomorrow</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">This weekend</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">This weekend</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Next week</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Next week</span>
                         </label>
                       </li>
                       <li>
-                        <label class="filter-list-events-item">
+                        <label class="filter-list-activities-item">
                           <input class="custom-checkbox" type="checkbox" />
-                          <span class="filter-list-events-item-checkmark"></span>
-                          <span class="filter-list-events-item-text">Custom</span>
+                          <span class="filter-list-activities-item-checkmark"></span>
+                          <span class="filter-list-activities-item-text">Custom</span>
                         </label>
                       </li>
                     </ul>
@@ -445,9 +448,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -457,9 +460,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -469,9 +472,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -481,9 +484,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>
@@ -493,9 +496,9 @@
                       <img src="images/cooking.jpg" alt="Card Image" class="card-image">
                     </div>
                     <div class="card-link-body">
-                      <p class="badge badge-designer">Designer</p>
-                      <h2 class="card-title">Lorem ipsum dolor sit explicabo adipisicing elit</h2>
-                      <button class="card-button material-symbols-rounded">arrow_forward</button>
+                      <div class="card-title-info-schedule">23 Ιουν - 4 Ιουλ</div>
+                      <div class="card-title-info">Τίτλος Δραστηριότητας</div>
+                      <div class="card-title-info-location">Μέγαρο Μουσικής</div>
                     </div>
                   </a>
                 </li>

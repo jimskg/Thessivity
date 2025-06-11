@@ -164,7 +164,7 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
     margin: 0;
-    height: 9rem;
+    /* height: 9rem; */
     top: 0;
     z-index: 20;
     display: flex;
@@ -515,7 +515,7 @@
     padding: 0 10px;
   }
 
-  .filter-list-events {
+  .filter-list-activities {
     top: 80px !important;
     overflow-y: auto !important;
     position: absolute;
@@ -529,7 +529,7 @@
     margin-bottom: 30px;
   }
 
-  .filter-list-events li {
+  .filter-list-activities li {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -540,7 +540,7 @@
     margin: 0;
   }
 
-  .filter-list-events-item {
+  .filter-list-activities-item {
     display: flex;
     align-items: center;
     padding: 12px 16px;
@@ -550,15 +550,15 @@
     user-select: none;
   }
 
-  .filter-list-events li:hover {
+  .filter-list-activities li:hover {
     background-color: var(--color-secondary-main);
   }
 
-  .filter-list-events-item input[type="checkbox"] {
+  .filter-list-activities-item input[type="checkbox"] {
     display: none;
   }
 
-  .filter-list-events-item-checkmark {
+  .filter-list-activities-item-checkmark {
     width: 20px;
     height: 20px;
     border: 2px solid var(--color-main);
@@ -570,18 +570,18 @@
     transition: all 0.2s ease;
   }
 
-  .filter-list-events-item input[type="checkbox"]:checked + .filter-list-events-item-checkmark {
+  .filter-list-activities-item input[type="checkbox"]:checked + .filter-list-activities-item-checkmark {
     background-color: var(--color-main);
     border-color: var(--color-main);
   }
 
-  .filter-list-events-item input[type="checkbox"]:checked + .filter-list-events-item-checkmark::after {
+  .filter-list-activities-item input[type="checkbox"]:checked + .filter-list-activities-item-checkmark::after {
     content: '✓';
     color: white;
     font-size: 14px;
   }
 
-  .filter-list-events-item-text {
+  .filter-list-activities-item-text {
     /* font-size: 16px;
     color: #333; */
     color: #646567;
@@ -857,8 +857,8 @@
   }
 
   .card-list {
-      margin-bottom: 30px !important;
-      height:unset !important;
+    margin-bottom: 30px !important;
+    height:unset !important;
   }
 
   .card-wrapper {
@@ -876,11 +876,13 @@
     margin-top: 15px;
   }
 
-  .card-list .card-item:hover {
+  ul.card-list > li.card-item:hover {
+  /* .card-list .card-item:hover { */
     transform: translateY(-10px); /* Move up by 10px */
   }
 
-  .card-list .card-item a:hover {
+  ul.card-list > li.card-item > a:hover {
+  /* .card-list .card-item a:hover { */
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
 
@@ -894,10 +896,17 @@
     /* border: 2px solid transparent; */
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.05);
     transition: 0.2s ease;
+    height: 390px;
+    flex-direction: column;
+    display:flex;
   }
 
   .card-link-body {
-    padding: 18px;
+    display:flex; 
+    flex-direction: column;
+    flex: 1;
+    padding: 16px 16px 8px 16px;
+    gap: 10px;
   }
 
   .card-list .card-item .card-link:active {
@@ -969,6 +978,56 @@
   .card-list .card-link:hover .card-button {
     color: #fff;
     background: #5372F0;
+  }
+
+  .card-title-info-schedule {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    color: #703EFF;
+    font-size: 15px;
+    line-height: 24px;
+    height: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .card-title-info {
+    font-weight: normal;
+    font-size: 1.5em;
+    color: #7c248a;
+    display: block;
+    display: -webkit-box;
+    margin: 0 auto;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #282C35;
+    font-size: 1.25em;
+    line-height: 20px;
+    max-height: 60px;
+    font-weight: 600;
+    letter-spacing: 0;
+    padding: 0;
+    margin: 0;
+    height: 60px;
+  }
+
+  .card-title-info-location {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #666A73;
+    font-size: 13px;
+    line-height: 30px;
+    height: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: auto 0 0;
+    padding: 0;
   }
 
   .card-wrapper .swiper-slide-button {
@@ -1209,11 +1268,6 @@
     
     .body-card-list {
       grid-template-columns: 1fr;
-    }
-
-    .body-card-wrapper {
-      margin-bottom: 0;
-      margin-top: 0;
     }
 
     /* BODY CARD LIST MEDIA END */
