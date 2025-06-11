@@ -20,25 +20,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         First: '413577439'
       };
 
-      for (let sheetName in gids) {
-        if (breakIfDownForMaintenance) break;
-        const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-        const response = await fetch(sheetUrl);
-        const json = await response.json();
-        const rows = json.values.slice(1);
+      // for (let sheetName in gids) {
+      //   if (breakIfDownForMaintenance) break;
+      //   const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+      //   const response = await fetch(sheetUrl);
+      //   const json = await response.json();
+      //   const rows = json.values.slice(1);
 
-        if (sheetName === "First") {
-          rows.forEach(row => {
-            const [value] = row;
-            console.log('dimitris2: ' + value);
-            if (testEnvironment) {
-              console.log('here');
-            }
-          });
-        }
-      }
-      closeLoadingSpinner();
-      openHomeBody();
+      //   if (sheetName === "First") {
+      //     rows.forEach(row => {
+      //       const [value] = row;
+      //       console.log('dimitris2: ' + value);
+      //       if (testEnvironment) {
+      //         console.log('here');
+      //       }
+      //     });
+      //   }
+      // }
+      // closeLoadingSpinner();
+      // openHomeBody();
+      
+      setTimeout(() => {
+        closeLoadingSpinner();
+        openHomeBody();
+      }, 1000);
+
     } catch (error) {
       console.log('error: ' + error);
       closeLoadingSpinner();
@@ -84,8 +90,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   /* SPINNER END */
 
-  function redirectToActivity(activityId){
-    window.location.href = `activity.html?buttonId=${encodeURIComponent(activityId)}`;
+  function redirectToActivity(activityId, event){
+    const url = `activity.html?activityId=${encodeURIComponent(activityId)}`;
+    if (event.button === 1) window.open(url, '_blank');
+    else if (event.button === 0) window.location.href = url;
+  }
+
+  function redirectToHome(event){
+    const url = 'index.html';
+    if (event.button === 1) window.open(url, '_blank');
+    else if (event.button === 0) window.location.href = url;
   }
 
   function openHomeBody(){
@@ -113,12 +127,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  document.getElementById('home-a')?.addEventListener('click', function () {
-    redirectToActivity();
+  document.getElementById('home-a')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
   });
 
-  document.getElementById('activities-a')?.addEventListener('click', function () {
-    redirectToActivity();
+  document.getElementById('activities-a')?.addEventListener('mousedown', function (event) {
+    redirectToActivity(undefined, event);
+  });
+  
+  document.getElementById('home-li')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
+  });
+
+  document.getElementById('activities-li')?.addEventListener('mousedown', function (event) {
+    redirectToActivity(undefined, event);
   });
 
   document.getElementById('lang-button')?.addEventListener('click', () => {
@@ -201,6 +223,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (getComputedStyle(arrow).display === 'none') return;
     document.getElementById('footer-list-support').classList.toggle("display-block");
     changeArrowDirectionIcon(arrow);
+  });
+
+  document.querySelectorAll('.card-link').forEach(function(card) {
+    card.addEventListener('mousedown', function(event) {
+      if (event.button === 1) {
+        const activityId = this.dataset.id;
+        redirectToActivity(activityId, event);
+      }
+    });
+
+    card.addEventListener('click', function(event) {
+      if (event.button === 0) {
+        event.preventDefault();
+        const activityId = this.dataset.id;
+        redirectToActivity(activityId, event);
+      }
+    });
   });
 
   // Dropdown filter open/close and arrow toggle

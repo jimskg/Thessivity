@@ -3,7 +3,6 @@
 
 .card-image-activity {
   width: 100%;
-  border-radius: 10px;
   border-radius: 10px 10px 0px 0px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -126,6 +125,15 @@
 
 /* CARD END */
 
+/* ACTIVITY MOVING BUTTON START */
+
+.card-link-button-activity.card-link-button-activity-stopped {
+  position: absolute;
+  bottom: 0;
+}
+
+/* ACTIVITY MOVING BUTTON END */
+
 .location-img, .schedule-img{
   height: 15px;
   width: 15px;
@@ -137,6 +145,63 @@
     padding:0;
     margin:0;
   }
+  
+  /* ACTIVITY MOVING BUTTON START */
+
+  .card-link-button-activity {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    transform: translateY(0);
+    padding: 15.5px 24px;
+    margin: 0;
+    will-change: transform;
+  }
+
+  .card-link-button-activity.card-link-button-activity-stopped {
+    transform: translateY(100%);
+  }
+
+  .card-link-button-a-activity {
+    color: rgb(255, 255, 255);
+    background-color: var(--color-main);
+    position: relative;
+    text-decoration: none;
+    text-transform: capitalize;
+    border-radius: 24px;
+    display: flex;
+    -moz-box-align: center;
+    align-items: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    border: medium;
+    padding: 16px 24px;
+    line-height: 16px;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  /* ACTIVITY MOVING BUTTON END */
+  
+  /* CARD START */
+
+  .card-image-activity {
+    border-radius: 0px;
+  }
+
+  .card-link-activity {
+    border-radius: 0px;
+  }
+
+  /* CARD END */
 
   /* body-row maybe issue with the other css
   to remove borders but issue in the other html

@@ -127,7 +127,7 @@
   }
 
   .arrow-to-top-button {
-    background-color: var(--color-main);
+    background-color: var(--color-third-main);
     color: rgb(255 255 255/var(--tw-text-opacity,1));
      display: flex;
     align-items: center;
@@ -898,11 +898,12 @@
     transition: 0.2s ease;
     height: 390px;
     flex-direction: column;
-    display:flex;
+    display: flex;
+    cursor: pointer;
   }
 
   .card-link-body {
-    display:flex; 
+    display: flex; 
     flex-direction: column;
     flex: 1;
     padding: 16px 16px 8px 16px;
@@ -985,7 +986,7 @@
     overflow: hidden;
     white-space: nowrap;
     display: block;
-    color: #703EFF;
+    color: var(--color-main);
     font-size: 15px;
     line-height: 24px;
     height: 24px;

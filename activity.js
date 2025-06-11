@@ -10,8 +10,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
 
   const urlParams = new URLSearchParams(window.location.search);
-  const buttonId = urlParams.get('buttonId');
-  console.log("Button ID:", buttonId); // Use it as needed
+  const activityId = urlParams.get('activityId');
+  console.log("Activity Id:", activityId);
+  
+  const buttonBar = document.querySelector('.card-link-button-activity');
+  const stopMarker = document.querySelector('#stop-here');
 
   async function fetchSheetData(sheetId, apiKey) {
     try {
@@ -19,25 +22,31 @@ document.addEventListener("DOMContentLoaded", async function () {
         First: '413577439'
       };
 
-      for (let sheetName in gids) {
-        if (breakIfDownForMaintenance) break;
-        const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-        const response = await fetch(sheetUrl);
-        const json = await response.json();
-        const rows = json.values.slice(1);
+      // for (let sheetName in gids) {
+      //   if (breakIfDownForMaintenance) break;
+      //   const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+      //   const response = await fetch(sheetUrl);
+      //   const json = await response.json();
+      //   const rows = json.values.slice(1);
 
-        if (sheetName === "First") {
-          rows.forEach(row => {
-            const [value] = row;
-            console.log('dimitris2: ' + value);
-            if (testEnvironment) {
-              console.log('here');
-            }
-          });
-        }
-      }
-      closeLoadingSpinner();
-      openHomeBody();
+      //   if (sheetName === "First") {
+      //     rows.forEach(row => {
+      //       const [value] = row;
+      //       console.log('dimitris2: ' + value);
+      //       if (testEnvironment) {
+      //         console.log('here');
+      //       }
+      //     });
+      //   }
+      // }
+      // closeLoadingSpinner();
+      // openHomeBody();
+
+      setTimeout(() => {
+        closeLoadingSpinner();
+        openHomeBody();
+      }, 1000);
+
     } catch (error) {
       console.log('error: ' + error);
       closeLoadingSpinner();
@@ -56,7 +65,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       : scrollBtn.classList.remove("show");
   });
 
-
   document.getElementById('arrow-to-top-button')?.addEventListener('click', () => {
     scrollToTop();
   });
@@ -69,6 +77,31 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   /* ARROW TO TOP END */
+  
+  /* ACTIVITY MOVING BUTTON START */
+
+  function isMobileDevice() {
+    return /Mobi|Android|iPhone/i.test(navigator.userAgent);
+  }
+
+  function checkButtonBarStop() {
+    const markerBottom = stopMarker.getBoundingClientRect().bottom;
+    const buttonBarHeight = buttonBar.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    if (markerBottom <= viewportHeight - buttonBarHeight) {
+      buttonBar.classList.add('card-link-button-activity-stopped');
+    } else {
+      buttonBar.classList.remove('card-link-button-activity-stopped');
+    }
+  }
+
+  if (isMobileDevice()) {
+    window.addEventListener('scroll', checkButtonBarStop);
+    window.addEventListener('resize', checkButtonBarStop);
+  }
+
+  /* ACTIVITY MOVING BUTTON END */
   
   /* SPINNER START */
 
@@ -84,8 +117,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   /* SPINNER END */
 
-  function redirectToActivity(activityId){
-    window.location.href = `activity.html?buttonId=${encodeURIComponent(activityId)}`;
+  function redirectToActivity(activityId, event){
+    const url = `activity.html?buttonId=${encodeURIComponent(activityId)}`;
+    if (event.button === 1) window.open(url, '_blank');
+    else if (event.button === 0) window.location.href = url;
+  }
+  
+  function redirectToHome(event){
+    const url = 'index.html';
+    if (event.button === 1) window.open(url, '_blank');
+    else if (event.button === 0) window.location.href = url;
+  }
+
+  function redirectToSite(urlSite, event){
+    const url = urlSite;
+    if (event.button === 1) window.open(url, '_blank');
+    else if (event.button === 0) window.location.href = url;
   }
 
   function openHomeBody(){
@@ -113,12 +160,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  document.getElementById('home-a')?.addEventListener('click', function () {
-    redirectToActivity();
+  document.getElementById('home-a')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
   });
 
-  document.getElementById('activities-a')?.addEventListener('click', function () {
-    redirectToActivity();
+  document.getElementById('activities-a')?.addEventListener('mousedown', function (event) {
+    redirectToActivity(undefined, event);
+  });
+  
+  document.getElementById('home-li')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
+  });
+
+  document.getElementById('activities-li')?.addEventListener('mousedown', function (event) {
+    redirectToActivity(undefined, event);
   });
 
   document.getElementById('lang-button')?.addEventListener('click', () => {
@@ -172,14 +227,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     changeArrowDirectionIcon(arrow);
   });
 
+  document.querySelector('.card-link-button-a-activity')?.addEventListener('mousedown', function(event) {
+      const urlSite = this.dataset.urlsite;
+      redirectToSite(urlSite, event);
+  });
+
+    // card.addEventListener('click', function(event) {
+    //   if (event.button === 0) {
+    //     event.preventDefault();
+    //     const activityId = this.dataset.id;
+    //     redirectToActivity(activityId, event);
+    //   }
+    // });
+  //});
+
   // Unified outside click handler for menus, language menu, and filter dropdowns including calendars
   window.addEventListener('click', function (event) {
-    // Close language menu
     closePopUps('list-language-menu', 'lang-button', 'lang-button-img', event);
-
-    // Close main menu
     closePopUps('list-menu', 'menu-button', 'menu-button-img', event);
-
   });
 
   function closePopUps(menuId, buttonId, imgId, event) {
@@ -191,6 +256,5 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (img && img.src.includes('up_arrow_logo.png')) collapseArrowIcon(img);
     }
   }
-
 
 });
