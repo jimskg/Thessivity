@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   /* SPINNER END */
 
   function redirectToActivity(activityId, event){
-    const url = `activity.html?buttonId=${encodeURIComponent(activityId)}`;
+    const url = `activity.html?activityId=${encodeURIComponent(activityId)}`;
     if (event.button === 1) window.open(url, '_blank');
     else if (event.button === 0) window.location.href = url;
   }
@@ -231,15 +231,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const urlSite = this.dataset.urlsite;
       redirectToSite(urlSite, event);
   });
-
-    // card.addEventListener('click', function(event) {
-    //   if (event.button === 0) {
-    //     event.preventDefault();
-    //     const activityId = this.dataset.id;
-    //     redirectToActivity(activityId, event);
-    //   }
-    // });
-  //});
 
   // Unified outside click handler for menus, language menu, and filter dropdowns including calendars
   window.addEventListener('click', function (event) {
