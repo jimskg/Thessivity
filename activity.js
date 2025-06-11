@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       top: 0,
       behavior: "smooth"
     });
-    checkButtonBarStop();
+     if (isMobileDevice()) checkButtonBarStop();
   }
   
   /* ARROW TO TOP END */
@@ -266,5 +266,49 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (img && img.src.includes('up_arrow_logo.png')) collapseArrowIcon(img);
     }
   }
+
+  /* SHOW MORE LESS DESCRIPTION LINES START */
+
+  const toggle = document.querySelector('.card-title-activity-text-toggle');
+  const content = document.querySelector('.card-title-description-text-activity');
+  const textElement = document.querySelector('.card-title-description-text-activity');
+  const maxLines = 13;
+  
+  if (getLineCount(textElement) >= maxLines) {
+    document.querySelector('.card-title-activity-text-toggle').style.display = 'inline-block';
+    textElement.classList.add('fade-out');
+  } else {
+    document.querySelector('.card-title-activity-text-toggle').style.display = 'none';
+  }
+
+  function getLineCount(element) {
+    const style = window.getComputedStyle(element);
+    const lineHeight = parseFloat(style.lineHeight);
+
+    // Get the total height of the element in pixels
+    const elementHeight = element.getBoundingClientRect().height;
+
+    // Calculate number of lines
+    const lines = Math.round(elementHeight / lineHeight);
+
+    return lines;
+  }
+
+  toggle.textContent = 'View more';
+  
+  toggle.addEventListener('click', () => {
+    content.classList.toggle('card-title-description-text-activity-expanded');
+
+    if (content.classList.contains('card-title-description-text-activity-expanded')) {
+      toggle.textContent = 'Show less';
+      content.classList.remove('fade-out');
+    } else {
+      toggle.textContent = 'View more';
+      content.classList.add('fade-out');
+    }
+    if (isMobileDevice()) checkButtonBarStop();
+  });
+
+  /* SHOW MORE LESS DESCRIPTION LINES END */
 
 });

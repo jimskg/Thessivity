@@ -74,6 +74,41 @@
   max-height: 100%;
   line-height: 1.8;
   font-size: 16;
+  position: relative;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 13;
+  -webkit-box-orient: vertical;
+}
+
+.fade-out::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3em;
+  background: linear-gradient(to top, white, rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.card-title-description-text-activity-expanded {
+  white-space: initial;
+  overflow: visible;
+  display: block;
+}
+
+.card-title-description-text-activity-expanded.fade-out::after {
+  display:none;
+}
+
+.card-title-activity-text-toggle {
+  color: var(--color-main);
+  cursor: pointer;
+  margin-top: 8px;
+  line-height: 1.8;
+  font-size: 16;
 }
 
 .card-title-info-location-activity, .card-title-info-schedule-activity {
