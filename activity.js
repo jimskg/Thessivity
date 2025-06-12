@@ -148,8 +148,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     else if (event.button === 0) window.location.href = url;
   }
 
-  function redirectToSite(urlSite, event){
-    const url = urlSite;
+  function redirectToSite(urlsite, event){
+    const url = urlsite;
     if (event.button === 1) window.open(url, '_blank');
     else if (event.button === 0) window.location.href = url;
   }
@@ -247,8 +247,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   document.querySelector('.card-link-button-a-activity')?.addEventListener('mousedown', function(event) {
-      const urlSite = this.dataset.urlsite;
-      redirectToSite(urlSite, event);
+      const urlsite = this.dataset.urlsite;
+      redirectToSite(urlsite, event);
   });
 
   // Unified outside click handler for menus, language menu, and filter dropdowns including calendars
@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const toggle = document.querySelector('.card-title-activity-text-toggle');
   const content = document.querySelector('.card-title-description-text-activity');
   const textElement = document.querySelector('.card-title-description-text-activity');
-  const maxLines = 13;
+  const maxLines = 3;
   
   if (getLineCount(textElement) >= maxLines) {
     document.querySelector('.card-title-activity-text-toggle').style.display = 'inline-block';

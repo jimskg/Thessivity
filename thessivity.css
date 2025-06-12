@@ -255,25 +255,25 @@
     width: 20px;
   }
   
-  .country-img{
+  .country-img {
     height: 15px;
     width: 15px;
   }
 
-  .phone-img{
+  .phone-img {
     height: 15px;
     width: 15px;
     filter: brightness(0) saturate(100%) invert(64%) sepia(6%) saturate(574%) hue-rotate(201deg) brightness(94%) contrast(90%);
   }
 
-  .arrow-img{
+  .arrow-img {
     display: none;
     margin-bottom: 12px;
     height: 20px;
     width: 20px;
   }
 
-  .social-img{
+  .social-img {
     height: 25px;
     width: 25px;
     filter: brightness(0) saturate(100%) invert(64%) sepia(6%) saturate(574%) hue-rotate(201deg) brightness(94%) contrast(90%);
@@ -281,6 +281,13 @@
 
   .social-img:hover {
     filter: brightness(0) saturate(100%) invert(36%) sepia(99%) saturate(670%) hue-rotate(158deg) brightness(92%) contrast(89%);
+  }
+
+  .duration-img, .price-img, .organiser-img, .location-img, .schedule-img, .people-img {
+    width: 15px;
+    height: 15px;
+    margin-right: 3px;
+    /* filter: brightness(0) saturate(100%) invert(64%) sepia(6%) saturate(574%) hue-rotate(201deg) brightness(94%) contrast(90%); */
   }
 
   /* IMAGE END */
