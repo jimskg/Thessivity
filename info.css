@@ -1,0 +1,25 @@
+.info-main-title {
+  font-size: 28px;
+  margin: 0;
+  color: var(--color-main);
+  margin-bottom:24px;
+}
+
+.info-highlight-row {
+  padding: 16px;
+  width: 100%;
+  margin: 0 auto;
+  color: #444545;
+  max-width: 1216px;
+  font: normal 16px pf_highway_sans_pro_lightRg, arial, sans-serif;
+  gap: 24px;
+  line-height: 1.5;
+}
+
+.info-highlight-row ul > li {
+  padding-top: 24px;
+}
+
+.hidden {
+  display: none;
+}
