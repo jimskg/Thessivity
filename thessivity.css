@@ -747,8 +747,8 @@
   }
 
   .description-main {
-    /* font-size: 39px;
-    line-height: 37px; */
+    font-size: 39px;
+    line-height: 37px;
     font-family: 'Roboto',Sans-serif;
     font-size: 37px;
     font-weight: 800;
