@@ -1,9 +1,13 @@
 
 /* CARD START */
 
+.card-image-activity-wrapper {
+  overflow: hidden !important;
+  border-radius: 10px 10px 0px 0px;
+}
+
 .card-image-activity {
   width: 100%;
-  border-radius: 10px 10px 0px 0px;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   height: auto;
@@ -364,7 +368,7 @@
   
   /* CARD START */
 
-  .card-image-activity {
+  .card-image-activity-wrapper {
     border-radius: 0px;
   }
 

@@ -93,6 +93,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       menu.classList.add("display-none");
     }
   }
+  
+  document.getElementById('logo-a')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
+  });
 
   document.getElementById('home-a')?.addEventListener('mousedown', function (event) {
     redirectToHome(event);

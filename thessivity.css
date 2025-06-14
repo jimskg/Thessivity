@@ -224,6 +224,7 @@
     color: white;
     font-size: 24px;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .lang-icon {
@@ -393,7 +394,6 @@
     text-decoration: none;
     padding: 15px 20px 15px 20px !important;
     width: 100%;
-    /* font: bold 1.45em pf_highway_sans_pro_lightRg,Arial,sans-serif; */
     line-height: normal;
     background: #e8e8e8 !important;
     -moz-border-radius: 10px;
@@ -639,7 +639,7 @@
     margin: 0 auto;
     color: #444545;
     max-width: 1216px;
-    font: normal 16px pf_highway_sans_pro_lightRg, arial, sans-serif;
+    font: normal 16px 'Roboto', sans-serif;
     gap: 24px;
     padding: 16px 0 16px 0px;
   }
@@ -909,6 +909,11 @@
     cursor: pointer;
   }
 
+  .card-image-wrapper {
+    overflow: hidden !important;
+    border-radius: 10px 10px 0px 0px;
+  }
+
   .card-link-body {
     display: flex; 
     flex-direction: column;
@@ -927,8 +932,6 @@
 
   .card-list .card-link .card-image {
     width: 100%;
-    /* border-radius: 10px; */
-    border-radius: 10px 10px 0px 0px;
     aspect-ratio: 16 / 9;
     object-fit: cover;
   }

@@ -179,6 +179,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  document.getElementById('logo-a')?.addEventListener('mousedown', function (event) {
+    redirectToHome(event);
+  });
+
   document.getElementById('home-a')?.addEventListener('mousedown', function (event) {
     redirectToHome(event);
   });
