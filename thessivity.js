@@ -311,10 +311,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Swiper init
   const swiper = new Swiper('.card-wrapper', {
-    // autoplay: {
-    //   delay: 5000,
-    //   disableOnInteraction: false,
-    // },
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
     loop: true,
     spaceBetween: 30,
     navigation: {
