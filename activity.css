@@ -272,7 +272,8 @@
 }
 
 .card-organiser-details-single-row:last-child {
-  width: calc(50% - 12px);
+  /* width: calc(50% - 12px); */
+  width: calc(50%);
 }
 
 .card-organiser-details-single-column {
