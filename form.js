@@ -71,15 +71,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 
-    const organizer = document.getElementById('organizer');
+    const organizer = document.getElementById('searchOrg');
+    //const organizer = document.getElementById('organizer');
     const createNewOrg = document.getElementById('createNewOrg');
     const orgDetails = document.getElementById('orgDetails');
+
+    const orgNameAddress = document.getElementById('orgNameAddress');
+    const orgName = document.getElementById('orgName');
 
     createNewOrg.addEventListener('change', () => {
       if (createNewOrg.checked) {
         organizer.value = '';
         organizer.classList.add('input-disabled');
         orgDetails.classList.remove('hidden');
+        orgNameAddress.classList.add('row');
+        orgName.classList.remove('hidden');
       } else {
         organizer.classList.remove('input-disabled');
         if (!organizer.value) orgDetails.classList.add('hidden');
@@ -88,6 +94,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     organizer.addEventListener('change', () => {
       orgDetails.classList.toggle('hidden', !organizer.value);
+      orgName.classList.toggle('hidden', organizer.value);
     });
 
 
@@ -113,21 +120,40 @@ document.addEventListener("DOMContentLoaded", async function () {
       flatpickr(input, { mode: type, dateFormat: 'Y-m-d' });
     }
 
-    function createRangePair() {
+    function createRangePair(firstTime) {
       const wrapper = document.createElement('div');
       wrapper.className = 'inline';
       const from = document.createElement('input');
+      // from.className = 'multiple-periods';
       from.type = 'text';
       const to = document.createElement('input');
+      // to.className = 'multiple-periods';
       to.type = 'text';
       from.placeholder = 'From';
       to.placeholder = 'To';
       wrapper.appendChild(from);
       wrapper.appendChild(to);
+
+      if (!firstTime){
+        const removeDates = document.createElement('button');
+        removeDates.type = 'button';
+        removeDates.className = 'remove-dates-btn';
+        removeDates.innerHTML = '&times;';
+        //removeDates.addEventListener('click', () => console.log('direct click'));
+        wrapper.appendChild(removeDates);
+      }
+      
+
       dateInputs.appendChild(wrapper);
       flatpickr(from, { dateFormat: 'Y-m-d' });
       flatpickr(to, { dateFormat: 'Y-m-d' });
     }
+
+    dateInputs.addEventListener('click', (e) => {
+      if (e.target.matches('button.remove-dates-btn')) {
+        e.target.closest('.inline')?.remove();   // delete just that pair
+      }
+    });
 
     
     createFlatpickr('single');
@@ -143,16 +169,18 @@ document.addEventListener("DOMContentLoaded", async function () {
           createFlatpickr('multiple');
           break;
         case 'range':
-          createRangePair();
+          createRangePair(true);
           break;
         case 'multiple-ranges':
-          createRangePair();
+          createRangePair(true);
           addRangeBtn.classList.remove('hidden');
           break;
       }
     });
 
-    addRangeBtn.addEventListener('click', createRangePair);
+    addRangeBtn.addEventListener('click', () => {
+      createRangePair(false)
+    });
 
     var quill = new Quill('#editor', {
       theme: 'snow',
@@ -204,4 +232,92 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     document.querySelector('input[type="number"]').addEventListener('input', (e) => {
       e.target.value = e.target.value.replace(/[^\d.]/g, '');
+    });
+
+
+
+
+
+
+
+
+
+
+
+    // ‑‑‑‑‑ data source (start with your <select> values, add more later) ‑‑‑‑‑
+    const choices = ['Deloitte', 'Pfizer', 'Accenture'];
+
+    // ‑‑‑‑‑ element handles ‑‑‑‑‑
+    const input       = document.getElementById('searchOrg');
+    const suggestions = document.getElementById('suggestions');
+
+    // helper: clear & hide list
+    const hideList = () => { suggestions.innerHTML = ''; suggestions.classList.add('hidden'); };
+
+    // --- SEARCH AS YOU TYPE -----------------------------------------------------
+    input.addEventListener('input', () => {
+      const q = input.value.trim();
+      hideList();
+      if (!q) return;
+
+      const hits = choices.filter(c => c.toLowerCase().includes(q.toLowerCase()));
+      if (!hits.length) return;
+
+      suggestions.classList.remove('hidden');
+
+      // build <li> nodes with icon + bolded match
+      hits.forEach(text => {
+        const li = document.createElement('li');
+        li.tabIndex = 0;        // arrow‑key focusable
+
+        // highlight match (case‑insensitive)
+        const re = new RegExp(`(${q})`, 'i');
+        const htmlText = text.replace(re, '<mark>$1</mark>');
+
+        li.innerHTML = `
+          <img src="images/organiser_logo.png"
+              class="organiser-img"
+              alt="organiser logo">
+          <span class="label">${htmlText}</span>
+        `;
+        suggestions.appendChild(li);
+      });
+    });
+
+    // --- CLICK OR KEYBOARD PICK -------------------------------------------------
+    suggestions.addEventListener('click', (e) => {
+      const li = e.target.closest('li');
+      if (li) {
+        input.value = li.querySelector('.label').textContent; // plain text only
+        hideList();
+      }
+    });
+
+    // simple keyboard support (↑/↓/Enter/Esc)
+    input.addEventListener('keydown', (e) => {
+      const active = document.activeElement;
+      if (e.key === 'ArrowDown' && suggestions.firstChild) {
+        e.preventDefault();
+        suggestions.firstChild.focus();
+      } else if (e.key === 'Escape') {
+        hideList();
+      } else if (e.key === 'Enter' && active.tagName === 'LI') {
+        input.value = active.querySelector('.label').textContent;
+        hideList();
+      }
+    });
+    suggestions.addEventListener('keydown', (e) => {
+      const next = e.key === 'ArrowDown' ? e.target.nextSibling
+                : e.key === 'ArrowUp'   ? e.target.previousSibling
+                : null;
+      if (next) { e.preventDefault(); next.focus(); }
+      if (e.key === 'Enter') {
+        input.value = e.target.querySelector('.label').textContent;
+        hideList();
+      }
+    });
+
+    // --- NEW: close list when clicking outside ----------------------------------
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.autocomplete')) hideList();
     });
