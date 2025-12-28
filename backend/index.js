@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
   res.send('Salesforce backend is running');
 });
 
-// Example API: Accounts (auto-called on page load)
-app.get('/accounts', async (req, res) => {
+// Example API: getData (auto-called on page load)
+app.get('/getData', async (req, res) => {
   try {
     const tokenData = await getAccessToken();
 
