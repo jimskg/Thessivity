@@ -9,6 +9,9 @@ async function getAccessToken() {
     exp: Math.floor(Date.now() / 1000) + 180
   };
 
+  console.log("Consumer Key (iss):", process.env.SF_CLIENT_ID);
+  console.log("Username (sub):", process.env.SF_USERNAME);
+
   const privateKey = process.env.SF_PRIVATE_KEY.replace(/\\n/g, '\n');
 
   const signedJwt = jwt.sign(payload, privateKey, {
