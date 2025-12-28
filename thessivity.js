@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   let calendarPopup = null;
   let secondaryDesc = null;
 
+  /*
+  let CONSUMER_KEY = '';
+  let CONSUMER_SECRET = '';
+  let CALLBACK_URL = 'https://login.salesforce.com/services/oauth2/success';
+  let FETCH_TOKEN = 'https://login.salesforce.com/services/oauth2/token';
+  */
+
   async function fetchSheetData(sheetId, apiKey) {
     try {
       const gids = {
@@ -39,6 +46,25 @@ document.addEventListener("DOMContentLoaded", async function () {
       // }
       // closeLoadingSpinner();
       // openHomeBody();
+
+      /*
+      fetch(FETCH_TOKEN, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: CONSUMER_KEY,
+          client_secret: CONSUMER_SECRET,
+          redirect_uri: CALLBACK_URL
+        })
+      })
+      .then(res => res.json())
+      .then(auth => console.log(auth));
+      */
+
       
       setTimeout(() => {
         closeLoadingSpinner();
