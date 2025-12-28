@@ -20,7 +20,7 @@ app.get('/getData', async (req, res) => {
     const tokenData = await getAccessToken();
 
     const sfResponse = await fetch(
-      `${tokenData.instance_url}/services/data/v58.0/query?q=SELECT+Id,Name+FROM+Account+LIMIT+10`,
+      `${tokenData.instance_url}/services/apexrest/getData`,
       {
         headers: {
           Authorization: `Bearer ${tokenData.access_token}`
