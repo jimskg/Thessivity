@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         First: '413577439'
       };
 
-      fetch('https://thessivity.onrender.com/accounts')
+      fetch('https://thessivity.onrender.com/getData')
       .then(res => res.json())
       .then(data => {
         const list = document.getElementById('accounts');
