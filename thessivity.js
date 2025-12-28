@@ -27,6 +27,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         First: '413577439'
       };
 
+      fetch('https://thessivity.onrender.com/accounts')
+      .then(res => res.json())
+      .then(data => {
+        const list = document.getElementById('accounts');
+        console.log('dimitris: ' +data.records);
+      })
+      .catch(err => console.error(err));
+
       // for (let sheetName in gids) {
       //   if (breakIfDownForMaintenance) break;
       //   const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
