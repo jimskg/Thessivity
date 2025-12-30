@@ -5,8 +5,10 @@
   <meta charset="UTF-8">
   <title>Thessivity</title>
   <head>
-    <link rel="stylesheet" href="thessivity.css"/>
-    <link rel="stylesheet" href="activity.css"/>
+    <link rel="stylesheet" href="css/thessivity.css"/>
+    <link rel="stylesheet" href="css/activity.css"/>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
@@ -27,214 +29,9 @@
     <div class="container">
       <div class="container-inside">
 
-        <!-- NAVIGATION START -->
-        <div class="topnav">
-          <div class="logo-icon" id="logo-a">
-              <img src="images/thessivity_logo.jpg" alt="Thessivity" class="logo-img">
-          </div>
-
-          <div class="full-screen-menu">
-            <nav>
-                <ul>
-                    <li><a id="home-a">Home</a></li>
-                    <li><a id="activities-a">Activities</a></li>
-                </ul>
-            </nav>
-          </div>
-
-          <div class="topnav-buttons">
-            <div class="small-screen-menu" id="menu-button">
-              <img src="images/menus_logo.png" class="menu-img" id="menu-button-img"></img>
-            </div>
-            <ul class="list-menu display-none" id="list-menu">
-              <li class="item-language-menu" id="home-li">Home</li>
-              <li class="item-language-menu" id="activities-li">Activities</li>
-            </ul>
-            <div class="lang-icon" id="lang-button">
-              <img src="images/lang.png" class="lang-img" id="lang-button-img"></img>
-            </div>
-            <ul class="list-language-menu display-none" id="list-language-menu">
-              <li class="item-language-menu" id="gr-li">GR</li>
-              <li class="item-language-menu" id="en-li">ENG</li>
-            </ul>
-          </div>
-        </div>
-        <!-- NAVIGATION END -->
-
-        <!-- ARROW TO TOP START -->
-        <div class="arrow-to-top-button-container" id="arrow-to-top-button">
-          <div type="button" class="arrow-to-top-button">
-            <div>
-              <img class="arrow-to-top-button-transform" src="images/uparrow_logo.png" width="24" height="24"></img>
-            </div>
-          </div>
-        </div>
-        <!-- ARROW TO TOP END -->
-
+        <div id="header-placeholder"></div>
 
         <div id="home-body" class="hidden">
-
-          <!-- CARD START -->
-          <div class="body-row">
-            <div class="body-card-wrapper">
-              <div class="card-list">
-                <div class="card-item">
-                  <div class="card-link-activity">
-                    
-                    <!-- CARD IMAGE START -->
-                    <div class="card-image-activity-wrapper">
-                      <img src="images/cooking.jpg" alt="Card Image" class="card-image-activity">
-                    </div>
-                    <!-- IMAGE END -->
-
-                    <!-- CARD MAIN TITLE START -->
-                    <div class="card-link-body-container-activity">
-                      <div class="card-link-body-activity">
-                        <h1 class="card-title-main-activity">Τίτλος Δραστηριότητας</h1>
-                        <div class="card-title-info-activity">
-                          <div class="card-title-info-location-activity">
-                            <img src="images/location_logo.png" alt="Location" class="location-img">
-                            <div class="card-secondary-title-activity"> Μέγαρο Μουσικής </div>
-                          </div>
-                          <div class="card-title-info-schedule-activity">
-                            <img src="images/schedule_logo.png" alt="Schedule" class="schedule-img">
-                            <div class="card-secondary-title-activity"> 25/6/2025 </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-link-button-activity">
-                        <a class="card-link-button-a-activity" data-urlsite="https://www.google.gr">Website</a>
-                      </div>
-                    </div>
-                    <!-- CARD MAIN TITLE END -->
-
-                    <!-- CARD MAIN DESCRIPTION START -->
-                    <div class="card-link-body-container-activity">
-                      <div class="card-link-body-activity">
-                        <h3 class="card-title-description-activity">Περιγραφή</h1>
-                        <div class="card-title-description-text-activity">
-                          Η πόλη ξυπνά σιγά σιγά καθώς ο ήλιος ανατέλλει πίσω από τα βουνά.
-                          Οι δρόμοι γεμίζουν με ανθρώπους που βιάζονται να φτάσουν στις δουλειές τους.
-                          Η μυρωδιά του φρεσκοκομμένου καφέ γεμίζει τον αέρα από τις καφετέριες της γειτονιάς.
-                          Τα παιδιά γελούν στο δρόμο για το σχολείο, κρατώντας τις τσάντες τους.
-                          Ένα ελαφρύ αεράκι ανακατεύει τα φύλλα των δέντρων και φέρνει μια αίσθηση ηρεμίας.
-                          Η μέρα ξεκινά γεμάτη δυνατότητες και μικρές στιγμές ευτυχίας.
-                          Η πόλη ξυπνά σιγά σιγά καθώς ο ήλιος ανατέλλει πίσω από τα βουνά.
-                        </div>
-                        <div class="card-title-activity-text-toggle"></div>
-                      </div>
-                    </div>
-                    <!-- CARD MAIN DESCRIPTION END -->
-
-                    <!-- CARD USEFULL INFORMATION START -->
-                    <div class="card-link-body-container-activity">
-                      <div class="card-link-body-activity">
-                        <h3 class="card-title-description-activity">Χρήσιμες Πληροφορίες</h1>
-                        <div class="card-usefull-info-organiser-first-container">
-                          <div class="card-usefull-info-container-column">
-
-                            <div class="card-usefull-info-organiser-second-container">
-                              <div class="card-usefull-info-organiser-third-container">
-                                <div class="card-usefull-info-organiser-title">
-                                  <img src="images/duration_logo.png" class="duration-img"></img>
-                                  <span class="card-usefull-info-organiser-title-text">Διάρκεια</span>
-                                </div>
-                                <div>
-                                  <p class="card-usefull-info-organiser-title-value">120 λεπτά</p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="card-usefull-info-organiser-third-container">
-                              <div class="card-usefull-info-organiser-title">
-                                <img src="images/price_logo.png" class="price-img"></img>
-                                <span class="card-usefull-info-organiser-title-text">Τιμή</span>
-                              </div>
-                              <div>
-                                <p class="card-usefull-info-organiser-title-value">20 €</p>
-                              </div>
-                            </div>
-
-                            <div class="card-usefull-info-organiser-third-container">
-                              <div class="card-usefull-info-organiser-title">
-                                <img src="images/people_logo.png" class="people-img"></img>
-                                <span class="card-usefull-info-organiser-title-text">Αριθμός Ατόμων</span>
-                              </div>
-                              <div>
-                                <p class="card-usefull-info-organiser-title-value">15-30</p>
-                              </div>
-                            </div>
-
-                          </div>
-
-                          <div class="card-usefull-info-container-column">
-                            <div class="card-usefull-info-organiser-third-container">
-                              <div class="card-usefull-info-organiser-title">
-                                <img src="images/location_logo.png" class="location-img"></img>
-                                <span class="card-usefull-info-organiser-title-text">Τοποθεσία</span>
-                              </div>
-                              <div>
-                                <p class="card-usefull-info-organiser-title-value">
-                                  <div class="card-usefull-info-organiser-title-value-div">Καλαμαριά</div>
-                                  <iframe class="card-usefull-information-location-map" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="" loading="eager" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24241.103216310123!2d22.92457222938538!3d40.5827113791267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a83f2f872ea2cd%3A0x1f0de45818ac9ec!2sOrigami%20Convenience%20Store!5e0!3m2!1sel!2sgr!4v1749757204378!5m2!1sel!2sgr"></iframe>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-
-                        </div>
-                        
-                      </div>
-                    </div>
-                    <!-- CARD USEFULL INFORMATION END -->
-
-                    <!-- CARD ORGANISER START -->
-                    <div class="card-link-body-container-activity">
-                      <div class="card-link-body-activity">
-                        <h3 class="card-title-description-activity">Διοργανωτής</h1>
-                        <div class="card-usefull-info-organiser-first-container">
-                          <div class="card-organiser-container-column">
-
-                            <div class="card-usefull-info-organiser-second-container">
-                              <div class="card-usefull-info-organiser-third-container">
-                                <div class="card-usefull-info-organiser-title">
-                                  <img src="images/organiser_logo.png" class="organiser-img"></img>
-                                  <span class="card-usefull-info-organiser-title-text">Helexpo</span>
-                                </div>
-                                <div class="card-organiser-details-multiple-rows">
-                                  <div class="card-organiser-details-single-row">
-                                    <div class="card-organiser-details-single-column">
-                                      <div class="card-organiser-details-single-column-title">Διεύθυνση</div>
-                                      <div class="card-organiser-details-single-column-value">Μεγάλου Αλεξάνδρου 40</div>
-                                    </div>
-                                    <div class="card-organiser-details-single-column">
-                                      <div class="card-organiser-details-single-column-title">Τηλέφωνο</div>
-                                      <a class="card-organiser-details-single-column-value" href="tel:2310111111">2310111111</a>
-                                    </div>
-                                  </div>
-                                  <div class="card-organiser-details-single-row">
-                                    <div class="card-organiser-details-single-column">
-                                      <div class="card-organiser-details-single-column-title">E-mail</div>
-                                      <a class="card-organiser-details-single-column-value" href="mailto:test@test.test">test@test.test</a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- CARD ORGANISER END -->
-                    <div id="stop-here"></div>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- CARD END -->
-          
         </div>
 
 
@@ -243,98 +40,14 @@
   </body>
 
   <footer>
-    <!-- FOOTER START -->
-    <div id="footer">
-      <div class="footer-container">
-        <div class="footer-fluid">
-          <div class="footer-row">
-            <!-- LEFT COLUMN START -->
-            <div class="footer-left-column">
-                <div>
-                    <!-- COUNTRY LANGUAGE START -->
-                    <div class="footer-country">
-                        <img src="images/greece_logo.png" alt="Country Flag" class="country-img">
-                        <a href="#" class="footer-title">Greece</a>
-                    </div>
-                    <!-- COUNTRY LANGUAGE END -->
-
-                    <!-- CONTACT INFO START -->
-                    <div>
-                        <a href="tel:+302117700000" class="footer-title">
-                            <img src="images/phone_logo.png" alt="Phone" class="phone-img">
-                            Phone reservations
-                        </a>
-                        <div>
-                          <ul class="footer-list">
-                            <li><a href="tel:+123-456-7890" class="footer-link">+30 123-456-7890</a></li>
-                            <li class="footer-no-link">Mon - Fri 10:00 - 18:00</li>
-                          </ul>
-                        </div>
-                    </div>
-                    <!-- CONTACT INFO END -->
-                </div>
-            </div>
-            <!-- LEFT COLUMN END -->
-
-            <!-- RIGHT COLUMN START -->
-            <div class="footer-right-column">
-                <!-- INFORMATION LINK START -->
-                <div class="footer-info">
-                    <a href="javascript:" class="footer-info-a-tag" id="footer-info-dropdown">
-                      <span class="footer-title">Information</span>
-                      <img src="images/down_arrow_logo.png" id="footer-info-dropdown-img" class="arrow-img">
-                    </a>
-                    <ul class="footer-list" id="footer-list-info">
-                        <li><a href="tel:+123-456-7890" class="footer-link">Phone: 123-456-7890</a></li>
-                        <li><a href="mailto:info@mysite.com" class="footer-link">Email: info@mysite.com</a></li>
-                        <li class="footer-no-link">Thessaloniki, Greece</li>
-                    </ul>
-                </div>
-                <!-- INFORMATION LINK END -->
-
-                <!-- SUPPORT LINK START -->
-                <div class="footer-info">
-                    <a href="javascript:" class="footer-info-a-tag" id="footer-support-dropdown">
-                      <span class="footer-title">Support</span>
-                      <img src="images/down_arrow_logo.png" id="footer-support-dropdown-img" class="arrow-img">
-                    </a>
-                    <ul class="footer-list" id="footer-list-support">
-                        <li><a href="info.html?page=privacy-policy" target="_blank" class="footer-link">Privacy Policy</a></li>
-                        <li><a href="info.html?page=accessibility-statement" target="_blank" class="footer-link">Accessibility Statement</a></li>
-                        <li><a href="info.html?page=terms-conditions" target="_blank" class="footer-link">Terms & Conditions</a></li>
-                        <li><a href="info.html?page=refund-policy" target="_blank" class="footer-link">Refund Policy</a></li>
-                    </ul>
-                </div>
-                <!-- SUPPORT LINK END -->
-
-                <!-- SOCIAL MEDIA LINK START -->
-                <div class="footer-info">
-                    <span class="footer-title">Stay Connected</span>
-                    <ul class="footer-list social-media">
-                        <li><a href="https://www.facebook.com" target="_blank"><img src="images/facebook_logo2.png" class="social-img" alt="Facebook"></a></li>
-                        <li><a href="https://www.instagram.com" target="_blank"><img src="images/instagram_logo.png" class="social-img" alt="Instagram"></a></li>
-                        <li><a href="https://www.tiktok.com" target="_blank"><img src="images/tiktok_logo.png" class="social-img" alt="TikTok"></a></li>
-                    </ul>
-                </div>
-                <!-- SOCIAL MEDIA LINK END -->
-            </div>
-            <!-- RIGHT COLUMN END -->
-          </div>
-        </div>
-
-        <!-- COPYRGIHT START -->
-        <div class="footer-copyright">
-            © 2025 Thessivity.gr
-        </div>
-        <!-- COPYRGIHT END -->
-
-      </div>
-    </div>
-    <!-- FOOTER END -->
+    <div id="footer-placeholder"></div>
   </footer>
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="activity.js"></script>
+  <script src="js/activity.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/i18n.js"></script>
 
 </html>

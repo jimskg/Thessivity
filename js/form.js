@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-  let currentLanguage = 'gr';
   let breakIfDownForMaintenance = false;
   let testEnvironment = window.location.href.includes('Thessivity/index.html');
   let outputData = {};
@@ -66,11 +65,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById('vipDurationInput').classList.toggle('hidden', !this.checked);
     });
 
-
-
-
-
-
     const organizer = document.getElementById('searchOrg');
     //const organizer = document.getElementById('organizer');
     const createNewOrg = document.getElementById('createNewOrg');
@@ -96,11 +90,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       orgDetails.classList.toggle('hidden', !organizer.value);
       orgName.classList.toggle('hidden', organizer.value);
     });
-
-
-
-
-
 
     const dateInputs = document.getElementById('dateInputs');
     const addRangeBtn = document.getElementById('addRange');
