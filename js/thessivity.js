@@ -20,6 +20,85 @@ document.addEventListener("DOMContentLoaded", async function () {
   let FETCH_TOKEN = 'https://login.salesforce.com/services/oauth2/token';
   */
 
+  const mockEvents = [
+    {
+      "Id": "a0123456789ABCDE",
+      "Name": "Cooking Workshop1",
+      "Date__c": "2025-06-25",
+      "Description__c": "Learn traditional recipes with a hands-on experience.",
+      "Location_name__c": "Μέγαρο Μουσικής",
+      "Longitude__c": 22.92457222938538,
+      "Latitude__c": 40.5827113791267,
+      "Number_Of_People__c": "15-30",
+      "Price__c": 20,
+      "Duration__c": 120,
+      "Website__c": "https://www.google.gr",
+      "Organizer__r": {
+        "Name": "Helexpo",
+        "Address__c": "Μεγάλου Αλεξάνδρου 40",
+        "Phone": "2310111111",
+        "Email__c": "test@test.test"
+      }
+    },
+    {
+      "Id": "a0123456789ABCDF",
+      "Name": "Painting Class2",
+      "Date__c": "2025-06-26",
+      "Description__c": "Express your creativity in a painting workshop.",
+      "Location_name__c": "Τεχνόπολις",
+      "Longitude__c": 22.9456,
+      "Latitude__c": 40.6372,
+      "Number_Of_People__c": "10-20",
+      "Price__c": 15,
+      "Duration__c": 90,
+      "Website__c": "https://www.google.gr",
+      "Organizer__r": {
+        "Name": "ArtCenter",
+        "Address__c": "Λεωφ. Στρατού 12",
+        "Phone": "2310222222",
+        "Email__c": "info@artcenter.gr"
+      }
+    },
+    {
+      "Id": "a0123456789ABCDG",
+      "Name": "Hiking Tour3",
+      "Date__c": "2025-06-27",
+      "Description__c": "Enjoy a scenic hike in the mountains.",
+      "Location_name__c": "Mount Olympus",
+      "Longitude__c": 22.5400,
+      "Latitude__c": 40.0833,
+      "Number_Of_People__c": "5-15",
+      "Price__c": null, // No price
+      "Duration__c": 180,
+      "Website__c": "https://www.google.gr",
+      "Organizer__r": {
+        "Name": "Outdoor Adventures",
+        "Address__c": "Olympus Basecamp",
+        "Phone": "2310333333",
+        "Email__c": "hello@outdoors.gr"
+      }
+    },
+    {
+      "Id": "a0123456789ABCD2",
+      "Name": "Hiking Tour4",
+      "Date__c": "2025-06-27",
+      "Description__c": "Enjoy a scenic hike in the mountains.",
+      "Location_name__c": "Mount Olympus",
+      "Longitude__c": 22.5400,
+      "Latitude__c": 40.0833,
+      "Number_Of_People__c": "5-15",
+      "Price__c": null, // No price
+      "Duration__c": 180,
+      "Website__c": "https://www.google.gr",
+      "Organizer__r": {
+        "Name": "Outdoor Adventures",
+        "Address__c": "Olympus Basecamp",
+        "Phone": "2310333333",
+        "Email__c": "hello@outdoors.gr"
+      }
+    }
+  ];
+
   async function fetchSheetData(sheetId, apiKey) {
     try {
       const gids = {
@@ -34,25 +113,31 @@ document.addEventListener("DOMContentLoaded", async function () {
       })
       .catch(err => console.error(err));
 
-      // for (let sheetName in gids) {
-      //   if (breakIfDownForMaintenance) break;
-      //   const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-      //   const response = await fetch(sheetUrl);
-      //   const json = await response.json();
-      //   const rows = json.values.slice(1);
+      for (let gid in gids) {
+        const response = await fetch(`https://thessivity.onrender.com/getGoogleSheetData?gid=${gid}`);
+        const text = await response.text(); // <- debug
+console.log('Google Sheets response:', text);
+//const json = JSON.parse(text);
 
-      //   if (sheetName === "First") {
-      //     rows.forEach(row => {
-      //       const [value] = row;
-      //       console.log('dimitris2: ' + value);
-      //       if (testEnvironment) {
-      //         console.log('here');
-      //       }
-      //     });
-      //   }
-      // }
-      // closeLoadingSpinner();
-      // openHomeBody();
+        // console.log(data);
+        // if (breakIfDownForMaintenance) break;
+        // const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+        // const response = await fetch(sheetUrl);
+        // const json = await response.json();
+        // const rows = json.values.slice(1);
+
+        // if (sheetName === "First") {
+        //   rows.forEach(row => {
+        //     const [value] = row;
+        //     console.log('dimitris2: ' + value);
+        //     if (testEnvironment) {
+        //       console.log('here');
+        //     }
+        //   });
+        // }
+      }
+      //closeLoadingSpinner();
+      //openHomeBody();
 
       /*
       fetch(FETCH_TOKEN, {
@@ -72,6 +157,17 @@ document.addEventListener("DOMContentLoaded", async function () {
       .then(auth => console.log(auth));
       */
 
+      const carouselList = document.querySelector('.card-list.swiper-wrapper');
+      const bodyList = document.querySelector('.body-card-list');
+
+      carouselList.innerHTML = '';
+      bodyList.innerHTML = '';
+
+      mockEvents.forEach(event => {
+        carouselList.appendChild(buildCarouselCard(event));
+        bodyList.appendChild(buildBodyCard(event));
+      });
+
       
       setTimeout(() => {
         closeLoadingSpinner();
@@ -85,6 +181,110 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   await fetchSheetData(sheetId, apiKey);
+
+  function buildCarouselCard(event) {
+    const li = document.createElement('li');
+    li.className = 'card-item swiper-slide';
+
+    const a = document.createElement('a');
+    a.className = 'card-link';
+    a.dataset.id = event.Id;
+
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'card-image-wrapper';
+    const img = document.createElement('img');
+    img.src = 'images/cooking.jpg'; // Replace with event image if exists
+    img.alt = event.Name;
+    img.className = 'card-image';
+    imageWrapper.appendChild(img);
+
+    const body = document.createElement('div');
+    body.className = 'card-link-body';
+
+    const schedule = document.createElement('div');
+    schedule.className = 'card-title-info-schedule';
+    schedule.textContent = formatEventDate(event.Date__c);
+
+    const title = document.createElement('div');
+    title.className = 'card-title-info';
+    title.textContent = event.Name;
+
+    const location = document.createElement('div');
+    location.className = 'card-title-info-location';
+    location.textContent = event.Location_name__c;
+
+    body.append(schedule, title, location);
+    a.append(imageWrapper, body);
+    li.appendChild(a);
+
+    return li;
+  }
+
+  function buildBodyCard(event) {
+    const li = document.createElement('li');
+    li.className = 'card-item';
+
+    const a = document.createElement('a');
+    a.className = 'card-link';
+    a.dataset.id = event.Id;
+
+    const imageWrapper = document.createElement('div');
+    imageWrapper.className = 'card-image-wrapper';
+    const img = document.createElement('img');
+    img.src = 'images/cooking.jpg'; // Replace with event image if exists
+    img.alt = event.Name;
+    img.className = 'card-image';
+    imageWrapper.appendChild(img);
+
+    const body = document.createElement('div');
+    body.className = 'card-link-body';
+
+    const schedule = document.createElement('div');
+    schedule.className = 'card-title-info-schedule';
+    schedule.textContent = formatEventDate(event.Date__c);
+
+    const title = document.createElement('div');
+    title.className = 'card-title-info';
+    title.textContent = event.Name;
+
+    const location = document.createElement('div');
+    location.className = 'card-title-info-location';
+    location.textContent = event.Location_name__c;
+
+    // Optional: show price only if exists
+    if (event.Price__c) {
+      const price = document.createElement('div');
+      price.className = 'card-title-info-price';
+      price.textContent = `${event.Price__c} €`;
+      body.appendChild(price);
+    }
+
+    body.append(schedule, title, location);
+    a.append(imageWrapper, body);
+    li.appendChild(a);
+
+    return li;
+  }
+
+  // Format date
+  function formatEventDate(dateStr) {
+    const date = new Date(dateStr);
+    return `${date.getDate()} ${date.toLocaleString('el', { month: 'short' })}`;
+  }
+
+  // Render all events
+  function renderEvents(events) {
+    const carouselList = document.querySelector('.card-list.swiper-wrapper');
+    const bodyList = document.querySelector('.body-card-list');
+
+    carouselList.innerHTML = '';
+    bodyList.innerHTML = '';
+
+    events.forEach(event => {
+      carouselList.appendChild(buildCarouselCard(event));
+      bodyList.appendChild(buildBodyCard(event));
+    });
+  }
 
   document.getElementById('sort-by-selection')?.addEventListener('click', () => {
     const menu = document.getElementById('sort-by-menu');
