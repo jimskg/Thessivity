@@ -19,12 +19,15 @@ app.get('/getData', async (req, res) => {
   try {
     const tokenData = await getAccessToken();
 
+    const lang = req.query.lang || 'gr';
     const sfResponse = await fetch(
-      `${tokenData.instance_url}/services/apexrest/getData`,
+      `${tokenData.instance_url}/services/apexrest/getData?lang=${lang}`,
       //`${tokenData.instance_url}/services/data/v58.0/query?q=SELECT+Id,Name+FROM+Contact+LIMIT+10`,
       {
+        method: 'GET',
         headers: {
-          Authorization: `Bearer ${tokenData.access_token}`
+          Authorization: `Bearer ${tokenData.access_token}`,
+          'Content-Type': 'application/json'
         }
       }
     );
@@ -57,7 +60,6 @@ app.get('/getGoogleSheetData', async (req, res) => {
 
     const json = await response.json();
 
-    // Return exactly what Google Sheets API returns
     res.json(json);
   } catch (err) {
     console.error('Google Sheets error:', err.message);

@@ -60,6 +60,227 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   await fetchSheetData(sheetId, apiKey);
 
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null) node.textContent = text;
+    return node;
+  }
+
+  function buildEventCard(event) {
+    const homeBody = document.getElementById('home-body');
+    homeBody.innerHTML = '';
+
+    const bodyRow = el('div', 'body-row');
+    const wrapper = el('div', 'body-card-wrapper');
+    const cardList = el('div', 'card-list');
+    const cardItem = el('div', 'card-item');
+    const cardLink = el('div', 'card-link-activity');
+
+    cardLink.append(
+      buildHeaderSection(event),
+      buildDescriptionSection(event),
+      buildUsefulInfoSection(event),
+      buildOrganizerSection(event),
+      el('div', null) // stop-here
+    );
+
+    cardLink.lastChild.id = 'stop-here';
+
+    cardItem.appendChild(cardLink);
+    cardList.appendChild(cardItem);
+    wrapper.appendChild(cardList);
+    bodyRow.appendChild(wrapper);
+    homeBody.appendChild(bodyRow);
+
+    bindDynamicEventListeners();
+  }
+
+  function buildHeaderSection(event) {
+    const fragment = document.createDocumentFragment();
+
+    const imgWrapper = el('div', 'card-image-activity-wrapper');
+    const img = el('img', 'card-image-activity');
+    img.src = 'images/cooking.jpg';
+    imgWrapper.appendChild(img);
+
+    const container = el('div', 'card-link-body-container-activity');
+    const body = el('div', 'card-link-body-activity');
+
+    const title = el('h1', 'card-title-main-activity', event.Name);
+
+    const info = el('div', 'card-title-info-activity');
+
+    info.append(
+      buildIconTextRow('location_logo.png', 'location-img', event.Location_name__c),
+      buildIconTextRow('schedule_logo.png', 'schedule-img', event.Date__c)
+    );
+
+    body.append(title, info);
+
+    const buttonBar = el('div', 'card-link-button-activity');
+    const link = el('a', 'card-link-button-a-activity', t('website'));
+    link.dataset.urlsite = event.Website__c;
+    buttonBar.appendChild(link);
+
+    container.append(body, buttonBar);
+    fragment.append(imgWrapper, container);
+
+    return fragment;
+  }
+
+  function buildIconTextRow(icon, imgClass, text) {
+    const row = el('div', 'card-title-info-location-activity');
+    const img = el('img', imgClass);
+    img.src = `images/${icon}`;
+    row.append(img, el('div', 'card-secondary-title-activity', text));
+    return row;
+  }
+
+  function buildDescriptionSection(event) {
+    const container = el('div', 'card-link-body-container-activity');
+    const body = el('div', 'card-link-body-activity');
+
+    body.append(
+      el('h3', 'card-title-description-activity', t('description')),
+      el('div', 'card-title-description-text-activity', event.Description__c),
+      el('div', 'card-title-activity-text-toggle')
+    );
+
+    container.appendChild(body);
+    return container;
+  }
+
+  function buildUsefulInfoSection(event) {
+    const container = el('div', 'card-link-body-container-activity');
+    const body = el('div', 'card-link-body-activity');
+
+    body.appendChild(el('h3', 'card-title-description-activity', t('usefulInfo')));
+
+    const first = el('div', 'card-usefull-info-organiser-first-container');
+    const col1 = el('div', 'card-usefull-info-container-column');
+    const col2 = el('div', 'card-usefull-info-container-column');
+
+    if (event.Duration__c)
+      col1.appendChild(buildInfoRow('duration_logo.png', 'duration-img', t('duration'), `${event.Duration__c} ${t('minutes')}`));
+
+    if (event.Price__c)
+      col1.appendChild(buildInfoRow('price_logo.png', 'price-img', t('price'), `${event.Price__c} €`));
+
+    if (event.Number_Of_People__c)
+      col1.appendChild(buildInfoRow('people_logo.png', 'people-img', t('people'), event.Number_Of_People__c));
+
+    col2.appendChild(buildLocationSection(event));
+
+    first.append(col1, col2);
+    body.appendChild(first);
+    container.appendChild(body);
+
+    return container;
+  }
+
+  function buildInfoRow(icon, imgClass, label, value) {
+    const row = el('div', 'card-usefull-info-organiser-third-container');
+
+    const title = el('div', 'card-usefull-info-organiser-title');
+    const img = el('img', imgClass);
+    img.src = `images/${icon}`;
+    title.append(img, el('span', 'card-usefull-info-organiser-title-text', label));
+
+    row.append(title, el('p', 'card-usefull-info-organiser-title-value', value));
+    return row;
+  }
+
+  function buildLocationSection(event) {
+    const row = el('div', 'card-usefull-info-organiser-third-container');
+
+    const title = el('div', 'card-usefull-info-organiser-title');
+    const img = el('img', 'location-img');
+    img.src = 'images/location_logo.png';
+
+    title.append(img, el('span', 'card-usefull-info-organiser-title-text', t('location')));
+
+    const iframe = el('iframe', 'card-usefull-information-location-map');
+    iframe.loading = 'lazy';
+    iframe.allowFullscreen = true;
+    iframe.src = `https://www.google.com/maps?q=${event.Latitude__c},${event.Longitude__c}&output=embed`;
+
+    const valueP = el('p', 'card-usefull-info-organiser-title-value');
+    const valueDiv = el('div', 'card-usefull-info-organiser-title-value-div', event.Location_name__c);
+    row.append(title, valueP, valueDiv, iframe);
+    return row;
+  }
+
+  function buildOrganizerSection(event) {
+    const o = event.Organizer__r;
+
+    const container = el('div', 'card-link-body-container-activity');
+    const body = el('div', 'card-link-body-activity');
+
+    // Section title
+    body.appendChild(el('h3', 'card-title-description-activity', t('organizer')));
+
+    // Outer organizer container
+    const organiserContainer = el('div','card-usefull-info-organiser-third-container');
+
+    // Organizer title (icon + name)
+    const organiserTitle = el('div','card-usefull-info-organiser-title');
+
+    const organiserImg = el('img', 'organiser-img');
+    organiserImg.src = 'images/organiser_logo.png';
+
+    organiserTitle.append(organiserImg,el('span', 'card-usefull-info-organiser-title-text', o.Name));
+
+    organiserContainer.appendChild(organiserTitle);
+
+    // Details wrapper
+    const detailsWrapper = el('div','card-organiser-details-multiple-rows');
+
+    // -------- First row (address + phone)
+    const firstRow = el('div', 'card-organiser-details-single-row');
+
+    firstRow.append(
+      buildOrganizerRow(t('address'), o.Address__c),
+      buildOrganizerLinkRow(t('phone'), `tel:${o.Phone}`, o.Phone)
+    );
+
+    // -------- Second row (email)
+    const secondRow = el('div','card-organiser-details-single-row');
+
+    secondRow.append(buildOrganizerLinkRow(t('email'),`mailto:${o.Email__c}`, o.Email__c));
+
+    detailsWrapper.append(firstRow, secondRow);
+    organiserContainer.appendChild(detailsWrapper);
+    body.appendChild(organiserContainer);
+    container.appendChild(body);
+
+    return container;
+  }
+
+
+  function buildOrganizerRow(label, value) {
+    const col = el('div', 'card-organiser-details-single-column');
+    col.append(
+      el('div', 'card-organiser-details-single-column-title', label),
+      el('div', 'card-organiser-details-single-column-value', value)
+    );
+    return col;
+  }
+
+  function buildOrganizerLinkRow(label, href, value) {
+    const col = el('div', 'card-organiser-details-single-column');
+    const a = el('a', 'card-organiser-details-single-column-value', value);
+    a.href = href;
+    col.append(
+      el('div', 'card-organiser-details-single-column-title', label),
+      a
+    );
+    return col;
+  }
+
+
+  /*
+
   function buildEventCard(event) {
     const homeBody = document.getElementById('home-body');
     homeBody.innerHTML = `
@@ -233,6 +454,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       </div>
     `;
   }
+    
+  */
 
   function bindDynamicEventListeners() {
     document
@@ -252,6 +475,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       requestAnimationFrame(checkButtonBarStop);
     }
   }
+
 
   /* ARROW TO TOP START */
 

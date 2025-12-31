@@ -1,24 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
   let breakIfDownForMaintenance = false;
   let testEnvironment = window.location.href.includes('Thessivity/index.html');
-  let outputData = {};
-
-  const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
-  //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
-  const sheetId = '1LPjh1COe8CRUiLgGqf2wQA64IbOx4q2vuZcTJtwATFs'; // Google Sheet ID
-  //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
-
   let startDate = null;
   let endDate = null;
   let calendarPopup = null;
   let secondaryDesc = null;
-
-  /*
-  let CONSUMER_KEY = '';
-  let CONSUMER_SECRET = '';
-  let CALLBACK_URL = 'https://login.salesforce.com/services/oauth2/success';
-  let FETCH_TOKEN = 'https://login.salesforce.com/services/oauth2/token';
-  */
+  let source = 'SF' // 'SF' / 'GD'
 
   const mockEvents = [
     {
@@ -99,75 +86,53 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   ];
 
-  async function fetchSheetData(sheetId, apiKey) {
-    try {
-      const gids = {
-        First: '413577439'
-      };
+  async function fetchSalesforceData() {
+    const response = await fetch(`https://thessivity.onrender.com/getData?lang=${currentLanguage}`);
+    const data = await response.json();
+    console.log('dimitris:', data.records);
 
-      fetch('https://thessivity.onrender.com/getData')
-      .then(res => res.json())
-      .then(data => {
-        const list = document.getElementById('accounts');
-        console.log('dimitris: ' +data.records);
-      })
-      .catch(err => console.error(err));
+    return data;
+  }
 
-      for (let gid in gids) {
-        const response = await fetch(`https://thessivity.onrender.com/getGoogleSheetData?gid=${gid}`);
-        const text = await response.text(); // <- debug
-console.log('Google Sheets response:', text);
-//const json = JSON.parse(text);
+  async function fetchGoogleSheetsData() {
+    const gids = { // probably i need to make this calls once, passing all the sheetNames, and in render do multiple callout build the json and return it
+      First: '413577439'
+    };
 
-        // console.log(data);
-        // if (breakIfDownForMaintenance) break;
-        // const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-        // const response = await fetch(sheetUrl);
-        // const json = await response.json();
-        // const rows = json.values.slice(1);
+    for (let sheetName in gids) {
+      const response = await fetch(
+        `https://thessivity.onrender.com/getGoogleSheetData?gid=${sheetName}`
+      );
+      const data = await response.json();
+      const rows = data.values.slice(1);
 
-        // if (sheetName === "First") {
-        //   rows.forEach(row => {
-        //     const [value] = row;
-        //     console.log('dimitris2: ' + value);
-        //     if (testEnvironment) {
-        //       console.log('here');
-        //     }
-        //   });
-        // }
+      if (sheetName === "First") {
+        rows.forEach(row => {
+          const [value] = row;
+          console.log('dimitris2:', value);
+
+          if (testEnvironment) {
+            console.log('here');
+          }
+        });
       }
-      //closeLoadingSpinner();
-      //openHomeBody();
+    }
+    
+    return 'here';
+  }
 
-      /*
-      fetch(FETCH_TOKEN, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: new URLSearchParams({
-          grant_type: 'authorization_code',
-          client_id: CONSUMER_KEY,
-          client_secret: CONSUMER_SECRET,
-          redirect_uri: CALLBACK_URL
-        })
-      })
-      .then(res => res.json())
-      .then(auth => console.log(auth));
-      */
+  async function fetchData() {
+    try {
+      openLoadingSpinner();
 
-      const carouselList = document.querySelector('.card-list.swiper-wrapper');
-      const bodyList = document.querySelector('.body-card-list');
+      /*await Promise.all([
+        fetchSalesforceData(),
+        fetchGoogleSheetsData()
+      ]);*/
+      
+      let data = source === 'SF' ? await fetchSalesforceData() : await fetchGoogleSheetsData();
 
-      carouselList.innerHTML = '';
-      bodyList.innerHTML = '';
-
-      mockEvents.forEach(event => {
-        carouselList.appendChild(buildCarouselCard(event));
-        bodyList.appendChild(buildBodyCard(event));
-      });
-
+      renderEvents(mockEvents);
       
       setTimeout(() => {
         closeLoadingSpinner();
@@ -180,7 +145,7 @@ console.log('Google Sheets response:', text);
     }
   }
 
-  await fetchSheetData(sheetId, apiKey);
+  await fetchData();
 
   function buildCarouselCard(event) {
     const li = document.createElement('li');
@@ -193,7 +158,7 @@ console.log('Google Sheets response:', text);
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    img.src = 'images/cooking.jpg'; // Replace with event image if exists
+    img.src = 'images/cooking.jpg';
     img.alt = event.Name;
     img.className = 'card-image';
     imageWrapper.appendChild(img);
@@ -231,7 +196,7 @@ console.log('Google Sheets response:', text);
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    img.src = 'images/cooking.jpg'; // Replace with event image if exists
+    img.src = 'images/cooking.jpg';
     img.alt = event.Name;
     img.className = 'card-image';
     imageWrapper.appendChild(img);
