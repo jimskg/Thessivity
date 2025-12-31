@@ -1,95 +1,113 @@
 document.addEventListener("DOMContentLoaded", async function () {
-  let breakIfDownForMaintenance = false;
-  let testEnvironment = window.location.href.includes('Thessivity/index.html');
   let startDate = null;
   let endDate = null;
   let calendarPopup = null;
   let secondaryDesc = null;
-  let source = 'SF' // 'SF' / 'GD'
+  let fallbackImage;
 
-  const mockEvents = [
-    {
-      "Id": "a0123456789ABCDE",
-      "Name": "Cooking Workshop1",
-      "Date__c": "2025-06-25",
-      "Description__c": "Learn traditional recipes with a hands-on experience.",
-      "Location_name__c": "Μέγαρο Μουσικής",
-      "Longitude__c": 22.92457222938538,
-      "Latitude__c": 40.5827113791267,
-      "Number_Of_People__c": "15-30",
-      "Price__c": 20,
-      "Duration__c": 120,
-      "Website__c": "https://www.google.gr",
-      "Organizer__r": {
-        "Name": "Helexpo",
-        "Address__c": "Μεγάλου Αλεξάνδρου 40",
-        "Phone": "2310111111",
-        "Email__c": "test@test.test"
-      }
+  const mockEvents = {
+    settings: {
+      offlineSite: true,
+      fallbackImage: 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/thessivity_logo.jpg',
+      descriptionMain: "Activities with Perspective",
+      descriptionSecondary: "Whether you dream of distant destinations or hidden gems, we’re here to make your journey unforgettable. Get ready for your next adventure!"
     },
-    {
-      "Id": "a0123456789ABCDF",
-      "Name": "Painting Class2",
-      "Date__c": "2025-06-26",
-      "Description__c": "Express your creativity in a painting workshop.",
-      "Location_name__c": "Τεχνόπολις",
-      "Longitude__c": 22.9456,
-      "Latitude__c": 40.6372,
-      "Number_Of_People__c": "10-20",
-      "Price__c": 15,
-      "Duration__c": 90,
-      "Website__c": "https://www.google.gr",
-      "Organizer__r": {
-        "Name": "ArtCenter",
-        "Address__c": "Λεωφ. Στρατού 12",
-        "Phone": "2310222222",
-        "Email__c": "info@artcenter.gr"
+    events: [
+      {
+        "Id": "a0123456789ABCDE",
+        "Name": "Cooking Workshop1",
+        "Date__c": "2025-06-25",
+        "Description__c": "Learn traditional recipes with a hands-on experience.",
+        "Location_name__c": "Μέγαρο Μουσικής",
+        "Longitude__c": 22.92457222938538,
+        "Latitude__c": 40.5827113791267,
+        "Category__c": 'Hiking',
+        "Number_Of_People__c": "15-30",
+        "Price__c": 20,
+        "Image__c": 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/cooking.jpg',
+        "Duration__c": 120,
+        "Website__c": "https://www.google.gr",
+        "Organizer__r": {
+          "Name": "Helexpo",
+          "Address__c": "Μεγάλου Αλεξάνδρου 40",
+          "VIP__c": true,
+          "Phone": "2310111111",
+          "Email__c": "test@test.test"
+        }
+      },
+      {
+        "Id": "a0123456789ABCDF",
+        "Name": "Painting Class2",
+        "Date__c": "2025-06-26",
+        "Description__c": "Express your creativity in a painting workshop.",
+        "Location_name__c": "Τεχνόπολις",
+        "Longitude__c": 22.9456,
+        "Latitude__c": 40.6372,
+        "Category__c": 'Hiking',
+        "Number_Of_People__c": "10-20",
+        "Price__c": 15,
+        "Image__c": 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/cooking.jpg',
+        "Duration__c": 90,
+        "Website__c": "https://www.google.gr",
+        "Organizer__r": {
+          "Name": "ArtCenter",
+          "Address__c": "Λεωφ. Στρατού 12",
+          "VIP__c": false,
+          "Phone": "2310222222",
+          "Email__c": "info@artcenter.gr"
+        }
+      },
+      {
+        "Id": "a0123456789ABCDG",
+        "Name": "Hiking Tour3",
+        "Date__c": "2025-06-27",
+        "Description__c": "Enjoy a scenic hike in the mountains.",
+        "Location_name__c": "Mount Olympus",
+        "Longitude__c": 22.5400,
+        "Latitude__c": 40.0833,
+        "Category__c": 'Hiking',
+        "Number_Of_People__c": "5-15",
+        "Price__c": null,
+        "Image__c": 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/cooking.jpg',
+        "Duration__c": 180,
+        "Website__c": "https://www.google.gr",
+        "Organizer__r": {
+          "Name": "Outdoor Adventures",
+          "Address__c": "Olympus Basecamp",
+          "VIP__c": true,
+          "Phone": "2310333333",
+          "Email__c": "hello@outdoors.gr"
+        }
+      },
+      {
+        "Id": "a0123456789ABCD2",
+        "Name": "Hiking Tour4",
+        "Date__c": "2025-06-27",
+        "Description__c": "Enjoy a scenic hike in the mountains.",
+        "Location_name__c": "Mount Olympus",
+        "Longitude__c": 22.5400,
+        "Latitude__c": 40.0833,
+        "Category__c": 'Hiking',
+        "Number_Of_People__c": "5-15",
+        "Price__c": null,
+        "Image__c": 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/cooking.jpg',
+        "Duration__c": 180,
+        "Website__c": "https://www.google.gr",
+        "Organizer__r": {
+          "Name": "Outdoor Adventures",
+          "Address__c": "Olympus Basecamp",
+          "Phone": "2310333333",
+          "VIP__c": false,
+          "Email__c": "hello@outdoors.gr"
+        }
       }
-    },
-    {
-      "Id": "a0123456789ABCDG",
-      "Name": "Hiking Tour3",
-      "Date__c": "2025-06-27",
-      "Description__c": "Enjoy a scenic hike in the mountains.",
-      "Location_name__c": "Mount Olympus",
-      "Longitude__c": 22.5400,
-      "Latitude__c": 40.0833,
-      "Number_Of_People__c": "5-15",
-      "Price__c": null, // No price
-      "Duration__c": 180,
-      "Website__c": "https://www.google.gr",
-      "Organizer__r": {
-        "Name": "Outdoor Adventures",
-        "Address__c": "Olympus Basecamp",
-        "Phone": "2310333333",
-        "Email__c": "hello@outdoors.gr"
-      }
-    },
-    {
-      "Id": "a0123456789ABCD2",
-      "Name": "Hiking Tour4",
-      "Date__c": "2025-06-27",
-      "Description__c": "Enjoy a scenic hike in the mountains.",
-      "Location_name__c": "Mount Olympus",
-      "Longitude__c": 22.5400,
-      "Latitude__c": 40.0833,
-      "Number_Of_People__c": "5-15",
-      "Price__c": null, // No price
-      "Duration__c": 180,
-      "Website__c": "https://www.google.gr",
-      "Organizer__r": {
-        "Name": "Outdoor Adventures",
-        "Address__c": "Olympus Basecamp",
-        "Phone": "2310333333",
-        "Email__c": "hello@outdoors.gr"
-      }
-    }
-  ];
+    ]
+  };
 
   async function fetchSalesforceData() {
     const response = await fetch(`https://thessivity.onrender.com/getData?lang=${currentLanguage}`);
     const data = await response.json();
-    console.log('dimitris:', data.records);
+    console.log('dimitris:', data.events);
 
     return data;
   }
@@ -130,9 +148,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchGoogleSheetsData()
       ]);*/
       
-      let data = source === 'SF' ? await fetchSalesforceData() : await fetchGoogleSheetsData();
-
-      renderEvents(mockEvents);
+      let data = databaseSource === 'SF' ? await fetchSalesforceData() : await fetchGoogleSheetsData();
+      // translateStaticTexts(mockEvents.settings);
+      // renderEvents(mockEvents.events);
+      //fallbackImage = mockEvents.settings.fallbackImage;
+      fallbackImage = data.settings.fallbackImage;
+      translateStaticTexts(data.settings);
+      renderEvents(data.events);
+      initEventListeners();
       
       setTimeout(() => {
         closeLoadingSpinner();
@@ -147,6 +170,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   await fetchData();
 
+  function translateStaticTexts(settings){
+    document.querySelectorAll('[data-istatic]').forEach(el => {
+      const key = el.dataset.istatic;
+      el.textContent = settings[key];
+    });
+  }
+
   function buildCarouselCard(event) {
     const li = document.createElement('li');
     li.className = 'card-item swiper-slide';
@@ -158,7 +188,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    img.src = 'images/cooking.jpg';
+    getValidImage(event.Image__c).then(finalUrl => {
+      img.src = finalUrl;
+    });
     img.alt = event.Name;
     img.className = 'card-image';
     imageWrapper.appendChild(img);
@@ -196,7 +228,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    img.src = 'images/cooking.jpg';
+    getValidImage(event.Image__c).then(finalUrl => {
+      img.src = finalUrl;
+    });
     img.alt = event.Name;
     img.className = 'card-image';
     imageWrapper.appendChild(img);
@@ -246,10 +280,51 @@ document.addEventListener("DOMContentLoaded", async function () {
     bodyList.innerHTML = '';
 
     events.forEach(event => {
-      carouselList.appendChild(buildCarouselCard(event));
       bodyList.appendChild(buildBodyCard(event));
     });
+
+    // Filter VIP events for the carousel
+    let vipEvents = events.filter(e => e.Organizer__r.VIP__c);
+    let nonVipEvents = events.filter(e => !e.Organizer__r.VIP__c);
+
+    // Ensure at least 4 events in the carousel
+    let carouselEvents = [...vipEvents];
+
+    if (carouselEvents.length < 4) {
+      // Take as many non-VIP events as needed to reach 4
+      const needed = 4 - carouselEvents.length;
+      carouselEvents = carouselEvents.concat(nonVipEvents.slice(0, needed));
+    }
+
+    // Render carousel events
+    carouselEvents.forEach(event => {
+      carouselList.appendChild(buildCarouselCard(event));
+    });
   }
+
+  function getValidImage(url) {
+    return new Promise((resolve) => {
+      if (!url) {
+        resolve(fallbackImage);
+        return;
+      }
+
+      const testImg = new Image();
+      testImg.onload = () => resolve(url);
+      testImg.onerror = () => resolve(fallbackImage);
+      testImg.src = url;
+    });
+  }
+  
+  document.getElementById('gr-li')?.addEventListener('click', () => {
+      closeHomeBody();
+      fetchData();
+  });
+
+  document.getElementById('en-li')?.addEventListener('click', () => {
+      closeHomeBody();
+      fetchData();
+  });
 
   document.getElementById('sort-by-selection')?.addEventListener('click', () => {
     const menu = document.getElementById('sort-by-menu');
@@ -280,23 +355,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     openCloseDynamicMenu(menu);
     changeArrowDirectionIcon(arrow);
     let sortBy = 'popularity';
-  });
-
-  document.querySelectorAll('.card-link').forEach(function(card) {
-    card.addEventListener('mousedown', function(event) {
-      if (event.button === 1) {
-        const activityId = this.dataset.id;
-        redirectToActivity(activityId, event);
-      }
-    });
-
-    card.addEventListener('click', function(event) {
-      if (event.button === 0) {
-        event.preventDefault();
-        const activityId = this.dataset.id;
-        redirectToActivity(activityId, event);
-      }
-    });
   });
 
   // Dropdown filter open/close and arrow toggle
@@ -362,24 +420,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
 
+  function initEventListeners(){
+    document.querySelectorAll('.card-link').forEach(function(card) {
+      card.addEventListener('mousedown', function(event) {
+        if (event.button === 1) {
+          const activityId = this.dataset.id;
+          redirectToActivity(activityId, event);
+        }
+      });
+
+      card.addEventListener('click', function(event) {
+        if (event.button === 0) {
+          event.preventDefault();
+          const activityId = this.dataset.id;
+          redirectToActivity(activityId, event);
+        }
+      });
+    });
+
   // Swiper init
-  const swiper = new Swiper('.card-wrapper', {
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    loop: true,
-    spaceBetween: 30,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      0: { slidesPerView: 1 },
-      768: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 }
-    },
-  });
+    const swiper = new Swiper('.card-wrapper', {
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      loop: true,
+      spaceBetween: 30,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        0: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+      },
+    });
+  }
+  
 
   // Unified outside click handler for menus, language menu, and filter dropdowns including calendars
   window.addEventListener('click', function (event) {

@@ -14,40 +14,76 @@ document.addEventListener("DOMContentLoaded", async function () {
   console.log("Activity Id:", activityId);
   
 
-  const mockEventResponse = {
-    Id: activityId || 'a0123456789ABCDE',
-    Name: 'Rizes',
-    Date__c: '25/6/2025',
-    Description__c: `Η πόλη ξυπνά σιγά σιγά καθώς ο ήλιος ανατέλλει πίσω από τα βουνά.
-  Οι δρόμοι γεμίζουν με ανθρώπους που βιάζονται να φτάσουν στις δουλειές τους.
-  Η μυρωδιά του φρεσκοκομμένου καφέ γεμίζει τον αέρα από τις καφετέριες της γειτονιάς.
-  Τα παιδιά γελούν στο δρόμο για το σχολείο, κρατώντας τις τσάντες τους.
-  Ένα ελαφρύ αεράκι ανακατεύει τα φύλλα των δέντρων και φέρνει μια αίσθηση ηρεμίας.
-  Η μέρα ξεκινά γεμάτη δυνατότητες και μικρές στιγμές ευτυχίας.
-  Η πόλη ξυπνά σιγά σιγά καθώς ο ήλιος ανατέλλει πίσω από τα βουνά.`,
-    Location_name__c: 'Μέγαρο Μουσικής',
-    Latitude__c: 40.5827113791267,
-    Longitude__c: 22.92457222938538,
-    Number_Of_People__c: '15-30',
-    Price__c: 20,
-    Duration__c: 120,
-    Website__c: 'https://www.google.gr',
-    Organizer__r: {
-      Name: 'Helexpo',
-      Address__c: 'Μεγάλου Αλεξάνδρου 40',
-      Phone: '2310111111',
-      Email__c: 'test@test.test'
-    }
-  };
+  const mockEventResponse = [
+     {
+        "Id": "a0123456789ABCDE",
+        "Name": "Cooking Workshop1",
+        "Date__c": "2025-06-25",
+        "Description__c": "Learn traditional recipes with a hands-on experience.",
+        "Location_name__c": "Μέγαρο Μουσικής",
+        "Longitude__c": 22.92457222938538,
+        "Latitude__c": 40.5827113791267,
+        "Category__c": 'Hiking',
+        "Number_Of_People__c": "15-30",
+        "Price__c": 20,
+        "Image__c": 'https://raw.githubusercontent.com/jimskg/Thessivity/refs/heads/master/images/cooking.jpg',
+        "Duration__c": 120,
+        "Website__c": "https://www.google.gr",
+        "Organizer__r": {
+          "Name": "Helexpo",
+          "Address__c": "Μεγάλου Αλεξάνδρου 40",
+          "VIP__c": true,
+          "Phone": "2310111111",
+          "Email__c": "test@test.test"
+        }
+      }
+  ];
 
-  async function fetchSheetData(sheetId, apiKey) {
+  async function fetchSalesforceDataForEvent() {
+    const response = await fetch(`https://thessivity.onrender.com/getData?lang=${currentLanguage}&id=${activityId}`);
+    const data = await response.json();
+    console.log('dimitris:', data.events);
+
+    return data;
+  }
+
+  async function fetchGoogleSheetsDataForEvent() {
+    const gids = { // probably i need to make this calls once, passing all the sheetNames, and in render do multiple callout build the json and return it
+      First: '413577439'
+    };
+
+    for (let sheetName in gids) {
+      const response = await fetch(
+        `https://thessivity.onrender.com/getGoogleSheetData?gid=${sheetName}`
+      );
+      const data = await response.json();
+      const rows = data.values.slice(1);
+
+      if (sheetName === "First") {
+        rows.forEach(row => {
+          const [value] = row;
+          console.log('dimitris2:', value);
+
+          if (testEnvironment) {
+            console.log('here');
+          }
+        });
+      }
+    }
+    
+    return 'here';
+  }
+
+  async function fetchDataForEvent(sheetId, apiKey) {
     try {
       
       openLoadingSpinner();
 
-      await new Promise(resolve => setTimeout(resolve, 800));
-
-      buildEventCard(mockEventResponse);
+      //await new Promise(resolve => setTimeout(resolve, 800));
+      let data = databaseSource === 'SF' ? await fetchSalesforceDataForEvent() : await fetchGoogleSheetsDataForEvent();
+      fallbackImage = data.settings.fallbackImage;
+      buildEventCard(data.events[0]);
+      //buildEventCard(mockEventResponse[0]);
 
       closeLoadingSpinner();
       openHomeBody();
@@ -58,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  await fetchSheetData(sheetId, apiKey);
+  await fetchDataForEvent(sheetId, apiKey);
 
   function el(tag, className, text) {
     const node = document.createElement(tag);

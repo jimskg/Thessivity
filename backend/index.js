@@ -20,17 +20,20 @@ app.get('/getData', async (req, res) => {
     const tokenData = await getAccessToken();
 
     const lang = req.query.lang || 'gr';
-    const sfResponse = await fetch(
-      `${tokenData.instance_url}/services/apexrest/getData?lang=${lang}`,
-      //`${tokenData.instance_url}/services/data/v58.0/query?q=SELECT+Id,Name+FROM+Contact+LIMIT+10`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-          'Content-Type': 'application/json'
-        }
+    const id = req.query.id; // optional parameter
+
+    let url = `${tokenData.instance_url}/services/apexrest/getData?lang=${lang}`;
+    if (id) {
+      url += `&id=${encodeURIComponent(id)}`;
+    }
+
+    const sfResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        'Content-Type': 'application/json'
       }
-    );
+    });
 
     const data = await sfResponse.json();
     res.json(data);

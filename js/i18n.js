@@ -24,7 +24,12 @@ const LABELS = {
     email: 'E-mail',
     minutes: 'λεπτά',
     viewMore: 'Προβολή περισσότερων',
-    showLess: 'Λιγότερα'
+    showLess: 'Λιγότερα',
+    homeTab: 'Αρχική',
+    activitiesTab: 'Δραστηριότητες',
+    grLanguage: 'Ελληνικά',
+    enLanguage: 'Αγγλικά'
+
   },
   en: {
     description: 'Description',
@@ -51,11 +56,15 @@ const LABELS = {
     email: 'Email',
     minutes: 'minutes',
     viewMore: 'View more',
-    showLess: 'Show less'
+    showLess: 'Show less',
+    homeTab: 'Home',
+    activitiesTab: 'Activities',
+    grLanguage: 'Greek',
+    enLanguage: 'English'
   }
 };
 
-// Current language, default to English
+// Current language, default to Greek
 let currentLanguage = 'gr';
 
 // Translation function

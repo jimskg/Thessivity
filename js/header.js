@@ -1,3 +1,7 @@
+
+let databaseSource = 'SF' // 'SF' / 'GD'
+let testEnvironment = window.location.href.includes('Thessivity/index.html');
+
 async function loadHeader() {
   const res = await fetch('partials/header.html');
   const html = await res.text();
@@ -122,6 +126,11 @@ function openLoadingSpinner(){
 function openHomeBody(){
   const home = document.getElementById("home-body");
   home.classList.remove("hidden");
+}
+
+function closeHomeBody(){
+  const home = document.getElementById("home-body");
+  home.classList.add("hidden");
 }
 
 function openCloseDynamicMenu(menu) {
