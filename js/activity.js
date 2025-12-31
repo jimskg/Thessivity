@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Name": "Cooking Workshop1",
         "Date__c": "2025-06-25",
         "Description__c": "Learn traditional recipes with a hands-on experience.",
-        "Location_name__c": "Μέγαρο Μουσικής",
+        "Location_Name__c": "Μέγαρο Μουσικής",
         "Longitude__c": 22.92457222938538,
         "Latitude__c": 40.5827113791267,
         "Category__c": 'Hiking',
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Website__c": "https://www.google.gr",
         "Organizer__r": {
           "Name": "Helexpo",
-          "Address__c": "Μεγάλου Αλεξάνδρου 40",
+          "BillingStreet": "Μεγάλου Αλεξάνδρου 40",
           "VIP__c": true,
           "Phone": "2310111111",
           "Email__c": "test@test.test"
@@ -74,10 +74,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     return 'here';
   }
 
-  async function fetchDataForEvent(sheetId, apiKey) {
+  async function fetchDataForEvent() {
     try {
-      
       openLoadingSpinner();
+      closeHomeBody();
 
       //await new Promise(resolve => setTimeout(resolve, 800));
       let data = databaseSource === 'SF' ? await fetchSalesforceDataForEvent() : await fetchGoogleSheetsDataForEvent();
@@ -94,12 +94,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  await fetchDataForEvent(sheetId, apiKey);
+  await fetchDataForEvent();
 
-  function el(tag, className, text) {
+  function el(tag, className, text, html) {
     const node = document.createElement(tag);
     if (className) node.className = className;
     if (text !== undefined && text !== null) node.textContent = text;
+    if (html !== undefined && html !== null) node.innerHTML = html;
     return node;
   }
 
@@ -148,7 +149,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const info = el('div', 'card-title-info-activity');
 
     info.append(
-      buildIconTextRow('location_logo.png', 'location-img', event.Location_name__c),
+      buildIconTextRow('location_logo.png', 'location-img', event.Location_Name__c),
       buildIconTextRow('schedule_logo.png', 'schedule-img', event.Date__c)
     );
 
@@ -156,7 +157,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const buttonBar = el('div', 'card-link-button-activity');
     const link = el('a', 'card-link-button-a-activity', t('website'));
-    link.dataset.urlsite = event.Website__c;
+    link.dataset.urlsite = normalizeUrl(event.Website__c);
+    link.rel = 'noopener noreferrer';
     buttonBar.appendChild(link);
 
     container.append(body, buttonBar);
@@ -176,10 +178,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   function buildDescriptionSection(event) {
     const container = el('div', 'card-link-body-container-activity');
     const body = el('div', 'card-link-body-activity');
-
+    
     body.append(
       el('h3', 'card-title-description-activity', t('description')),
-      el('div', 'card-title-description-text-activity', event.Description__c),
+      el('div', 'card-title-description-text-activity', null, event.Description__c),
       el('div', 'card-title-activity-text-toggle')
     );
 
@@ -242,7 +244,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     iframe.src = `https://www.google.com/maps?q=${event.Latitude__c},${event.Longitude__c}&output=embed`;
 
     const valueP = el('p', 'card-usefull-info-organiser-title-value');
-    const valueDiv = el('div', 'card-usefull-info-organiser-title-value-div', event.Location_name__c);
+    const valueDiv = el('div', 'card-usefull-info-organiser-title-value-div', event.Location_Name__c);
     row.append(title, valueP, valueDiv, iframe);
     return row;
   }
@@ -276,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const firstRow = el('div', 'card-organiser-details-single-row');
 
     firstRow.append(
-      buildOrganizerRow(t('address'), o.Address__c),
+      buildOrganizerRow(t('address'), o.BillingStreet),
       buildOrganizerLinkRow(t('phone'), `tel:${o.Phone}`, o.Phone)
     );
 
@@ -352,7 +354,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <div class="card-title-info-activity">
             <div class="card-title-info-location-activity">
               <img src="images/location_logo.png" class="location-img">
-              <div class="card-secondary-title-activity">${event.Location_name__c}</div>
+              <div class="card-secondary-title-activity">${event.Location_Name__c}</div>
             </div>
             <div class="card-title-info-schedule-activity">
               <img src="images/schedule_logo.png" class="schedule-img">
@@ -429,7 +431,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         </div>
         <div>
           <p class="card-usefull-info-organiser-title-value">
-            <div class="card-usefull-info-organiser-title-value-div">${event.Location_name__c}</div>
+            <div class="card-usefull-info-organiser-title-value-div">${event.Location_Name__c}</div>
             <iframe class="card-usefull-information-location-map"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
@@ -458,7 +460,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             <div class="card-organiser-details-multiple-rows">
               <div class="card-organiser-details-single-row">
-                ${buildOrganizerRow(t('address'), o.Address__c)}
+                ${buildOrganizerRow(t('address'), o.BillingStreet)}
                 ${buildOrganizerLinkRow(t('phone'), `tel:${o.Phone}`, o.Phone)}
               </div>
               <div class="card-organiser-details-single-row">
@@ -512,6 +514,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  function normalizeUrl(url) {
+    if (!url) return '';
+
+    // If it already starts with http:// or https://, return as-is
+    if (/^https?:\/\//i.test(url)) {
+      return url;
+    }
+
+    // Otherwise, prepend https://
+    return `https://${url}`;
+  }
 
   /* ARROW TO TOP START */
 
@@ -571,18 +584,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   document.getElementById('gr-li')?.addEventListener('click', () => {
-      buildEventCard(mockEventResponse);
-      setViewMore();
+      fetchDataForEvent();
   });
 
   document.getElementById('en-li')?.addEventListener('click', () => {
-      buildEventCard(mockEventResponse);
-      setViewMore();
-  });
-
-  document.querySelector('.card-link-button-a-activity')?.addEventListener('mousedown', function(event) {
-      const urlsite = this.dataset.urlsite;
-      redirectToSite(urlsite, event);
+      fetchDataForEvent();
   });
 
   /* SHOW MORE LESS DESCRIPTION LINES START */

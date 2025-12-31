@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Name": "Cooking Workshop1",
         "Date__c": "2025-06-25",
         "Description__c": "Learn traditional recipes with a hands-on experience.",
-        "Location_name__c": "Μέγαρο Μουσικής",
+        "Location_Name__c": "Μέγαρο Μουσικής",
         "Longitude__c": 22.92457222938538,
         "Latitude__c": 40.5827113791267,
         "Category__c": 'Hiking',
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Website__c": "https://www.google.gr",
         "Organizer__r": {
           "Name": "Helexpo",
-          "Address__c": "Μεγάλου Αλεξάνδρου 40",
+          "BillingStreet": "Μεγάλου Αλεξάνδρου 40",
           "VIP__c": true,
           "Phone": "2310111111",
           "Email__c": "test@test.test"
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Name": "Painting Class2",
         "Date__c": "2025-06-26",
         "Description__c": "Express your creativity in a painting workshop.",
-        "Location_name__c": "Τεχνόπολις",
+        "Location_Name__c": "Τεχνόπολις",
         "Longitude__c": 22.9456,
         "Latitude__c": 40.6372,
         "Category__c": 'Hiking',
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Website__c": "https://www.google.gr",
         "Organizer__r": {
           "Name": "ArtCenter",
-          "Address__c": "Λεωφ. Στρατού 12",
+          "BillingStreet": "Λεωφ. Στρατού 12",
           "VIP__c": false,
           "Phone": "2310222222",
           "Email__c": "info@artcenter.gr"
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Name": "Hiking Tour3",
         "Date__c": "2025-06-27",
         "Description__c": "Enjoy a scenic hike in the mountains.",
-        "Location_name__c": "Mount Olympus",
+        "Location_Name__c": "Mount Olympus",
         "Longitude__c": 22.5400,
         "Latitude__c": 40.0833,
         "Category__c": 'Hiking',
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Website__c": "https://www.google.gr",
         "Organizer__r": {
           "Name": "Outdoor Adventures",
-          "Address__c": "Olympus Basecamp",
+          "BillingStreet": "Olympus Basecamp",
           "VIP__c": true,
           "Phone": "2310333333",
           "Email__c": "hello@outdoors.gr"
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Name": "Hiking Tour4",
         "Date__c": "2025-06-27",
         "Description__c": "Enjoy a scenic hike in the mountains.",
-        "Location_name__c": "Mount Olympus",
+        "Location_Name__c": "Mount Olympus",
         "Longitude__c": 22.5400,
         "Latitude__c": 40.0833,
         "Category__c": 'Hiking',
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         "Website__c": "https://www.google.gr",
         "Organizer__r": {
           "Name": "Outdoor Adventures",
-          "Address__c": "Olympus Basecamp",
+          "BillingStreet": "Olympus Basecamp",
           "Phone": "2310333333",
           "VIP__c": false,
           "Email__c": "hello@outdoors.gr"
@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function fetchData() {
     try {
       openLoadingSpinner();
+      closeHomeBody();
 
       /*await Promise.all([
         fetchSalesforceData(),
@@ -208,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const location = document.createElement('div');
     location.className = 'card-title-info-location';
-    location.textContent = event.Location_name__c;
+    location.textContent = event.Location_Name__c;
 
     body.append(schedule, title, location);
     a.append(imageWrapper, body);
@@ -248,7 +249,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const location = document.createElement('div');
     location.className = 'card-title-info-location';
-    location.textContent = event.Location_name__c;
+    location.textContent = event.Location_Name__c;
 
     // Optional: show price only if exists
     if (event.Price__c) {
@@ -317,12 +318,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   document.getElementById('gr-li')?.addEventListener('click', () => {
-      closeHomeBody();
       fetchData();
   });
 
   document.getElementById('en-li')?.addEventListener('click', () => {
-      closeHomeBody();
       fetchData();
   });
 

@@ -65,19 +65,23 @@ const LABELS = {
 };
 
 // Current language, default to Greek
-let currentLanguage = 'gr';
+const DEFAULT_LANG = 'gr';
+let currentLanguage = localStorage.getItem('lang') || DEFAULT_LANG;
+translatePage(currentLanguage);
 
 // Translation function
 function t(key) {
-  return LABELS[currentLanguage][key] || key;
+  return LABELS[currentLanguage]?.[key] || key;
 }
 
 function setLanguage(lang) {
   currentLanguage = lang;
-  translatePage();
+  localStorage.setItem('lang', lang);
+  translatePage(lang);
 }
 
-function translatePage() {
+function translatePage(lang) {
+  document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     el.textContent = t(key);
