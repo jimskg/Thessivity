@@ -41,9 +41,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   async function fetchSalesforceDataForEvent() {
     const response = await fetch(`https://thessivity.onrender.com/getData?lang=${currentLanguage}&id=${activityId}`);
-    const data = await response.json();
-    console.log('dimitris:', data.events);
 
+    if (!response.ok) {
+      const errorData = await response.json(); // backend error message
+      return json({
+        success: false,
+        error: errorData.message || 'Internal server error'
+      });
+    }
+
+    const data = await response.json();
     return data;
   }
 
@@ -81,8 +88,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       //await new Promise(resolve => setTimeout(resolve, 800));
       let data = databaseSource === 'SF' ? await fetchSalesforceDataForEvent() : await fetchGoogleSheetsDataForEvent();
-      fallbackImage = data.settings.fallbackImage;
-      buildEventCard(data.events[0]);
+
+      if (data.error == undefined){
+        fallbackImage = data.settings.fallbackImage;
+        buildEventCard(data.events[0]);
+      } else {
+        buildErrorScreen(data.error);
+      }
       //buildEventCard(mockEventResponse[0]);
 
       closeLoadingSpinner();
@@ -102,6 +114,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (text !== undefined && text !== null) node.textContent = text;
     if (html !== undefined && html !== null) node.innerHTML = html;
     return node;
+  }
+
+  function buildErrorScreen(errorMessage){
+    const homeBody = document.getElementById('home-body');
+    //homeBody.innerHTML = errorMessage;
+
+    const errorContainer = el('div', 'error-container');
+    const errorH2 = el('h2', 'description-main');
+    errorH2.innerHTML = errorMessage;
+    homeBody.appendChild(errorContainer);
+    errorContainer.appendChild(errorH2);
+
+    bindDynamicEventListeners();
   }
 
   function buildEventCard(event) {

@@ -39,7 +39,38 @@ app.get('/getData', async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error('Salesforce error:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Internal server error'
+    });
+  }
+});
+
+app.get('/getInfo', async (req, res) => {
+  try {
+    const tokenData = await getAccessToken();
+
+    const lang = req.query.lang || 'gr';
+    const page = req.query.page; // optional parameter
+
+    let url = `${tokenData.instance_url}/services/apexrest/getInfo?lang=${lang}&page=${page}`;
+
+    const sfResponse = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await sfResponse.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Salesforce error:', err.message);
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Internal server error'
+    });
   }
 });
 
@@ -66,7 +97,10 @@ app.get('/getGoogleSheetData', async (req, res) => {
     res.json(json);
   } catch (err) {
     console.error('Google Sheets error:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Internal server error'
+    });
   }
 });
 

@@ -1,5 +1,16 @@
 
-  
+  /* ERROR TO TOP START */
+  .error-container {
+    display:flex;
+    justify-content: center;
+    padding-top: 24px;
+    padding-bottom: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* ERROR TO TOP END */
+
   /* ARROW TO TOP START */
 
   .arrow-to-top-button-container {
