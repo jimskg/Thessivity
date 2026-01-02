@@ -1,7 +1,6 @@
   body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to left, #E3E3DF, #f0dabb, #E3E3DF);
-    padding-top: 20px;
   }
   .form-container {
     max-width: 800px;
@@ -10,6 +9,7 @@
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    width: 100%;
   }
   h1 {
     text-align: center;
@@ -41,6 +41,7 @@
     color: #000;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 2rem;
   }
   .row { display: flex; gap: 1rem; flex-wrap: wrap; }
   .row > div { flex: 1; min-width: 200px; }
@@ -336,4 +337,28 @@
     width: 16px;
     height: 16px;
     object-fit: contain;
+  }
+
+  .input-invalid {
+    border: 1px solid red !important;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+    display: none; /* hide initially */
+  }
+/* 
+  select.input-invalid {
+    border: 1px solid red;
+  } */
+
+  select.input-invalid option {
+    background-color: white; /* options never get red */
+    color: black;
+  }
+
+  .required-asterisk {
+    color: red;
+    margin-left: 2px;
   }
