@@ -515,6 +515,7 @@ function initFormSubmission(quill) {
     // --- Validation ---
     if (!validateForm()) {
       window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll to top to see errors
+      closeLoadingSpinner();
       return;
     }
 
