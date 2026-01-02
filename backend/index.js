@@ -77,9 +77,8 @@ app.get('/getInfo', async (req, res) => {
 app.post('/createEvent', async (req, res) => {
   try {
     const tokenData = await getAccessToken();
-
-    // eventData comes from frontend body
     const eventData = req.body;
+  console.log('NODE RECEIVED:', req.body);
 
     const url = `${tokenData.instance_url}/services/apexrest/createEvent`;
 
@@ -94,7 +93,6 @@ app.post('/createEvent', async (req, res) => {
 
     const result = await sfResponse.json();
 
-    // Pass Salesforce response back to frontend
     res.status(sfResponse.status).json(result);
 
   } catch (err) {
@@ -105,6 +103,7 @@ app.post('/createEvent', async (req, res) => {
     });
   }
 });
+
 
 
 app.get('/getGoogleSheetData', async (req, res) => {
