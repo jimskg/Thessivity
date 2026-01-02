@@ -497,6 +497,7 @@ function validateForm() {
 function initFormSubmission(quill) {
   const form = document.getElementById('eventForm');
   form?.addEventListener('submit', async e => {
+    openLoadingSpinner();
     e.preventDefault();
 
     // --- Gather Values ---
@@ -525,8 +526,8 @@ function initFormSubmission(quill) {
       Name: '', 
       BillingStreet: '', 
       Phone: '', 
-      Email__c: '', 
-      VIP__c: vip 
+      Email: '', 
+      VIP: vip 
     };
     if (createNewOrg.checked) {
       organizer.Name = document.getElementById('orgName').value.trim();
@@ -597,6 +598,7 @@ function initFormSubmission(quill) {
       console.error(err);
       alert("Submission error");
     }
+    closeLoadingSpinner();
 
   });
 }

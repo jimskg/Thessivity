@@ -81,7 +81,6 @@ app.post('/createEvent', async (req, res) => {
   try {
     const tokenData = await getAccessToken();
     const eventData = req.body;
-  console.log('NODE RECEIVED:', req.body);
 
     const url = `${tokenData.instance_url}/services/apexrest/createEvent`;
 
