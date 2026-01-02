@@ -47,20 +47,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   async function fetchData() {
     
+    openLoadingSpinner();
+    /*
     const divToShow = document.getElementById(pageId);
     if (divToShow){
       divToShow.classList.remove('hidden');
-    } else {
-
-      let data = databaseSource === 'SF' ? await fetchSalesforceInfoData() : await fetchGoogleSheetsInfoData();
-
-      if (data.error == undefined){
-        buildInfo(data);
-      } else {
-        buildErrorScreen(data.error);
-      }
-
     }
+    */
+    let data = databaseSource === 'SF' ? await fetchSalesforceInfoData() : await fetchGoogleSheetsInfoData();
+
+    if (data.error == undefined){
+      buildInfo(data);
+    } else {
+      buildErrorScreen(data.error);
+    }
+
     openHomeBody();
     closeLoadingSpinner();
   } 
@@ -69,26 +70,36 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function buildInfo(data){
     const infoBody = document.getElementById('info-body');
+    infoBody.innerHTML = '';
+    infoBody.classList.remove('hidden');
     const h1 = el('h1', 'info-main-title');
     const div = el('div', null);
     
-    h1.innerHTML = data.subject;
-    div.innerHTML = data.HtmlValue.replace(/^<html[^>]*>\s*|\s*<\/html>$/gi, '');
+    h1.innerHTML = data.Subject;
+    div.innerHTML = data.HtmlValue
     infoBody.appendChild(h1);
     infoBody.appendChild(div);
   }
 
   function buildErrorScreen(errorMessage){
-    const homeBody = document.getElementById('info-body');
+    const infoBody = document.getElementById('info-body');
+    infoBody.innerHTML = '';
+    infoBody.classList.remove('hidden');
 
     const errorContainer = el('div', 'error-container');
     const errorH2 = el('h2', 'description-main');
     errorH2.innerHTML = errorMessage;
-    homeBody.appendChild(errorContainer);
+    infoBody.appendChild(errorContainer);
     errorContainer.appendChild(errorH2);
-
-    bindDynamicEventListeners();
   }
+  
+  document.getElementById('gr-li')?.addEventListener('click', () => {
+      fetchData();
+  });
+
+  document.getElementById('en-li')?.addEventListener('click', () => {
+      fetchData();
+  });
   
   function el(tag, className, text, html) {
     const node = document.createElement(tag);
