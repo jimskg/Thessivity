@@ -28,7 +28,27 @@ const LABELS = {
     homeTab: 'Αρχική',
     activitiesTab: 'Δραστηριότητες',
     grLanguage: 'Ελληνικά',
-    enLanguage: 'Αγγλικά'
+    enLanguage: 'Αγγλικά',
+    filterTagKids: 'Παιδιά',
+    filterTagOffers: 'Προσφορές',
+    filterTagFestivals: 'Φεστιβάλς',
+    filterCategoryTitle: 'ΕΙΔΟΣ / ΚΑΤΗΓΟΡΙΑ',
+    filterCategoryAll: 'Όλες',
+    filterWhereTitle: 'ΠΟΥ',
+    filterWhereEverywhere: 'Οπουδήποτε',
+    filterWhenTitle: 'ΠΟΤΕ',
+    filterWhenAnytime: 'Οποτεδήποτε',
+    filterWhenToday: 'Σήμερα',
+    filterWhenTomorrow: 'Αύριο',
+    filterWhenWeekend: 'Το σαββατοκύριακο',
+    filterWhenNextWeek: 'Την επόμενη εβδομάδα',
+    filterWhenCustom: 'Συγκεκριμένο διάστημα',
+    filterDescriptionActivities: 'Δραστηριότητες στη Θεσσαλονίκη',
+    filterSearchPlaceholder: 'Αναζήτηση',
+    sortedBy: 'Ταξινόμηση κατά:',
+    sortedByDefault: 'Προεπιλογή',
+    sortedByDate: 'Ηρεμονηνία',
+    sortedByPopularity: 'Δημοτικότητα'
 
   },
   en: {
@@ -60,7 +80,27 @@ const LABELS = {
     homeTab: 'Home',
     activitiesTab: 'Activities',
     grLanguage: 'Greek',
-    enLanguage: 'English'
+    enLanguage: 'English',
+    filterTagKids: 'Kids',
+    filterTagOffers: 'Offers',
+    filterTagFestivals: 'Festivals',
+    filterCategoryTitle: 'TYPE / CATEGORY',
+    filterCategoryAll: 'Everything',
+    filterWhereTitle: 'WHERE',
+    filterWhereEverywhere: 'Everywhere',
+    filterWhenTitle: 'WHEN',
+    filterWhenAnytime: 'Anytime', 
+    filterWhenToday: 'Today',
+    filterWhenTomorrow: 'Tomorrow',
+    filterWhenWeekend: 'This weekend',
+    filterWhenNextWeek: 'Next week',
+    filterWhenCustom: 'Custom',
+    filterDescriptionActivities: 'Activities in Thessaloniki',
+    filterSearchPlaceholder: 'Search',
+    sortedBy: 'Sorted by:',
+    sortedByDefault: 'Default',
+    sortedByDate: 'Date',
+    sortedByPopularity: 'Popularity'
   }
 };
 
