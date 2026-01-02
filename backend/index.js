@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 // Allow frontend calls
 app.use(cors());
 
+app.use(express.json()); // parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // optional: parse form bodies
+
 // Health check
 app.get('/', (req, res) => {
   res.send('Salesforce backend is running');
