@@ -51,7 +51,7 @@
             <!-- CAROUSEL START -->
             <div class="card-wrapper ">
               <!-- Card slides container -->
-              <ul class="card-list swiper-wrapper">
+              <ul class="card-list swiper-wrapper" id="card-list-swiper-wrapper">
                 
               </ul>
 
@@ -69,258 +69,8 @@
           <!-- HIGHLIGHT END -->
 
           <!-- FILTERS START -->
-          <div class="filter-row">
-            <div class="filter-row-container">
-            <div class="filter-row-card">
-              <div class="filter-container-top">
-                <div class="filter-description">Activities in Thessaloniki</div>
-                <ul class="filter-tag-list">
-                  <li><a href="#" data-filter="kids" id="filter-tag-id-for-kids">For Kids</a></li>
-                  <li><a href="#" data-filter="offers" id="filter-tag-id-offers">Offers</a></li>
-                  <li><a href="#" data-filter="festivals" id="filter-tag-id-festivals">Festivals</a></li>
-                </ul>
-              </div>
-              <div class="filter-container-bottom">
-                <div class="filter-button-container">
-                  <a class="filter-button">
-                    <div class="filter-button-body">
-                      <div>
-                        <div class="filter-button-main-description">Category</div>
-                        <div class="filter-button-secondary-description">All</div>
-                      </div>
-                      <div class="filter-button-img-conainer">
-                        <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- DROPDOWN START -->
-                  <div class="filter-dropdown-panel display-none">
-                    <div class="filter-search-bar">
-                      <input type="text" class="filter-search-input" placeholder="Search"/>
-                    </div>
-                    <ul class="filter-list-activities">
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input data-id="all" type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">All</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option A</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option B</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option C</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option D</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option E</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option F</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option G</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option H</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- DROPDOWN START -->
-                </div>
-                <div class="filter-button-container">
-                  <a class="filter-button">
-                    <div class="filter-button-body">
-                      <div>
-                        <div class="filter-button-main-description">Where</div>
-                        <div class="filter-button-secondary-description">Everywhere</div>
-                      </div>
-                      <div class="filter-button-img-conainer">
-                        <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- DROPDOWN START -->
-                  <div class="filter-dropdown-panel display-none">
-                    <div class="filter-search-bar">
-                      <input type="text" class="filter-search-input" placeholder="Search"/>
-                    </div>
-                    <ul class="filter-list-activities">
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input data-id="all" type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">All</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option A</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option B</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option C</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option D</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option E</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option F</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option G</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Option H</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- DROPDOWN START -->
-                </div>
-                <div class="filter-button-container">
-                  <a class="filter-button">
-                    <div class="filter-button-body">
-                      <div>
-                        <div class="filter-button-main-description">When</div>
-                        <div class="filter-button-secondary-description">Anytime</div>
-                      </div>
-                      <div class="filter-button-img-conainer">
-                        <img src="images/down_arrow_logo.png" class="down-arrow-img" id="filter-button-img"></img>
-                      </div>
-                    </div>
-                  </a>
-                  <!-- DROPDOWN START -->
-                  <div class="filter-dropdown-panel display-none">
-                    <div class="filter-search-bar">
-                      <input type="text" class="filter-search-input" placeholder="Search"/>
-                    </div>
-                    
-                    <ul class="filter-list-activities">
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input data-id="all" type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Anytime</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Today</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Tomorrow</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">This weekend</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Next week</span>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="filter-list-activities-item">
-                          <input class="custom-checkbox" type="checkbox" />
-                          <span class="filter-list-activities-item-checkmark"></span>
-                          <span class="filter-list-activities-item-text">Custom</span>
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="calendar-popup display-none"></div>
-                  <!-- Calendar popup placeholder -->
-                  <!-- DROPDOWN START -->
-                </div>
-              </div>
-            </div>
-            </div>
+          <div class="filter-row" id="filter-row">
+            
           </div>
           <!-- FILTERS END -->
 
@@ -328,20 +78,20 @@
           <div class="body-row">
             <!-- SORT BY START -->
             <div class="sort-by-container">
-              <span class="sort-by-label">Sorted by:</span>
+              <span class="sort-by-label" data-i18n="sortedBy">Sorted by:</span>
               <div id="sort-by-selection" class="sort-by-selection">
-                <span id="sort-by-selection-title">Default</span>
+                <span id="sort-by-selection-title" data-i18n="sortedByDefault">Default</span>
                 <img src="images/down_arrow_logo.png" id="sort-by-dropdown-img" class="down-arrow-img"/>
               </div>
               <div id="sort-by-menu" class="sort-by-menu display-none">
-                <div id="sort-default-li"><span class="sort-by-menu-item">Default</span></div>
-                <div id="sort-date-li"><span class="sort-by-menu-item">Date</span></div>
-                <div id="sort-populatity-li"><span class="sort-by-menu-item">Popularity</span></div>
+                <div id="sort-default-li"><span class="sort-by-menu-item" data-i18n="sortedByDefault">Default</span></div>
+                <div id="sort-date-li"><span class="sort-by-menu-item" data-i18n="sortedByDate">Date</span></div>
+                <div id="sort-populatity-li"><span class="sort-by-menu-item" data-i18n="sortedByPopularity">Popularity</span></div>
               </div>
             </div>
             <!-- SORT BY END -->
             <div class="body-card-wrapper">
-              <ul class="card-list body-card-list" id="body-events">
+              <ul class="card-list body-card-list" id="body-card-list">
                 
               </ul>
             </div>
