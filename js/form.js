@@ -29,8 +29,7 @@ const typeOptions = [
   { id: 'type-placeholder', value: '', i18n: 'selectOne', disabled: true, selected: true, hidden: true},
   { id: 'type-seminar', value: 'seminar', i18n: 'typeSeminar' },
   { id: 'type-festival', value: 'festival', i18n: 'typeFestival' },
-  { id: 'type-workshop', value: 'workshop', i18n: 'typeWorkshop' },
-  { id: 'type-experience', value: 'experience', i18n: 'typeExperience' }
+  { id: 'type-workshop', value: 'workshop', i18n: 'typeWorkshop' }
 ];
 
 const audienceOptions = [
