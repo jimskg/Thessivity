@@ -74,6 +74,39 @@ app.get('/getInfo', async (req, res) => {
   }
 });
 
+app.post('/createEvent', async (req, res) => {
+  try {
+    const tokenData = await getAccessToken();
+
+    // eventData comes from frontend body
+    const eventData = req.body;
+
+    const url = `${tokenData.instance_url}/services/apexrest/createEvent`;
+
+    const sfResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(eventData)
+    });
+
+    const result = await sfResponse.json();
+
+    // Pass Salesforce response back to frontend
+    res.status(sfResponse.status).json(result);
+
+  } catch (err) {
+    console.error('Salesforce error:', err);
+    res.status(500).json({
+      success: false,
+      error: err.message || 'Internal server error'
+    });
+  }
+});
+
+
 app.get('/getGoogleSheetData', async (req, res) => {
   try {
     const apiKey = process.env.GD_API_KEY;

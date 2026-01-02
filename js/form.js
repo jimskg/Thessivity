@@ -529,10 +529,10 @@ function initFormSubmission(quill) {
       VIP__c: vip 
     };
     if (createNewOrg.checked) {
-      organizer.Name = document.querySelector('orgName').value.trim();
-      organizer.BillingStreet = document.querySelector('orgAddress').value.trim();
-      organizer.Phone = document.querySelector('orgPhone').value.trim();
-      organizer.Email__c = document.querySelector('orgEmail').value.trim();
+      organizer.Name = document.getElementById('orgName').value.trim();
+      organizer.BillingStreet = document.getElementById('orgAddress').value.trim();
+      organizer.Phone = document.getElementById('orgPhone').value.trim();
+      organizer.Email = document.getElementById('orgEmail').value.trim();
     } else {
       organizer.Name = organizerInput.value.trim();
     }
@@ -544,52 +544,53 @@ function initFormSubmission(quill) {
     // --- File Upload ---
     const fileInput = document.getElementById('fileInput');
     let imageUrl = '';
-    if (fileInput?.files.length) {
-      const file = fileInput.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
+    // if (fileInput?.files.length) {
+    //   const file = fileInput.files[0];
+    //   const formData = new FormData();
+    //   formData.append('file', file);
 
-      try {
-        const uploadResponse = await fetch('https://your-cloudflare-r2-endpoint/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const uploadData = await uploadResponse.json();
-        imageUrl = uploadData.url;
-      } catch(err) {
-        console.error(err);
-        alert('Image upload failed');
-        return;
-      }
-    }
+    //   try {
+    //     const uploadResponse = await fetch('https://your-cloudflare-r2-endpoint/upload', {
+    //       method: 'POST',
+    //       body: formData
+    //     });
+    //     const uploadData = await uploadResponse.json();
+    //     imageUrl = uploadData.url;
+    //   } catch(err) {
+    //     console.error(err);
+    //     alert('Image upload failed');
+    //     return;
+    //   }
+    // }
 
     // --- Build JSON ---
     const eventData = {
-      Name: title,
-      Date__c: dateValue,
-      Description__c: description,
-      Location_Name__c: location,
-      Longitude__c: parseFloat(lng),
-      Latitude__c: parseFloat(lat),
-      Category__c: category,
-      Type__c: type,
-      Audience__c: audience,
-      Price__c: price,
-      Duration__c: vipDuration ? parseInt(vipDuration) : null,
-      Image__c: imageUrl,
-      Website__c: document.getElementById('website').value.trim(),
-      Organizer__r: organizer
+      eventName: title,
+      eventDate: dateValue,
+      eventDescription: description,
+      eventLocation_Name: location,
+      eventLongitude: parseFloat(lng),
+      eventLatitude: parseFloat(lat),
+      eventCategory: category,
+      eventType: type,
+      eventAudience: audience,
+      eventPrice: price,
+      eventDuration: vipDuration ? parseInt(vipDuration) : null,
+      eventImage: imageUrl,
+      eventWebsite: document.getElementById('website').value.trim(),
+      eventOrganizer: organizer
     };
 
     console.log("Event JSON:", eventData);
 
     // --- Send to backend ---
     try {
-      const response = await fetch('http://localhost:3000/submitEvent', {
+      const response = await fetch('https://thessivity.onrender.com/createEvent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(eventData)
       });
+
       const result = await response.json();
       alert(result.success ? "Event submitted!" : "Submission failed!");
     } catch(err) {
