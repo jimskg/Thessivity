@@ -1,5 +1,19 @@
 // -------------------- Constants / Options --------------------
 let quill; 
+//let dateFormat = 'Y-m-d';
+let dateFormat = "d-m-Y";
+//let altFormat = "j F, Y";
+let altFormat = "d-m-Y";
+
+
+const GOOGLE_API_KEY = "AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM";
+
+const script = document.createElement('script');
+script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places&callback=initGoogleAutocomplete`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
+
 
 const vipDurationOptions = [
   { id: 'vip-placeholder', value: '', i18n: 'selectOne', disabled: true, selected: true, hidden: true},
@@ -23,20 +37,21 @@ const categoryOptions = [
   { id: 'cat-sports', value: 'Sports', i18n: 'categorySports'},
   { id: 'cat-cooking', value: 'Cooking', i18n: 'categoryCooking'},
   { id: 'cat-rest', value: 'Rest', i18n: 'categoryRest'},
+  { id: 'cat-πainting', value: 'Painting', i18n: 'categoryPainting'},
 ];
 
 const typeOptions = [
   { id: 'type-placeholder', value: '', i18n: 'selectOne', disabled: true, selected: true, hidden: true},
-  { id: 'type-seminar', value: 'seminar', i18n: 'typeSeminar' },
-  { id: 'type-festival', value: 'festival', i18n: 'typeFestival' },
-  { id: 'type-workshop', value: 'workshop', i18n: 'typeWorkshop' }
+  { id: 'type-seminar', value: 'Seminar', i18n: 'typeSeminar' },
+  { id: 'type-festival', value: 'Festival', i18n: 'typeFestival' },
+  { id: 'type-workshop', value: 'Workshop', i18n: 'typeWorkshop' }
 ];
 
 const audienceOptions = [
   { id: 'audience-placeholder', value: '', i18n: 'selectOne', disabled: true, selected: true, hidden: true},
-  { id: 'audience-kids', value: 'kids', i18n: 'audienceKids' },
-  { id: 'audience-adults', value: 'adults', i18n: 'audienceAdults' },
-  { id: 'audience-all', value: 'adults_kids', i18n: 'audienceAdultsKids' }
+  { id: 'audience-kids', value: 'Kids', i18n: 'audienceKids' },
+  { id: 'audience-adults', value: 'Adults', i18n: 'audienceAdults' },
+  { id: 'audience-all', value: 'Adults & Kids', i18n: 'audienceAdultsKids' }
 ];
 
 // Example organizer suggestions
@@ -87,13 +102,13 @@ function initLangListeners() {
 }
 
 function initVIPToggle() {
-  const vipCheckbox = document.getElementById('vip');
-  const vipContainer = document.getElementById('vipDurationInput');
+    const vipCheckbox = document.getElementById('vip');
+    const vipContainer = document.getElementById('vipDurationInput');
 
-  if (!vipCheckbox || !vipContainer) return;
+    if (!vipCheckbox || !vipContainer) return;
 
-  // Initial visibility
-  vipContainer.classList.toggle('hidden', !vipCheckbox.checked);
+    // Initial visibility
+    vipContainer.classList.toggle('hidden', !vipCheckbox.checked);
 
   // Toggle on change
   vipCheckbox.addEventListener('change', () => {
@@ -101,81 +116,81 @@ function initVIPToggle() {
   });
 }
 
-function initOrganizerToggle() {
-  const organizerInput = document.getElementById('searchOrg');
-  const createNewOrg = document.getElementById('createNewOrg');
-  const orgDetails = document.getElementById('orgDetails');
-  const orgNameAddress = document.getElementById('orgNameAddress');
-  const orgName = document.getElementById('orgName');
+// function initOrganizerToggle() {
+//   const organizerInput = document.getElementById('searchOrg');
+//   const createNewOrg = document.getElementById('createNewOrg');
+//   const orgDetails = document.getElementById('orgDetails');
+//   const orgNameAddress = document.getElementById('orgNameAddress');
+//   const orgName = document.getElementById('orgName');
   
-  createNewOrg.checked = false;
+//   createNewOrg.checked = false;
 
-  createNewOrg?.addEventListener('change', () => {
-    if (createNewOrg.checked) {
-      organizerInput.value = '';
-      organizerInput.classList.add('input-disabled');
-      orgDetails.classList.remove('hidden');
-      orgNameAddress.classList.add('row');
-      orgName.classList.remove('hidden');
-    } else {
-      organizerInput.classList.remove('input-disabled');
-      if (!organizerInput.value) orgDetails.classList.add('hidden');
-    }
-  });
+//   createNewOrg?.addEventListener('change', () => {
+//     if (createNewOrg.checked) {
+//       organizerInput.value = '';
+//       organizerInput.classList.add('input-disabled');
+//       orgDetails.classList.remove('hidden');
+//       orgNameAddress.classList.add('row');
+//       orgName.classList.remove('hidden');
+//     } else {
+//       organizerInput.classList.remove('input-disabled');
+//       if (!organizerInput.value) orgDetails.classList.add('hidden');
+//     }
+//   });
 
-  organizerInput?.addEventListener('change', () => {
-    orgDetails.classList.toggle('hidden', !organizerInput.value);
-    orgName.classList.toggle('hidden', organizerInput.value);
-  });
+//   organizerInput?.addEventListener('change', () => {
+//     orgDetails.classList.toggle('hidden', !organizerInput.value);
+//     orgName.classList.toggle('hidden', organizerInput.value);
+//   });
 
-  initOrganizerAutocomplete(organizerInput, organizerChoices);
-}
+//   initOrganizerAutocomplete(organizerInput, organizerChoices);
+// }
 
-function initOrganizerAutocomplete(input, choices) {
-  const suggestions = document.getElementById('suggestions');
-  if (!input || !suggestions) return;
+// function initOrganizerAutocomplete(input, choices) {
+//   const suggestions = document.getElementById('suggestions');
+//   if (!input || !suggestions) return;
 
-  const hideList = () => {
-    suggestions.innerHTML = '';
-    suggestions.classList.add('hidden');
-  };
+//   const hideList = () => {
+//     suggestions.innerHTML = '';
+//     suggestions.classList.add('hidden');
+//   };
 
-  input.addEventListener('input', () => {
-    const q = input.value.trim();
-    hideList();
-    if (!q) return;
+//   input.addEventListener('input', () => {
+//     const q = input.value.trim();
+//     hideList();
+//     if (!q) return;
 
-    const hits = choices.filter(c => c.toLowerCase().includes(q.toLowerCase()));
-    if (!hits.length) return;
+//     const hits = choices.filter(c => c.toLowerCase().includes(q.toLowerCase()));
+//     if (!hits.length) return;
 
-    suggestions.classList.remove('hidden');
-    hits.forEach(text => {
-      const li = document.createElement('li');
-      li.tabIndex = 0;
+//     suggestions.classList.remove('hidden');
+//     hits.forEach(text => {
+//       const li = document.createElement('li');
+//       li.tabIndex = 0;
 
-      const re = new RegExp(`(${q})`, 'i');
-      const htmlText = text.replace(re, '<mark>$1</mark>');
+//       const re = new RegExp(`(${q})`, 'i');
+//       const htmlText = text.replace(re, '<mark>$1</mark>');
 
-      li.innerHTML = `
-        <img src="images/organiser_logo.png" class="organiser-img" alt="organiser logo">
-        <span class="label">${htmlText}</span>
-      `;
-      suggestions.appendChild(li);
-    });
-  });
+//       li.innerHTML = `
+//         <img src="images/organiser_logo.png" class="organiser-img" alt="organiser logo">
+//         <span class="label">${htmlText}</span>
+//       `;
+//       suggestions.appendChild(li);
+//     });
+//   });
 
-  suggestions.addEventListener('click', e => {
-    const li = e.target.closest('li');
-    if (li) {
-      input.value = li.querySelector('.label').textContent;
-      hideList();
-    }
-  });
+//   suggestions.addEventListener('click', e => {
+//     const li = e.target.closest('li');
+//     if (li) {
+//       input.value = li.querySelector('.label').textContent;
+//       hideList();
+//     }
+//   });
 
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.autocomplete')) hideList();
-  });
-}
+//   document.addEventListener('click', e => {
+//     if (!e.target.closest('.autocomplete')) hideList();
+//   });
+// }
 
 function initDatePickers() {
   const dateInputs = document.getElementById('dateInputs');
@@ -198,7 +213,7 @@ function initDatePickers() {
     input.dataset.i18n = type === 'single' ? "selectDate" : "selectDates";
     input.placeholder = t(input.dataset.i18n);
     dateInputs.appendChild(input);
-    flatpickr(input, { mode: type, dateFormat: 'Y-m-d' });
+    flatpickr(input, { mode: type, altInput: true, altFormat: altFormat, dateFormat: dateFormat});
   }
 
   function createRangePair(firstTime = true) {
@@ -225,8 +240,32 @@ function initDatePickers() {
     }
 
     dateInputs.appendChild(wrapper);
-    flatpickr(from, { dateFormat: 'Y-m-d' });
-    flatpickr(to, { dateFormat: 'Y-m-d' });
+    // flatpickr(from, { dateFormat: 'Y-m-d' });
+    // flatpickr(to, { dateFormat: 'Y-m-d' });
+
+     // Initialize flatpickr instances
+    const fromPicker = flatpickr(from, {
+      //dateFormat: 'Y-m-d',
+      altInput: true,
+      altFormat: altFormat,
+      dateFormat: dateFormat,
+      onChange: (selectedDates) => {
+        if (selectedDates.length) {
+          toPicker.set('minDate', new Date(selectedDates[0].getTime() + 86400000));
+
+          // Optional: auto-clear invalid "to" date
+          if (toPicker.selectedDates[0] < selectedDates[0]) {
+            toPicker.clear();
+          }
+        }
+      }
+    });
+
+    const toPicker = flatpickr(to, {
+      altInput: true,
+      altFormat: altFormat,
+      dateFormat: dateFormat,
+    });
   }
 
   dateInputs.addEventListener('click', e => {
@@ -366,6 +405,18 @@ function validateForm() {
     valid = false;
   } else clearFieldError('audience');
 
+  // Event Duration in minutes
+  if (!document.getElementById('duration').value || document.getElementById('duration').value <= 0) {
+    showFieldError('duration', 'errorDurationRequired');
+    valid = false;
+  } else clearFieldError('duration');
+
+  // Number of People
+  if (!document.getElementById('numberOfPeople').value || !validatePeopleCount(document.getElementById('numberOfPeople').value)) {
+    showFieldError('numberOfPeople', 'errorNumberOfPeopleRequired');
+    valid = false;
+  } else clearFieldError('numberOfPeople');
+
   // VIP Duration (only if VIP checked)
   const vipCheckbox = document.getElementById('vip');
   const vipDuration = document.getElementById('vipDuration');
@@ -380,9 +431,15 @@ function validateForm() {
     valid = false;
   } else clearFieldError('location');
 
+  // Event Address
+  if (!document.getElementById('eventAddress').value.trim()) {
+    showFieldError('eventAddress', 'errorEventAddressRequired');
+    valid = false;
+  } else clearFieldError('eventAddress');
+
   // Price
-  const priceInput = document.querySelector('input[type="number"]');
-  if (!priceInput.value.trim() || Number(priceInput.value) < 0) {
+  const priceInput = document.getElementById('price');
+  if (!priceInput.value.trim() || Number(priceInput.value) <= 0) {
     showFieldError('price', 'errorPriceRequired');
     valid = false;
   } else clearFieldError('price');
@@ -414,7 +471,8 @@ function validateForm() {
         const from = pair.querySelector('input:nth-child(1)').value.trim();
         const to = pair.querySelector('input:nth-child(2)').value.trim();
         if (!from || !to) {
-          showFieldError('dateInputs', 'errorDateRequired'); // i18n key
+          if (pairs.length == 1) showFieldError('dateInputs', 'errorDateRangeRequired');
+          else showFieldError('dateInputs', 'errorDateRangesRequired');
           valid = false;
         }
       });
@@ -458,14 +516,14 @@ function validateForm() {
   }
 
   // Organizer
-  const createNewOrg = document.getElementById('createNewOrg');
-  const organizerInput = document.getElementById('searchOrg');
+  //const createNewOrg = document.getElementById('createNewOrg');
+  //const organizerInput = document.getElementById('searchOrg');
   const orgNameInput = document.getElementById('orgName');
   const orgPhoneInput = document.getElementById('orgPhone');
   const orgEmailInput = document.getElementById('orgEmail');
   const orgAddressInput = document.getElementById('orgAddress');
-  if (createNewOrg.checked) {
-    clearFieldError('searchOrg');
+  //if (createNewOrg.checked) {
+    //clearFieldError('searchOrg');
     if (!orgNameInput.value.trim()) {
       showFieldError('orgName', 'errorOrganizerNameRequired');
       valid = false;
@@ -474,7 +532,7 @@ function validateForm() {
       showFieldError('orgPhone', 'errorOrganizerPhoneRequired');
       valid = false;
     } else clearFieldError('orgPhone');
-    if (!orgEmailInput.value.trim()) {
+    if (!isValidEmail(orgEmailInput.value.trim())) {
       showFieldError('orgEmail', 'errorOrganizerEmailRequired');
       valid = false;
     } else clearFieldError('orgEmail');
@@ -482,14 +540,35 @@ function validateForm() {
       showFieldError('orgAddress', 'errorOrganizerAddressRequired');
       valid = false;
     } else clearFieldError('orgAddress');
-  } else {
-    if (!organizerInput.value.trim()) {
-      showFieldError('searchOrg', 'errorOrganizerRequired');
-      valid = false;
-    } else clearFieldError('searchOrg');
-  }
+  // } else {
+  //   if (!organizerInput.value.trim()) {
+  //     showFieldError('searchOrg', 'errorOrganizerRequired');
+  //     valid = false;
+  //   } else clearFieldError('searchOrg');
+  // }
 
   return valid;
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+function validatePeopleCount(value) {
+  if (!value) return false;
+
+  // Allow "45" OR "10-100"
+  const formatRegex = /^(\d+|\d+-\d+)$/;
+  if (!formatRegex.test(value)) return false;
+
+  // If it's a range, validate logical order
+  if (value.includes('-')) {
+    const [min, max] = value.split('-').map(Number);
+    return min <= max;
+  }
+
+  // Single number is always valid at this point
+  return true;
 }
 
 
@@ -504,11 +583,17 @@ function initFormSubmission(quill) {
     const category = document.getElementById('category').value;
     const type = document.getElementById('type').value;
     const audience = document.getElementById('audience').value;
+    const duration = document.getElementById('duration').value;
+    const numberOfPeople = document.getElementById('numberOfPeople').value;
     const location = document.getElementById('location').value.trim();
-    const lat = document.getElementById('lat').value;
-    const lng = document.getElementById('lng').value;
+    const eventAddress = document.getElementById('eventAddress').value.trim();
+    const eventLat = document.getElementById('eventLat').value;
+    const eventLng = document.getElementById('eventLng').value;
+    const eventStreet = document.getElementById('eventStreet').value;
+    const eventCity = document.getElementById('eventCity').value;
+    const eventPostalCode = document.getElementById('eventPostalCode').value;
     const description = quill.root.innerHTML;
-    const price = parseFloat(document.querySelector('input[type="number"]').value) || 0;
+    const price = parseFloat(document.getElementById('price').value) || 0;
     const vip = document.getElementById('vip').checked;
     const vipDuration = vip ? document.getElementById('vipDuration').value : null;
 
@@ -520,28 +605,55 @@ function initFormSubmission(quill) {
     }
 
     // --- Organizer ---
-    const createNewOrg = document.getElementById('createNewOrg');
-    const organizerInput = document.getElementById('searchOrg');
+    //const createNewOrg = document.getElementById('createNewOrg');
+    //const organizerInput = document.getElementById('searchOrg');
     const organizer = { 
       Name: '', 
-      BillingStreet: '', 
+      BillingStreet: '',
+      BillingCity: '',
+      BillingPostalCode: '',
+      BillingLatitude: '',
+      BillingLongitude: '',
       Phone: '', 
       Email: '', 
+      VIPDuration: '',
       VIP: vip 
     };
-    if (createNewOrg.checked) {
+    //if (createNewOrg.checked) {
       organizer.Name = document.getElementById('orgName').value.trim();
       organizer.BillingStreet = document.getElementById('orgAddress').value.trim();
+      organizer.BillingCity = document.getElementById('orgCity').value.trim();
+      organizer.BillingPostalCode = document.getElementById('orgPostalCode').value.trim();
+      organizer.BillingLatitude = parseFloat(document.getElementById('orgLng').value.trim());
+      organizer.BillingLongitude = parseFloat(document.getElementById('orgLat').value.trim());
       organizer.Phone = document.getElementById('orgPhone').value.trim();
       organizer.Email = document.getElementById('orgEmail').value.trim();
-    } else {
-      organizer.Name = organizerInput.value.trim();
-    }
+      organizer.VIPDuration = vipDuration ? parseInt(vipDuration) : null;
+    // } else {
+    //   organizer.Name = organizerInput.value.trim();
+    // }
 
     // --- Dates (first input for simplicity) ---
     const dateInput = document.getElementById('dateInputs')?.querySelector('input');
-    const dateValue = dateInput ? dateInput.value : '';
+    let dateValue = dateInput ? dateInput.value : '';
 
+    const dateRanges = [];
+
+    document.getElementById('dateInputs')?.querySelectorAll('#dateInputs .inline')
+      .forEach(row => {
+        const from = row.querySelector('input[data-i18n="from"]')?.value;
+        const to = row.querySelector('input[data-i18n="to"]')?.value;
+
+        if (from && to) {
+          dateRanges.push({ from, to });
+        }
+      });
+
+    if (dateRanges.length >=1){
+      dateValue = dateRanges.map(({ from, to }) => `${from}:${to}`).join(',');
+    }
+    // closeLoadingSpinner();
+    // return;
     // --- File Upload ---
     const fileInput = document.getElementById('fileInput');
     let imageUrl = '';
@@ -569,22 +681,27 @@ function initFormSubmission(quill) {
       eventName: title,
       eventDate: dateValue,
       eventDescription: description,
-      eventLocation_Name: location,
-      eventLongitude: parseFloat(lng),
-      eventLatitude: parseFloat(lat),
+      eventLocationName: location,
+      eventAddress: eventAddress,
+      eventLongitude: parseFloat(eventLng),
+      eventLatitude: parseFloat(eventLat),
+      eventStreet: eventStreet,
+      eventCity: eventCity,
+      eventPostalCode: eventPostalCode,
       eventCategory: category,
       eventType: type,
       eventAudience: audience,
       eventPrice: price,
-      eventDuration: vipDuration ? parseInt(vipDuration) : null,
+      eventDuration: duration,
+      eventNumberOfPeople: numberOfPeople,
       eventImage: imageUrl,
       eventWebsite: document.getElementById('website').value.trim(),
       eventOrganizer: organizer
     };
 
     console.log("Event JSON:", eventData);
-
     // --- Send to backend ---
+
     try {
       const response = await fetch('https://thessivity.onrender.com/createEvent', {
         method: 'POST',
@@ -593,15 +710,176 @@ function initFormSubmission(quill) {
       });
 
       const result = await response.json();
-      alert(result.success ? "Event submitted!" : "Submission failed!");
-    } catch(err) {
+
+      if (result.success) {
+        showPopup("Event submitted successfully!", "success");
+        clearForm();
+      } else {
+        showPopup("Submission failed. Please try again.", "error");
+      }
+    } catch (err) {
       console.error(err);
-      alert("Submission error");
+      showPopup("Submission error. Please try again later.", "error");
     }
     closeLoadingSpinner();
 
   });
 }
+
+function clearForm() {
+  document.getElementById('eventForm').reset();
+  const vipCheckbox = document.getElementById('vip');
+  const vipContainer = document.getElementById('vipDurationInput');
+  const vipDuration = document.getElementById('vipDuration');
+  const fileInput = document.getElementById('fileInput');
+  const dateInputs = document.getElementById('dateInputs');
+  const addRangeBtn = document.getElementById('addRange');
+  const removeBtn = document.getElementById('removeBtn');
+  if (removeBtn) removeBtn.click();
+
+  if (vipCheckbox && vipContainer){
+    vipDuration.value = '';
+    vipContainer.classList.toggle('hidden', !vipCheckbox.checked);
+  } 
+  
+  document.getElementById('category').value = '';
+  document.getElementById('type').value = '';
+  document.getElementById('audience').value = '';
+
+
+  if (dateInputs) dateInputs.innerHTML = '';
+  if (dateInputs && !dateInputs.classList.contains('hidden')) dateInputs.classList.add('hidden');
+  if (addRangeBtn && !addRangeBtn.classList.contains('hidden')) addRangeBtn.classList.add('hidden');
+
+  fileInput.value = '';
+}
+
+function showPopup(message, type = 'success') {
+  const popup = document.getElementById('popup');
+  const content = popup.querySelector('.popup-content');
+  const messageEl = document.getElementById('popup-message');
+
+  messageEl.textContent = message;
+  content.className = `popup-content ${type}`;
+  popup.classList.remove('hidden');
+
+  setTimeout(closePopup, 2000);
+}
+
+function closePopup() {
+  document.getElementById('popup').classList.add('hidden');
+}
+
+function initGoogleAutocomplete() {
+  const eventAddressInput = document.getElementById('eventAddress');
+  const orgAddressInput = document.getElementById('orgAddress');
+
+  if (eventAddressInput) {
+    const eventAutocomplete = new google.maps.places.Autocomplete(
+      eventAddressInput,
+      { types: ['geocode'] }
+    );
+
+    eventAutocomplete.addListener('place_changed', () => {
+      const place = eventAutocomplete.getPlace();
+
+      if (!place.geometry) return;
+
+      document.getElementById('eventLat').value = place.geometry.location.lat();
+      document.getElementById('eventLng').value = place.geometry.location.lng();
+
+      // Initialize variables
+      let streetName = '';
+      let streetNumber = '';
+      let city = '';
+      let postalCode = '';
+
+      // Loop through address components
+      place.address_components.forEach(component => {
+        const types = component.types;
+
+        
+        if (types.includes('route')) {
+          streetName = component.long_name; // street name
+        }
+
+        if (types.includes('street_number')) {
+          streetNumber = component.long_name; // street number
+        }
+
+        if (types.includes('locality')) {
+          city = component.long_name; // city
+        }
+
+        if (types.includes('postal_code')) {
+          postalCode = component.long_name; // postal code
+        }
+      });
+
+      const street = `${streetName} ${streetNumber}`;
+
+      // Store them in your form fields
+      document.getElementById('eventStreet').value = street;
+      document.getElementById('eventCity').value = city;
+      document.getElementById('eventPostalCode').value = postalCode;
+
+    });
+
+
+  }
+
+  if (orgAddressInput) {
+    const organizerAutocomplete = new google.maps.places.Autocomplete(
+      orgAddressInput,
+      { types: ['geocode'] }
+    );
+
+    organizerAutocomplete.addListener('place_changed', () => {
+      const place = organizerAutocomplete.getPlace();
+
+      if (!place.geometry) return;
+
+      document.getElementById('orgLat').value = place.geometry.location.lat();
+      document.getElementById('orgLng').value = place.geometry.location.lng();
+      
+      // Initialize variables
+      let streetName = '';
+      let streetNumber = '';
+      let city = '';
+      let postalCode = '';
+
+      // Loop through address components
+      place.address_components.forEach(component => {
+        const types = component.types;
+
+        
+        if (types.includes('route')) {
+          streetName = component.long_name; // street name
+        }
+
+        if (types.includes('street_number')) {
+          streetNumber = component.long_name; // street number
+        }
+
+        if (types.includes('locality')) {
+          city = component.long_name; // city
+        }
+
+        if (types.includes('postal_code')) {
+          postalCode = component.long_name; // postal code
+        }
+      });
+
+      const street = `${streetName} ${streetNumber}`;
+
+      // Store them in your form fields
+      document.getElementById('orgStreet').value = street;
+      document.getElementById('orgCity').value = city;
+      document.getElementById('orgPostalCode').value = postalCode;
+    });
+  }
+}
+
 
 // -------------------- Main Initialization --------------------
 async function initForm() {
@@ -611,13 +889,13 @@ async function initForm() {
   buildSelectHTML('audienceContainer', 'audience', audienceOptions);
 
   initVIPToggle();
-  initOrganizerToggle();
+  //initOrganizerToggle();
   initDatePickers();
   initFileInput();
   initNumberValidation();
-  closeLoadingSpinner();
   initLangListeners();
   initFormSubmission(quill);
+  closeLoadingSpinner();
 }
 
 // -------------------- DOM Ready --------------------

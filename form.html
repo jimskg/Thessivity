@@ -28,6 +28,12 @@
       </div>
     </div>
 
+    <div id="popup" class="popup hidden">
+      <div class="popup-content">
+        <p id="popup-message"></p>
+      </div>
+    </div>
+
   <body>
     
     <div class="container">
@@ -57,7 +63,7 @@
               </div>
 
               <div class="form-group" id="vipDurationInput">
-                <label data-i18n="duration">Duration<span class="required-asterisk">*</span></label>
+                <label data-i18n="durationVIP">Duration<span class="required-asterisk">*</span></label>
                 <div id="vipDurationContainer"></div>
                 <div class="error-message" id="error-vipDuration"></div>
               </div>
@@ -84,6 +90,19 @@
 
             <div class="row">
               <div class="form-group">
+                <label data-i18n="durationLabel">Duration in minutes<span class="required-asterisk">*</span></label>
+                <input type="number" id="duration" inputmode="numeric" pattern="[0-9]*" placeholder="0" step="1"/>
+                <div class="error-message" id="error-duration"></div>
+              </div>
+              <div class="form-group">
+                <label data-i18n="numberOfPeopleLabel">Number Of People<span class="required-asterisk">*</span></label>
+                <input type="text" id="numberOfPeople" inputmode="numeric" data-i18n-placeholder="numberOfPeoplePlaceholder" inputmode="numeric"/>
+                <div class="error-message" id="error-numberOfPeople"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group">
                 <label for="website" data-i18n="website">Website</label>
                 <input type="text" id="website" name="website" placeholder="https://example.com">
                 <div class="error-message" id="error-website"></div>
@@ -91,7 +110,7 @@
               <div class="form-group">
                 <label for="amount" data-i18n="price">Price<span class="required-asterisk">*</span></label>
                 <div class="currency-input">
-                  <input type="number" id="price" inputmode="numeric" pattern="[0-9]*" placeholder="0.00" step="1" min="0" />
+                  <input type="number" id="price" inputmode="numeric" placeholder="0.00" step=".01"/>
                 </div>
                 <div class="error-message" id="error-price"></div>
               </div>
@@ -100,9 +119,18 @@
             <div class="form-group">
               <label for="location" data-i18n="location">Location<span class="required-asterisk">*</span></label>
               <input id="location" name="location" type="text">
-              <input type="hidden" id="lat" name="lat">
-              <input type="hidden" id="lng" name="lng">
               <div class="error-message" id="error-location"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventAddress" data-i18n="eventAddress">Event Address<span class="required-asterisk">*</span></label>
+              <input id="eventAddress" name="eventAddress" type="text" placeholder="">
+              <input type="hidden" id="eventLat" name="lat">
+              <input type="hidden" id="eventLng" name="lng">
+              <input type="hidden" id="eventStreet" name="strt">
+              <input type="hidden" id="eventCity" name="city">
+              <input type="hidden" id="eventPostalCode" name="postalcode">
+              <div class="error-message" id="error-eventAddress"></div>
             </div>
 
             <div class="form-group">
@@ -136,7 +164,7 @@
               <div class="error-message" id="error-fileText"></div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
               <div class="form-group">
                 <label data-i18n="organizer">Organizer<span class="required-asterisk">*</span></label>
                 <div class="autocomplete">
@@ -155,10 +183,11 @@
                   </div>
                 </label>
               </div>
-            </div>
+            </div> -->
 
-            <div id="orgDetails" class="hidden">
-              <div id="orgNameAddress">
+            <!-- <div id="orgDetails" class="hidden"> -->
+            <div id="orgDetails">
+              <div class="row">
                 <div class="form-group">
                   <label data-i18n="organizerCreateNewName">Organizer Name<span class="required-asterisk">*</span></label>
                   <input type="text" id="orgName">
@@ -166,7 +195,12 @@
                 </div>
                 <div class="form-group">
                   <label data-i18n="organizerCreateNewAddress">Organizer Address<span class="required-asterisk">*</span></label>
-                  <input type="text" id="orgAddress">
+                  <input type="text" id="orgAddress" placeholder="">
+                  <input type="hidden" id="orgLat" name="lat">
+                  <input type="hidden" id="orgLng" name="lng">
+                  <input type="hidden" id="orgStreet" name="strt">
+                  <input type="hidden" id="orgCity" name="city">
+                  <input type="hidden" id="orgPostalCode" name="postalcode">
                   <div class="error-message" id="error-orgAddress"></div>
                 </div>
               </div>
@@ -210,6 +244,10 @@
       src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initAutocomplete"
       async defer>
     </script> -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM&libraries=places"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM&libraries=places"></script> -->
+    <!-- <script
+      const GOOGLE_API_KEY = "YOUR_API_KEY";
+      src="https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places&callback=initGoogleAutocomplete" async defer
+    ></script> -->
   </body>
 </html>

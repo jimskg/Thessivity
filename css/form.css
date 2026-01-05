@@ -362,3 +362,33 @@
     color: red;
     margin-left: 2px;
   }
+  
+  .popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .popup.hidden {
+    display: none;
+  }
+
+  .popup-content {
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 10px;
+    min-width: 280px;
+    text-align: center;
+  }
+
+  .popup-content.success {
+    border-left: 5px solid #4caf50;
+  }
+
+  .popup-content.error {
+    border-left: 5px solid #f44336;
+  }
