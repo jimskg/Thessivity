@@ -312,6 +312,22 @@
 
 /* ACTIVITY MOVING BUTTON END */
 
+/* DATE TILES END */
+
+.dates-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.date-tile {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+/* DATE TILES END */
+
 @media (max-width: 768px) {
   
   .body-row, .body-card-wrapper {

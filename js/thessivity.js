@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       {
         "Id": "a0123456789ABCDE",
         "Name": "Cooking Workshop1",
-        "Date__c": "2025-06-25",
+        "Dates__c": "05-01-2026",
         "Description__c": "Learn traditional recipes with a hands-on experience.",
         "Location_Name__c": "Μέγαρο Μουσικής",
         "Longitude__c": 22.92457222938538,
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       {
         "Id": "a0123456789ABCDF",
         "Name": "Painting Class2",
-        "Date__c": "2025-06-26",
+        "Dates__c": "05-01-2026; 08-01-2026; 09-01-2026; 10-01-2026",
         "Description__c": "Express your creativity in a painting workshop.",
         "Location_Name__c": "Τεχνόπολις",
         "Longitude__c": 22.9456,
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       {
         "Id": "a0123456789ABCDG",
         "Name": "Hiking Tour3",
-        "Date__c": "2025-06-27",
+        "Dates__c": "05-01-2026:08-01-2026",
         "Description__c": "Enjoy a scenic hike in the mountains.",
         "Location_Name__c": "Mount Olympus",
         "Longitude__c": 22.5400,
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       {
         "Id": "a0123456789ABCD2",
         "Name": "Hiking Tour4",
-        "Date__c": "2025-06-27",
+        "Dates__c": "05-01-2026:08-01-2026; 09-01-2026:10-01-2026",
         "Description__c": "Enjoy a scenic hike in the mountains.",
         "Location_Name__c": "Mount Olympus",
         "Longitude__c": 22.5400,
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    getValidImage(event.Image__c).then(finalUrl => {
+    getValidImage(event.Image__c, fallbackImage).then(finalUrl => {
       img.src = finalUrl;
     });
     img.alt = event.Name;
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const schedule = document.createElement('div');
     schedule.className = 'card-title-info-schedule';
-    schedule.textContent = formatEventDate(event.Date__c);
+    schedule.dataset.i18n = formatEventDate(event.Dates__c);
 
     const title = document.createElement('div');
     title.className = 'card-title-info';
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const imageWrapper = document.createElement('div');
     imageWrapper.className = 'card-image-wrapper';
     const img = document.createElement('img');
-    getValidImage(event.Image__c).then(finalUrl => {
+    getValidImage(event.Image__c, fallbackImage).then(finalUrl => {
       img.src = finalUrl;
     });
     img.alt = event.Name;
@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const schedule = document.createElement('div');
     schedule.className = 'card-title-info-schedule';
-    schedule.textContent = formatEventDate(event.Date__c);
+    schedule.dataset.i18n = formatEventDate(event.Dates__c);
 
     const title = document.createElement('div');
     title.className = 'card-title-info';
@@ -352,12 +352,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     location.textContent = event.Location_Name__c;
 
     // Optional: show price only if exists
-    if (event.Price__c) {
-      const price = document.createElement('div');
-      price.className = 'card-title-info-price';
-      price.textContent = `${event.Price__c} €`;
-      body.appendChild(price);
-    }
+    // if (event.Price__c) {
+    //   const price = document.createElement('div');
+    //   price.className = 'card-title-info-price';
+    //   price.textContent = `${event.Price__c} €`;
+    //   body.appendChild(price);
+    // }
 
     body.append(schedule, title, location);
     a.append(imageWrapper, body);
@@ -368,8 +368,47 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Format date
   function formatEventDate(dateStr) {
-    const date = new Date(dateStr);
-    return `${date.getDate()} ${date.toLocaleString('el', { month: 'short' })}`;
+    if (!dateStr) return '';
+
+    // Split by semicolon first
+    const parts = dateStr.split(';').map(p => p.trim()).filter(Boolean);
+
+    // Determine the type
+    let displayText = '';
+
+    // Check if all parts are single dates or ranges
+    const isAllSingleDates = parts.every(p => !p.includes(':'));
+    const isAllRanges = parts.every(p => p.includes(':'));
+
+    try {
+      if (parts.length === 1) {
+        // Single date or single range
+        if (parts[0].includes(':')) {
+          // Single range
+          const [start, end] = parts[0].split(':').map(parseDate);
+          displayText = `${formatDate(start)} - ${formatDate(end)}`;
+        } else {
+          // Single date
+          const date = parseDate(parts[0]);
+          displayText = formatDate(date);
+        }
+      } else {
+        // Multiple items
+        if (isAllSingleDates) {
+          displayText = 'multipleDates';
+        } else if (isAllRanges) {
+          displayText = 'multipleRanges';
+        } else {
+          // Mixed (dates and ranges) → treat as multiple ranges for simplicity
+          displayText = 'multipleRanges';
+        }
+      }
+    } catch (error){
+      displayText = '';
+    }
+    
+    if (displayText == 'Invalid Date') displayText = '';
+    return displayText;
   }
 
   // Render all events
@@ -400,20 +439,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Render carousel events
     carouselEvents.forEach(event => {
       carouselList.appendChild(buildCarouselCard(event));
-    });
-  }
-
-  function getValidImage(url) {
-    return new Promise((resolve) => {
-      if (!url) {
-        resolve(fallbackImage);
-        return;
-      }
-
-      const testImg = new Image();
-      testImg.onload = () => resolve(url);
-      testImg.onerror = () => resolve(fallbackImage);
-      testImg.src = url;
     });
   }
 

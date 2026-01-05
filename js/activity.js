@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   let breakIfDownForMaintenance = false;
   let testEnvironment = window.location.href.includes('Thessivity/index.html');
   let outputData = {};
+  let fallbackImage;
 
   const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
   //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
      {
         "Id": "a0123456789ABCDE",
         "Name": "Cooking Workshop1",
-        "Date__c": "2025-06-25",
+        "Dates__c": "2025-06-25",
         "Description__c": "Learn traditional recipes with a hands-on experience.",
         "Location_Name__c": "Μέγαρο Μουσικής",
         "Longitude__c": 22.92457222938538,
@@ -163,7 +164,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const imgWrapper = el('div', 'card-image-activity-wrapper');
     const img = el('img', 'card-image-activity');
-    img.src = 'images/cooking.jpg';
+    getValidImage(event.Image__c, fallbackImage).then(finalUrl => {
+      img.src = finalUrl;
+    });
     imgWrapper.appendChild(img);
 
     const container = el('div', 'card-link-body-container-activity');
@@ -175,7 +178,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     info.append(
       buildIconTextRow('location_logo.png', 'location-img', event.Location_Name__c),
-      buildIconTextRow('schedule_logo.png', 'schedule-img', event.Date__c)
+      buildIconTextRow('schedule_logo.png', 'schedule-img', event.Dates__c, true)
     );
 
     body.append(title, info);
@@ -192,11 +195,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     return fragment;
   }
 
-  function buildIconTextRow(icon, imgClass, text) {
+  function buildIconTextRow(icon, imgClass, text, isDates = false) {
     const row = el('div', 'card-title-info-location-activity');
     const img = el('img', imgClass);
     img.src = `images/${icon}`;
-    row.append(img, el('div', 'card-secondary-title-activity', text));
+
+    let content;
+    if (isDates) {
+      // Build tiles for dates
+      content = buildDateTiles(text); // returns a div with tiles
+    } else {
+      content = el('div', 'card-secondary-title-activity', text);
+    }
+
+    row.append(img, content);
     return row;
   }
 
@@ -266,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const iframe = el('iframe', 'card-usefull-information-location-map');
     iframe.loading = 'lazy';
     iframe.allowFullscreen = true;
-    iframe.src = `https://www.google.com/maps?q=${event.Latitude__c},${event.Longitude__c}&output=embed`;
+    iframe.src = `https://www.google.com/maps?q=${event.Location__Latitude__s},${event.Location__Longitude__s}&output=embed`;
 
     const valueP = el('p', 'card-usefull-info-organiser-title-value');
     const valueDiv = el('div', 'card-usefull-info-organiser-title-value-div', event.Location_Name__c);
@@ -320,7 +332,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     return container;
   }
 
-
   function buildOrganizerRow(label, value) {
     const col = el('div', 'card-organiser-details-single-column');
     col.append(
@@ -339,6 +350,42 @@ document.addEventListener("DOMContentLoaded", async function () {
       a
     );
     return col;
+  }
+
+  function buildDateTiles(dateStr) {
+    const container = el('div', 'dates-container');
+
+    if (!dateStr) return container;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const parts = dateStr.split(';').map(p => p.trim()).filter(Boolean);
+
+    parts.forEach(part => {
+      let text = '';
+      let includeTile = true;
+
+      if (part.includes(':')) {
+        // Range
+        const [start, end] = part.split(':').map(parseDate);
+        if (end < today) includeTile = false;
+        text = `${formatDate(start)} - ${formatDate(end)}`;
+      } else {
+        // Single date
+        const date = parseDate(part);
+        if (date < today) includeTile = false;
+        text = formatDate(date);
+      }
+
+      if (includeTile && text != 'Invalid Date'){
+        const tile = el('div', 'date-tile', text);
+        container.appendChild(tile);
+      }
+      
+    });
+
+    return container;
   }
 
 
@@ -383,7 +430,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="card-title-info-schedule-activity">
               <img src="images/schedule_logo.png" class="schedule-img">
-              <div class="card-secondary-title-activity">${event.Date__c}</div>
+              <div class="card-secondary-title-activity">${event.Dates__c}</div>
             </div>
           </div>
         </div>
