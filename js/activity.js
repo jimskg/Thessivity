@@ -1,20 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-  let breakIfDownForMaintenance = false;
   let testEnvironment = window.location.href.includes('Thessivity/index.html');
-  let outputData = {};
   let fallbackImage;
-
-  const apiKey = 'AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM'; // Your API key from Google Developer Console
-  //https://console.cloud.google.com/apis/credentials?inv=1&invt=AbxvKg&project=thessivity //jimskgg@gmail.com 
-  const sheetId = '1LPjh1COe8CRUiLgGqf2wQA64IbOx4q2vuZcTJtwATFs'; // Google Sheet ID
-  //https://drive.google.com/drive/folders/1Firv30_I1x6b5ENz3MLu31ZxpDNLcTdE
-
   const urlParams = new URLSearchParams(window.location.search);
   const activityId = urlParams.get('activityId');
   console.log("Activity Id:", activityId);
   
-
   const mockEventResponse = [
      {
         "Id": "a0123456789ABCDE",
