@@ -713,7 +713,7 @@ function initFormSubmission(quill) {
 
       if (result.success) {
         showPopup("Event submitted successfully!", "success");
-        clearForm();
+        clearForm(quill);
       } else {
         showPopup("Submission failed. Please try again.", "error");
       }
@@ -726,7 +726,7 @@ function initFormSubmission(quill) {
   });
 }
 
-function clearForm() {
+function clearForm(quill) {
   document.getElementById('eventForm').reset();
   const vipCheckbox = document.getElementById('vip');
   const vipContainer = document.getElementById('vipDurationInput');
@@ -745,7 +745,7 @@ function clearForm() {
   document.getElementById('category').value = '';
   document.getElementById('type').value = '';
   document.getElementById('audience').value = '';
-
+  quill.root.innerHTML = '';
 
   if (dateInputs) dateInputs.innerHTML = '';
   if (dateInputs && !dateInputs.classList.contains('hidden')) dateInputs.classList.add('hidden');
