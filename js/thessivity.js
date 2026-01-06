@@ -5,6 +5,17 @@ document.addEventListener("DOMContentLoaded", async function () {
   let secondaryDesc = null;
   let fallbackImage;
 
+  let currentSortBy = 'default'; // default sort
+
+  const activeFilters = {
+    category: new Set(),   // multi
+    where: new Set(),      // multi
+    when: null             // { type: 'preset', value } OR { type: 'range', start, end }
+  };
+
+  // Tracks which filter tags are currently selected
+  const selectedFilters = new Set();
+
   const mockEvents = {
     settings: {
       offlineSite: true,
@@ -104,34 +115,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     ]
   };
 
+  let realEvents = {};
+
   const filterTags = [
-    {id: 'filter-tag-id-for-kids', filter: 'kids', text: 'For Kids', i18n: 'filterTagKids' },
-    {id: 'filter-tag-id-festivals', filter: 'festivals', text: 'Festivals', i18n: 'filterTagFestivals'},
-    {id: 'filter-tag-id-workshops', filter: 'workshops', text: 'Workshops', i18n: 'filterTagWorkshops'},
-    {id: 'filter-tag-id-seminars', filter: 'seminars', text: 'Seminars', i18n: 'filterTagSeminars'}
+    {id: 'filter-tag-id-for-kids', filter: 'kids', value: 'kids', field: "Audience__c", text: 'For Kids', i18n: 'filterTagKids' },
+    {id: 'filter-tag-id-festivals', filter: 'festivals', value: 'festival', field: "Type__c", text: 'Festivals', i18n: 'filterTagFestivals'},
+    {id: 'filter-tag-id-workshops', filter: 'workshops', value: 'workshop', field: "Type__c", text: 'Workshops', i18n: 'filterTagWorkshops'},
+    {id: 'filter-tag-id-seminars', filter: 'seminars', value: 'seminar', field: "Type__c", text: 'Seminars', i18n: 'filterTagSeminars'}
   ];
+
+  const SKIP_TILES = ['filterCategoryAll', 'filterWhereEverywhere', 'filterWhenAnytime'];
 
   const dropdowns = [
     {
       main: { text: 'Category', i18n: 'filterCategoryTitle' },
       secondary: { text: 'All', i18n: 'filterCategoryAll' },
       options: [
-        { text: 'All', i18n: 'filterCategoryAll', id: 'all' },
-        { text: 'Option A', i18n: 'filterCategoryOptionA' },
-        { text: 'Option B', i18n: 'filterCategoryOptionB' },
-        { text: 'Option C', i18n: 'filterCategoryOptionC' },
-        { text: 'Option D', i18n: 'filterCategoryOptionD' },
-        { text: 'Option E', i18n: 'filterCategoryOptionE' },
-        { text: 'Option F', i18n: 'filterCategoryOptionF' },
-        { text: 'Option G', i18n: 'filterCategoryOptionG' },
-        { text: 'Option H', i18n: 'filterCategoryOptionH' }
+        { text: 'All', value: 'All', i18n: 'filterCategoryAll', id: 'all' },
+        { text: 'Photography', value: 'Photography', i18n: 'categoryPhotography'},
+        { text: 'Hiking', value: 'Hiking', i18n: 'categoryHiking'},
+        { text: 'Dance', value: 'Dance', i18n: 'categoryDance'},
+        { text: 'Robotics', value: 'Robotics', i18n: 'categoryRobotics'},
+        { text: 'Music', value: 'Music', i18n: 'categoryMusic'},
+        { text: 'Travel', value: 'Travel', i18n: 'categoryTravel'},
+        { text: 'Volunteering', value: 'Volunteering', i18n: 'categoryVolunteering'},
+        { text: 'Wellness & Fitness', value: 'Wellness & Fitness', i18n: 'categoryWellnessFitness'},
+        { text: 'Personal Development', value: 'Personal Development', i18n: 'categoryPersonalDevelopment'},
+        { text: 'Crafts', value: 'Crafts', i18n: 'categoryCrafts'},
+        { text: 'Sports', value: 'Sports', i18n: 'categorySports'},
+        { text: 'Cooking', value: 'Cooking', i18n: 'categoryCooking'},
+        { text: 'Rest', value: 'Rest', i18n: 'categoryRest'},
+        { text: 'Painting', value: 'Painting', i18n: 'categoryPainting'}
       ]
     },
     {
       main: { text: 'Where', i18n: 'filterWhereTitle' },
       secondary: { text: 'Everywhere', i18n: 'filterWhereEverywhere' },
       options: [
-        { text: 'All', i18n: 'filterWhereAll', id: 'all' },
+        { text: 'All', i18n: 'filterWhereEverywhere', id: 'all' },
         { text: 'Option A', i18n: 'filterWhereOptionA' },
         { text: 'Option B', i18n: 'filterWhereOptionB' },
         { text: 'Option C', i18n: 'filterWhereOptionC' },
@@ -215,9 +236,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       //fallbackImage = mockEvents.settings.fallbackImage;
       if (data.error == undefined){
         fallbackImage = data.settings.fallbackImage;
+        realEvents = data;
         translateStaticTexts(data.settings);
-        renderEvents(data.events);
+        renderEvents(data.events, true);
         renderFilters();
+        ensureTilesContainer();
         translatePage(currentLanguage);
       } else {
         buildErrorScreen(data.error);
@@ -413,34 +436,37 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   // Render all events
-  function renderEvents(events) {
+  function renderEvents(events, vip = false) {
     const carouselList = document.querySelector('#card-list-swiper-wrapper');
     const bodyList = document.querySelector('#body-card-list');
 
-    carouselList.innerHTML = '';
     bodyList.innerHTML = '';
 
     events.forEach(event => {
       bodyList.appendChild(buildBodyCard(event));
     });
 
-    // Filter VIP events for the carousel
-    let vipEvents = events.filter(e => e.Organizer__r.VIP__c);
-    let nonVipEvents = events.filter(e => !e.Organizer__r.VIP__c);
+    if (vip){
+      carouselList.innerHTML = '';
+      // Filter VIP events for the carousel
+      let vipEvents = events.filter(e => e.Organizer__r.VIP__c);
+      let nonVipEvents = events.filter(e => !e.Organizer__r.VIP__c);
 
-    // Ensure at least 4 events in the carousel
-    let carouselEvents = [...vipEvents];
+      // Ensure at least 4 events in the carousel
+      let carouselEvents = [...vipEvents];
 
-    if (carouselEvents.length < 4) {
-      // Take as many non-VIP events as needed to reach 4
-      const needed = 4 - carouselEvents.length;
-      carouselEvents = carouselEvents.concat(nonVipEvents.slice(0, needed));
+      if (carouselEvents.length < 4) {
+        // Take as many non-VIP events as needed to reach 4
+        const needed = 4 - carouselEvents.length;
+        carouselEvents = carouselEvents.concat(nonVipEvents.slice(0, needed));
+      }
+
+      // Render carousel events
+      carouselEvents.forEach(event => {
+        carouselList.appendChild(buildCarouselCard(event));
+      });
     }
-
-    // Render carousel events
-    carouselEvents.forEach(event => {
-      carouselList.appendChild(buildCarouselCard(event));
-    });
+    
   }
 
   function renderFilters(){
@@ -522,59 +548,119 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   function buildDropdownPanel(options, mainText) {
-    const panel = el('div', 'filter-dropdown-panel display-none');
+  const panel = el('div', 'filter-dropdown-panel display-none');
+  const isWhen = mainText === 'When';
 
-    if (mainText != 'When') {
-      const searchBar = el('div', 'filter-search-bar');
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'filter-search-input';
-      input.placeholder = 'Search';
-      input.dataset.i18n = 'filterSearchPlaceholder';
-
-      searchBar.appendChild(input);
-      panel.appendChild(searchBar);
-    }
-
-    const ul = mainText != 'When' ? el('ul', 'filter-list-activities filter-list-activities-top') : el('ul', 'filter-list-activities filter-list-activities-top-when') ;
-
-    options.forEach(opt => {
-      const li = el('li');
-      const label = el('label', 'filter-list-activities-item');
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      if (opt.id) checkbox.dataset.id = opt.id;
-      if (opt.custom) checkbox.className = 'custom-checkbox';
-
-      const checkmark = el('span', 'filter-list-activities-item-checkmark');
-      const text = el('span', 'filter-list-activities-item-text', opt.text);
-      text.dataset.i18n = opt.i18n;
-
-      label.append(checkbox, checkmark, text);
-      li.appendChild(label);
-      ul.appendChild(li);
-    });
-
-    panel.appendChild(ul);
-
-    // --- Single selection logic for 'When' ---
-    if (mainText === 'When') {
-      const checkboxes = ul.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach(cb => {
-        cb.addEventListener('change', () => {
-          if (cb.checked) {
-            // Uncheck all others
-            checkboxes.forEach(other => {
-              if (other !== cb) other.checked = false;
-            });
-          }
-        });
-      });
-    }
-
-    return panel;
+  // Search bar for Category / Where
+  if (!isWhen) {
+    const searchBar = el('div', 'filter-search-bar');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'filter-search-input';
+    input.placeholder = 'Search';
+    input.dataset.i18n = 'filterSearchPlaceholder';
+    searchBar.appendChild(input);
+    panel.appendChild(searchBar);
   }
+
+  const ul = el(
+    'ul',
+    isWhen
+      ? 'filter-list-activities filter-list-activities-top-when'
+      : 'filter-list-activities filter-list-activities-top'
+  );
+
+  options.forEach(opt => {
+    const li = el('li');
+    const label = el('label', 'filter-list-activities-item');
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.value = opt.i18n;
+    if (opt.id) checkbox.dataset.id = opt.id;
+    if (opt.custom) checkbox.classList.add('custom-checkbox');
+
+    const checkmark = el('span', 'filter-list-activities-item-checkmark');
+    const text = el('span', 'filter-list-activities-item-text', opt.text);
+    text.dataset.i18n = opt.i18n;
+
+    label.append(checkbox, checkmark, text);
+    li.appendChild(label);
+    ul.appendChild(li);
+  });
+
+  panel.appendChild(ul);
+  const checkboxes = ul.querySelectorAll('input[type="checkbox"]');
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      const isAll = cb.dataset.id === 'all';
+      const filterType = mainText === 'Category' ? 'category' : mainText === 'Where' ? 'where' : 'when';
+
+      // ------------------------
+      // WHEN (Single Select)
+      // ------------------------
+      if (isWhen) {
+        // Deselecting an option
+        if (!cb.checked) {
+          if (activeFilters.when?.value === cb.dataset.value) {
+            activeFilters.when = null;
+            renderTiles();
+            filterEvents();
+          }
+          return;
+        }
+
+        // Selecting an option
+        checkboxes.forEach(o => { if (o !== cb) o.checked = false; });
+
+        if (isAll) {
+          activeFilters.when = null;
+          updateWhenButton(LABELS[currentLanguage].filterWhenAnytime);
+          renderTiles();
+          filterEvents();
+          closeAllFilterDropdownsAndCalendars(new Event('click'));
+          return;
+        }
+
+        activeFilters.when = { type: 'preset', value: cb.dataset.value };
+        updateWhenButton(LABELS[currentLanguage][cb.dataset.value]);
+        renderTiles();
+        filterEvents();
+        closeAllFilterDropdownsAndCalendars(new Event('click'));
+        return;
+      }
+
+      // ------------------------
+      // CATEGORY / WHERE (Multi Select)
+      // ------------------------
+      if (isAll && cb.checked) {
+        checkboxes.forEach(o => { if (o !== cb) o.checked = false; });
+        activeFilters[filterType].clear();
+        renderTiles(); // Remove tiles for this dropdown
+        filterEvents();
+        return;
+      }
+
+      // Normal option: deselect "All"
+      const allCb = ul.querySelector('input[data-id="all"]');
+      if (allCb) allCb.checked = false;
+      // Remove the 'all' value from activeFilters if it exists
+      SKIP_TILES.forEach(skipKey => activeFilters[filterType].delete(skipKey));
+
+      if (cb.checked) activeFilters[filterType].add(cb.dataset.value);
+      else activeFilters[filterType].delete(cb.dataset.value);
+
+      renderTiles();
+      filterEvents();
+    });
+  });
+
+  return panel;
+}
+
+
+
   
   document.getElementById('gr-li')?.addEventListener('click', () => {
       fetchData();
@@ -596,7 +682,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     const arrow = document.getElementById('sort-by-dropdown-img');
     openCloseDynamicMenu(menu);
     changeArrowDirectionIcon(arrow);
-    let sortBy = 'default';
+    currentSortBy = 'default';
+    document.getElementById('sort-by-selection-title').dataset.i18n = 'sortedByDefault';
+
+    filterEvents(); // re-render events in default order
   });
 
   document.getElementById('sort-date-li')?.addEventListener('click', () => {
@@ -604,19 +693,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     const arrow = document.getElementById('sort-by-dropdown-img');
     openCloseDynamicMenu(menu);
     changeArrowDirectionIcon(arrow);
-    let sortBy = 'date';
+    currentSortBy = 'date';
+    document.getElementById('sort-by-selection-title').dataset.i18n = 'sortedByDate';
+
+    filterEvents(); // re-render events sorted by date
   });
 
-  document.getElementById('sort-populatity-li')?.addEventListener('click', () => {
-    const menu = document.getElementById('sort-by-menu');
-    const arrow = document.getElementById('sort-by-dropdown-img');
-    openCloseDynamicMenu(menu);
-    changeArrowDirectionIcon(arrow);
-    let sortBy = 'popularity';
-  });
-
-
-  function initEventListeners(){
+  function initCardLinkListeners(){
     document.querySelectorAll('.card-link').forEach(function(card) {
       card.addEventListener('mousedown', function(event) {
         if (event.button === 1) {
@@ -633,6 +716,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       });
     });
+  }
+
+  function initEventListeners(){
+    initCardLinkListeners();
 
     // Swiper init
     const swiper = new Swiper('.card-wrapper', {
@@ -693,8 +780,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     // Filter tag selection
-    const selectedFilters = new Set();
-      document.querySelectorAll('.filter-tag-list a').forEach(link => {
+    document.querySelectorAll('.filter-tag-list a').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
         const filter = this.dataset.filter;
@@ -706,16 +792,32 @@ document.addEventListener("DOMContentLoaded", async function () {
           selectedFilters.add(filter);
           this.classList.add('filter-tag-selected');
         }
+        
+        filterEvents();       // apply filters including selected tags
       });
     });
 
-    // Checkbox handling
-    document.querySelectorAll('.filter-list-activities-item input[type="checkbox"]').forEach(checkbox => {
-      checkbox.addEventListener('change', (event) => {
-        console.log('Clicked checkbox data-id:', event.target.getAttribute('data-id'));
-        console.log('Checked:', event.target.checked);
+    document.querySelectorAll('.filter-list-activities-item input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', e => {
+        const container = cb.closest('.filter-button-container');
+        const mainKey = container.querySelector('.filter-button-main-description').dataset.i18n;
+
+        if (mainKey === 'filterWhenTitle') return;
+
+        const type = mainKey === 'filterCategoryTitle' ? 'category' : 'where';
+        //const value = cb.nextSibling.nextSibling.textContent;
+        const valueKey = cb.dataset.value;
+
+        cb.checked
+          ? activeFilters[type].add(valueKey) ///////////////
+          : activeFilters[type].delete(valueKey);
+
+        updateButtonSecondary(type);
+        renderTiles();
+        filterEvents();
       });
     });
+
   }
   
 
@@ -893,24 +995,29 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleDateClick(dayEl) {
     const clickedDate = new Date(dayEl.dataset.date);
 
-    if (!startDate || (startDate && endDate)) {
-      // Reset selection if both dates are set or startDate missing
+    if (!startDate || endDate) {
       startDate = clickedDate;
       endDate = null;
       clearDateSelection();
       dayEl.classList.add('selected-start');
-    } else if (clickedDate < startDate) {
-      // If clicked before startDate, make it new startDate
-      clearDateSelection();
-      startDate = clickedDate;
-      dayEl.classList.add('selected-start');
     } else {
-      // Set endDate
       endDate = clickedDate;
       highlightRange(startDate, endDate);
-    }
 
-    updateSecondaryDesc();
+      activeFilters.when = {
+        type: 'range',
+        start: startDate,
+        end: endDate
+      };
+
+      updateWhenButton(
+        `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`
+      );
+
+      closeAllFilterDropdownsAndCalendars(new Event('click'));
+      renderTiles();
+      filterEvents();
+    }
   }
 
   function clearDateSelection() {
@@ -934,18 +1041,348 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
-  function updateSecondaryDesc() {
-    if (!secondaryDesc) return;
+  /* CALENDAR END */
 
-    if (startDate && endDate) {
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      secondaryDesc.textContent = `${startDate.toLocaleDateString(undefined, options)} - ${endDate.toLocaleDateString(undefined, options)}`;
-    } else if (startDate) {
-      secondaryDesc.textContent = `${startDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`;
-    } else {
-      secondaryDesc.textContent = 'Custom';
+  /* FILTERS START */
+
+  function ensureTilesContainer() {
+    if (document.querySelector('.filter-tiles')) return;
+
+    const tiles = document.createElement('div');
+    tiles.className = 'filter-tiles';
+    document.querySelector('.filter-row-card').appendChild(tiles);
+  }
+
+  function renderTiles() {
+    const container = document.querySelector('.filter-tiles');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    // Category & Where
+    ['category', 'where'].forEach(type => {
+      activeFilters[type].forEach(valueKey => {
+        if (!SKIP_TILES.includes(valueKey)) {
+          container.appendChild(
+            createTile(type, valueKey, LABELS[currentLanguage][valueKey])
+          );
+        }
+      });
+    });
+
+    // When
+    if (activeFilters.when) {
+      let label;
+
+      if (activeFilters.when.type === 'preset') {
+        if (!SKIP_TILES.includes(activeFilters.when.value)) { // <-- skip Anytime
+          label = LABELS[currentLanguage][activeFilters.when.value];
+          container.appendChild(createTile('when', 'when', label));
+        }
+      } else {
+        label =
+          `${activeFilters.when.start.toLocaleDateString()} - ` +
+          `${activeFilters.when.end.toLocaleDateString()}`;
+        container.appendChild(createTile('when', 'when', label));
+      }
     }
   }
-  /* CALENDAR END */
+
+
+  function createTile(type, valueKey, label) {
+    const tile = document.createElement('div');
+    tile.className = 'filter-tile';
+    tile.textContent = label;
+
+    const close = document.createElement('span');
+    close.className = 'filter-tile-close';
+    close.textContent = '×';
+
+    close.addEventListener('click', () => {
+      removeFilter(type, valueKey);
+    });
+
+    tile.appendChild(close);
+    return tile;
+  }
+
+  function removeFilter(type, valueKeyOrLabel) {
+    // WHEN (single-select)
+    if (type === 'when') {
+
+      document.querySelectorAll('.filter-list-activities-item input[type="checkbox"]')
+        .forEach(cb => {
+          if (cb.dataset.value === activeFilters.when.value) {
+            cb.checked = false;
+          }
+        });
+
+      activeFilters.when = null;
+      resetWhenUI();
+    }
+
+    // CATEGORY / WHERE (multi-select)
+    else {
+      activeFilters[type].delete(valueKeyOrLabel);
+
+      // Uncheck checkbox
+      document.querySelectorAll('.filter-list-activities-item input[type="checkbox"]')
+        .forEach(cb => {
+          if (cb.dataset.value === valueKeyOrLabel) {
+            cb.checked = false;
+          }
+        });
+
+      updateButtonSecondary(type);
+    }
+
+    renderTiles();
+    filterEvents();
+  }
+
+
+  function updateButtonSecondary(type) {
+    const container = [...document.querySelectorAll('.filter-button-container')]
+      .find(c => c.querySelector('.filter-button-main-description').dataset.i18n
+        === (type === 'category' ? 'filterCategoryTitle' : 'filterWhereTitle'));
+
+    const secondary = container.querySelector('.filter-button-secondary-description');
+
+    const values = [...activeFilters[type]];
+    if (values.length === 0) {
+      secondary.dataset.i18n = type === 'category' ? 'filterCategoryAll' : 'filterWhereEverywhere';
+    } else if (values.length === 1) {
+      secondary.dataset.i18n = values[0];
+    } else {
+      secondary.textContent = `${values.length} selected`;
+    }
+  }
+
+  function updateWhenButton(text) {
+    const container = [...document.querySelectorAll('.filter-button-container')]
+      .find(c =>
+        c.querySelector('.filter-button-main-description')?.dataset.i18n === 'filterWhenTitle'
+      );
+
+    if (!container) return;
+
+    container.querySelector('.filter-button-secondary-description').textContent = text;
+  }
+
+
+  function resetWhenUI() {
+    updateWhenButton('Anytime');
+    document.querySelectorAll('.custom-checkbox').forEach(cb => cb.checked = false);
+  }
+
+  function filterEvents() {
+    openLoadingSpinner();
+    let filtered = realEvents.events.filter(event => {
+
+      // CATEGORY
+      const activeCategory = [...activeFilters.category].filter(v => !SKIP_TILES.includes(v));
+      if (activeCategory.length) {
+        const categoryDropdown = dropdowns.find(d => d.main.i18n === 'filterCategoryTitle');
+        if (!activeCategory.includes(getI18nKey(categoryDropdown.options, event.Category__c))) return false;
+      }
+
+      // WHERE
+      const activeWhere = [...activeFilters.where].filter(v => !SKIP_TILES.includes(v));
+      if (activeWhere.length) {
+        if (!activeWhere.includes(event.Location_Name__c)) return false;
+      }
+
+      // WHEN
+      if (activeFilters.when) {
+        const eventDates = parseEventDates(event.Dates__c);
+
+        if (activeFilters.when.type === 'preset') {
+          if (!matchesPreset(eventDates, activeFilters.when.value)) return false;
+        } else {
+          if (!matchesRange(eventDates, activeFilters.when.start, activeFilters.when.end)) return false;
+        }
+      }
+
+      // ------------------------
+      // FILTER TAGS (new)
+      // ------------------------
+      if (selectedFilters.size) {
+        const tagMatched = [...selectedFilters].some(tagFilter => {
+          const tagConfig = filterTags.find(ft => ft.filter === tagFilter);
+          if (!tagConfig) return false;
+          return event[tagConfig.field] && event[tagConfig.field].toLowerCase() === tagConfig.value;
+        });
+
+        if (!tagMatched) return false;
+      }
+
+      return true;
+    });
+
+    // --- Sort events based on currentSortBy ---
+    if (currentSortBy === 'date') {
+      filtered = filtered
+      .map(event => ({
+        event,
+        nextDate: getNextUpcomingDate(event)
+      }))
+      .filter(e => e.nextDate !== null) // ignore events with no upcoming dates
+      .sort((a, b) => a.nextDate - b.nextDate) // closest upcoming date first
+      .map(e => e.event); // unwrap event objects
+    }
+
+    renderEvents(filtered);
+    translatePage(currentLanguage);
+    initCardLinkListeners();
+    closeLoadingSpinner();
+  }
+
+  function getNextUpcomingDate(event) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // normalize to start of day
+
+    const dates = parseEventDates(event.Dates__c); // returns [{start, end}, ...]
+
+    // Flatten to all start dates that are >= today
+    const futureStarts = dates
+      .flatMap(d => {
+        // if it's a range, check start and end
+        if (d.end >= today) {
+          // If start < today, treat today as start
+          return [d.start < today ? today : d.start];
+        }
+        return []; // range fully in past → ignore
+      });
+
+    if (futureStarts.length === 0) return null; // no future dates
+    return futureStarts.sort((a, b) => a - b)[0]; // earliest upcoming date
+  }
+
+
+  function getI18nKey(options, value) {
+    return options.find(opt => opt.value === value)?.i18n;
+  }
+
+  function parseDMY(dateStr) {
+    const [day, month, year] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  function parseEventDates(str) {
+    return str.split(';').flatMap(part => {
+      if (part.includes(':')) {
+        const [s, e] = part.split(':').map(p => p.trim());
+        return [{ start: parseDMY(s), end: parseDMY(e) }];
+      }
+      const d = parseDMY(part);
+      return [{ start: d, end: d }];
+    });
+  }
+
+  // function matchesRange(dates, start, end) {
+  //   return dates.some(d =>
+  //     d.end >= start && d.start <= end
+  //   );
+  // }
+
+  function isSameOrAfter(dateA, dateB) {
+    // Compare only year, month, day
+    return dateA.getFullYear() > dateB.getFullYear() ||
+          (dateA.getFullYear() === dateB.getFullYear() &&
+            dateA.getMonth() > dateB.getMonth()) ||
+          (dateA.getFullYear() === dateB.getFullYear() &&
+            dateA.getMonth() === dateB.getMonth() &&
+            dateA.getDate() >= dateB.getDate());
+  }
+
+  function isSameOrBefore(dateA, dateB) {
+    return dateA.getFullYear() < dateB.getFullYear() ||
+          (dateA.getFullYear() === dateB.getFullYear() &&
+            dateA.getMonth() < dateB.getMonth()) ||
+          (dateA.getFullYear() === dateB.getFullYear() &&
+            dateA.getMonth() === dateB.getMonth() &&
+            dateA.getDate() <= dateB.getDate());
+  }
+
+  function matchesRange(dates, start, end) {
+    return dates.some(d =>
+      isSameOrAfter(d.end, start) && isSameOrBefore(d.start, end)
+    );
+  }
+
+  function matchesPreset(dates, presetKey) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // normalize to midnight
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+
+    if (presetKey === 'filterWhenToday') {
+      return matchesRange(dates, today, today);
+    }
+
+    if (presetKey === 'filterWhenTomorrow') {
+      const t = new Date(today);
+      t.setDate(t.getDate() + 1);
+      return matchesRange(dates, t, t);
+    }
+
+    if (presetKey === 'filterWhenWeekend') {
+      // optional
+    }
+
+    switch (presetKey) {
+      case 'filterWhenToday':
+        return matchesRange(dates, today, today);
+
+      case 'filterWhenTomorrow':
+        return matchesRange(dates, tomorrow, tomorrow);
+
+      case 'filterWhenWeekend': {
+        const { start, end } = getWeekendRange(dayOfWeek);
+        return matchesRange(dates, start, end);
+      }
+
+      case 'filterWhenNextWeek': {
+        const { start, end } = getNextWeekRange(dayOfWeek);
+        return matchesRange(dates, start, end);
+      }
+
+      case 'filterWhenAnytime':
+        return true;
+
+      default:
+        return true;
+    }
+  }
+
+  function getWeekendRange(dayOfWeek) {
+    // Assuming weekend = Saturday & Sunday
+    const saturday = new Date(today);
+    saturday.setDate(today.getDate() + ((6 - dayOfWeek + 7) % 7)); // next Saturday
+    saturday.setHours(0, 0, 0, 0);
+
+    const sunday = new Date(saturday);
+    sunday.setDate(saturday.getDate() + 1);
+    sunday.setHours(23, 59, 59, 999);
+
+    return { start: saturday, end: sunday };
+  }
+
+  function getNextWeekRange(dayOfWeek) {
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + ((8 - dayOfWeek) % 7)); // next Monday
+    monday.setHours(0, 0, 0, 0);
+
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6); // next Sunday
+    sunday.setHours(23, 59, 59, 999);
+
+    return { start: monday, end: sunday };
+  }
+
+  /* FILTERS END */
 
 });

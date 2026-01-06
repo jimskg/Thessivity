@@ -263,7 +263,7 @@ const LABELS = {
     errorOrganizerPhoneRequired: "Please enter organizer phone",
     errorOrganizerEmailRequired: "Please enter a valid organizer email",
     errorOrganizerAddressRequired: "Please enter organizer address",
-    errorDateModeRequired: 'Please select a date mode',
+    errorDateModeRequired: 'Please select a date mode'
   }
 };
 

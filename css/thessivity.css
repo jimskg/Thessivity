@@ -391,6 +391,39 @@
     cursor: pointer;
   }
 
+  /* Container below filter buttons */
+  .filter-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* Single tile */
+  .filter-tile {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f1f3f5;
+    border-radius: 16px;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  /* Close (X) button */
+  .filter-tile-close {
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    color: #777;
+  }
+
+  .filter-tile-close:hover {
+    color: #000;
+  }
+
   /* FILTER END */
 
   /* DESCRIPTION START */
