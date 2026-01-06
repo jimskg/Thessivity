@@ -51,24 +51,6 @@
               <div class="error-message" id="error-title"></div>
             </div>
 
-            <div class="row">
-              <div>
-                <label data-i18n="wannabeVIP">Do you want to be a VIP?</label>
-                <label class="toggle-container" for="vip">
-                  <div class="toggle-switch">
-                    <input type="checkbox" id="vip" />
-                    <span class="slider"></span>
-                  </div>
-                </label>
-              </div>
-
-              <div class="form-group" id="vipDurationInput">
-                <label data-i18n="durationVIP">Duration<span class="required-asterisk">*</span></label>
-                <div id="vipDurationContainer"></div>
-                <div class="error-message" id="error-vipDuration"></div>
-              </div>
-            </div>
-
             <div class="form-group">
               <label data-i18n="categoryLabel">Category<span class="required-asterisk">*</span></label>
               <div id="categoryContainer"></div>
@@ -217,6 +199,25 @@
                   <div class="error-message" id="error-orgPhone"></div>
                 </div>
               </div>
+
+              <div class="row">
+                <div>
+                  <label data-i18n="wannabeVIP">Do you want to be a VIP?</label>
+                  <label class="toggle-container" for="vip">
+                    <div class="toggle-switch">
+                      <input type="checkbox" id="vip" />
+                      <span class="slider"></span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="form-group" id="vipDurationInput">
+                  <label data-i18n="durationVIP">Duration<span class="required-asterisk">*</span></label>
+                  <div id="vipDurationContainer"></div>
+                  <div class="error-message" id="error-vipDuration"></div>
+                </div>
+              </div>
+              
             </div>
 
             <button type="submit" class="add-btn" data-i18n="submitBtn">Submit</button>
