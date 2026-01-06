@@ -106,8 +106,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const filterTags = [
     {id: 'filter-tag-id-for-kids', filter: 'kids', text: 'For Kids', i18n: 'filterTagKids' },
-    {id: 'filter-tag-id-offers', filter: 'offers', text: 'Offers', i18n: 'filterTagOffers'},
-    {id: 'filter-tag-id-festivals', filter: 'festivals', text: 'Festivals', i18n: 'filterTagFestivals'}
+    {id: 'filter-tag-id-festivals', filter: 'festivals', text: 'Festivals', i18n: 'filterTagFestivals'},
+    {id: 'filter-tag-id-workshops', filter: 'workshops', text: 'Workshops', i18n: 'filterTagWorkshops'},
+    {id: 'filter-tag-id-seminars', filter: 'seminars', text: 'Seminars', i18n: 'filterTagSeminars'}
   ];
 
   const dropdowns = [
@@ -511,7 +512,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     body.append(textWrap, imgWrap);
     button.appendChild(body);
 
-    container.append(button, buildDropdownPanel(config.options));
+    container.append(button, buildDropdownPanel(config.options, config.main.text));
 
     if (config.main.text === 'When') {
       container.appendChild(el('div', 'calendar-popup display-none'));
@@ -520,20 +521,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     return container;
   }
   
-  function buildDropdownPanel(options) {
+  function buildDropdownPanel(options, mainText) {
     const panel = el('div', 'filter-dropdown-panel display-none');
 
-    const searchBar = el('div', 'filter-search-bar');
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'filter-search-input';
-    input.placeholder = 'Search';
-    input.dataset.i18n = 'filterSearchPlaceholder';
+    if (mainText != 'When') {
+      const searchBar = el('div', 'filter-search-bar');
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'filter-search-input';
+      input.placeholder = 'Search';
+      input.dataset.i18n = 'filterSearchPlaceholder';
 
-    searchBar.appendChild(input);
-    panel.appendChild(searchBar);
+      searchBar.appendChild(input);
+      panel.appendChild(searchBar);
+    }
 
-    const ul = el('ul', 'filter-list-activities');
+    const ul = mainText != 'When' ? el('ul', 'filter-list-activities filter-list-activities-top') : el('ul', 'filter-list-activities filter-list-activities-top-when') ;
 
     options.forEach(opt => {
       const li = el('li');
@@ -554,6 +557,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     panel.appendChild(ul);
+
+    // --- Single selection logic for 'When' ---
+    if (mainText === 'When') {
+      const checkboxes = ul.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          if (cb.checked) {
+            // Uncheck all others
+            checkboxes.forEach(other => {
+              if (other !== cb) other.checked = false;
+            });
+          }
+        });
+      });
+    }
+
     return panel;
   }
   
