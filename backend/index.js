@@ -14,10 +14,11 @@ const PORT = process.env.PORT || 3000;
 //const upload = multer({ dest: 'tmp/' }); // temp folder for uploads
 
 console.log('=== ENV VARS ===');
-console.log('B2_KEY_ID:', process.env.B2_KEY_ID);
-console.log('B2_APPLICATION_KEY:', process.env.B2_APPLICATION_KEY ? 'SET' : 'MISSING');
-console.log('B2_BUCKET_ID:', process.env.B2_BUCKET_ID);
-console.log('CLOUDFLARE_SUBDOMAIN:', process.env.CLOUDFLARE_SUBDOMAIN);
+// console.log('B2_KEY_ID:', process.env.B2_KEY_ID);
+// console.log('B2_APPLICATION_KEY:', process.env.B2_APPLICATION_KEY ? 'SET' : 'MISSING');
+// console.log('B2_BUCKET_ID:', process.env.B2_BUCKET_ID);
+// console.log('CLOUDFLARE_SUBDOMAIN:', process.env.CLOUDFLARE_SUBDOMAIN);
+console.log('DROPBOX_ACCESS_TOKEN:', process.env.DROPBOX_ACCESS_TOKEN);
 console.log('================');
 
 // Initialize B2 client
@@ -39,7 +40,107 @@ app.get('/', (req, res) => {
 
 const formidable = require('formidable');
 
+
 app.post('/uploadImage', (req, res) => {
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Form parsing failed', details: err });
+    }
+
+    const file = files.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    console.log(
+      'File received:',
+      file.originalFilename,
+      file.filepath,
+      file.size
+    );
+
+    try {
+      // Read file into buffer
+      const fileBuffer = fs.readFileSync(file.filepath);
+
+      const dropboxPath = `/events/${Date.now()}_${file.originalFilename}`;
+
+      /* 1️⃣ Upload file to Dropbox */
+      const uploadResponse = await fetch(
+        'https://content.dropboxapi.com/2/files/upload',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.DROPBOX_ACCESS_TOKEN}`,
+            'Dropbox-API-Arg': JSON.stringify({
+              path: dropboxPath,
+              mode: 'add',
+              autorename: true,
+              mute: false
+            }),
+            'Content-Type': 'application/octet-stream'
+          },
+          body: fileBuffer
+        }
+      );
+
+      if (!uploadResponse.ok) {
+        const text = await uploadResponse.text();
+        throw new Error(`Dropbox upload failed: ${text}`);
+      }
+
+      const uploadedFile = await uploadResponse.json();
+
+      /* 2️⃣ Create shared link */
+      const linkResponse = await fetch(
+        'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.DROPBOX_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            path: uploadedFile.path_lower,
+            settings: {
+              requested_visibility: 'public'
+            }
+          })
+        }
+      );
+
+      if (!linkResponse.ok) {
+        const text = await linkResponse.text();
+        throw new Error(`Create link failed: ${text}`);
+      }
+
+      const linkData = await linkResponse.json();
+
+      // Convert Dropbox share link to direct image URL
+      const publicUrl = linkData.url
+        .replace('www.dropbox.com', 'dl.dropboxusercontent.com')
+        .replace('?dl=0', '');
+
+      // Cleanup temp file
+      fs.unlinkSync(file.filepath);
+
+      console.log('File available at:', publicUrl);
+
+      res.json({ url: publicUrl });
+
+    } catch (err) {
+      console.error('Dropbox upload error:', err);
+      res.status(500).json({
+        error: 'Upload failed',
+        details: err.message
+      });
+    }
+  });
+});
+
+app.post('/uploadImageWrong', (req, res) => {
   const form = new formidable.IncomingForm();
   form.parse(req, async (err, fields, files) => {
     if (err) {
