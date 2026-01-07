@@ -13,6 +13,13 @@ const PORT = process.env.PORT || 3000;
 
 //const upload = multer({ dest: 'tmp/' }); // temp folder for uploads
 
+console.log('=== ENV VARS ===');
+console.log('B2_KEY_ID:', process.env.B2_KEY_ID);
+console.log('B2_APPLICATION_KEY:', process.env.B2_APPLICATION_KEY ? 'SET' : 'MISSING');
+console.log('B2_BUCKET_ID:', process.env.B2_BUCKET_ID);
+console.log('CLOUDFLARE_SUBDOMAIN:', process.env.CLOUDFLARE_SUBDOMAIN);
+console.log('================');
+
 // Initialize B2 client
 const b2 = new B2({
   applicationKeyId: process.env.B2_KEY_ID,       // from Backblaze
@@ -33,19 +40,35 @@ app.get('/', (req, res) => {
 const formidable = require('formidable');
 
 app.post('/uploadImage', (req, res) => {
+  console.log('Received /uploadImage request');
+
   const form = new formidable.IncomingForm();
 
   form.parse(req, async (err, fields, files) => {
-    if (err) return res.status(500).json({ error: 'Form parsing failed' });
+    console.log('Form parsing complete');
+    if (err) {
+      console.error('Form parsing error:', err);
+      return res.status(500).json({ error: 'Form parsing failed', details: err });
+    }
 
     const file = files.file;
-    if (!file) return res.status(400).json({ error: 'No file uploaded' });
+    if (!file) {
+      console.warn('No file uploaded');
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    console.log('File received:', file.originalFilename, file.filepath, file.size);
 
     try {
-      await b2.authorize();
+      console.log('Authorizing B2...');
+      const authResponse = await b2.authorize();
+      console.log('B2 Authorization response:', authResponse.data);
 
       const fileName = `events/${Date.now()}_${file.originalFilename}`;
+      console.log('Uploading file as:', fileName);
+
       const fileBuffer = fs.readFileSync(file.filepath);
+      console.log('File buffer length:', fileBuffer.length);
 
       const uploadResponse = await b2.uploadFile({
         bucketId: process.env.B2_BUCKET_ID,
@@ -53,19 +76,66 @@ app.post('/uploadImage', (req, res) => {
         data: fileBuffer
       });
 
+      console.log('Upload response:', uploadResponse.data);
+
       // Remove temp file
       fs.unlinkSync(file.filepath);
+      console.log('Temporary file removed');
 
       // Cloudflare public URL
+      if (!process.env.CLOUDFLARE_SUBDOMAIN) {
+        console.error('CLOUDFLARE_SUBDOMAIN is missing!');
+        return res.status(500).json({ error: 'Missing CLOUDFLARE_SUBDOMAIN env variable' });
+      }
+
       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+      console.log('File available at:', publicUrl);
 
       res.json({ url: publicUrl });
     } catch (err) {
       console.error('B2 Upload error:', err);
-      res.status(500).json({ error: 'Upload failed' });
+      if (err.code === 'ERR_INVALID_URL') {
+        console.error('Check that B2_KEY_ID, B2_APPLICATION_KEY, and B2_BUCKET_ID are all correctly set.');
+      }
+      res.status(500).json({ error: 'Upload failed', details: err.message });
     }
   });
 });
+
+// app.post('/uploadImage', (req, res) => {
+//   const form = new formidable.IncomingForm();
+
+//   form.parse(req, async (err, fields, files) => {
+//     if (err) return res.status(500).json({ error: 'Form parsing failed' });
+
+//     const file = files.file;
+//     if (!file) return res.status(400).json({ error: 'No file uploaded' });
+
+//     try {
+//       await b2.authorize();
+
+//       const fileName = `events/${Date.now()}_${file.originalFilename}`;
+//       const fileBuffer = fs.readFileSync(file.filepath);
+
+//       const uploadResponse = await b2.uploadFile({
+//         bucketId: process.env.B2_BUCKET_ID,
+//         fileName,
+//         data: fileBuffer
+//       });
+
+//       // Remove temp file
+//       fs.unlinkSync(file.filepath);
+
+//       // Cloudflare public URL
+//       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+
+//       res.json({ url: publicUrl });
+//     } catch (err) {
+//       console.error('B2 Upload error:', err);
+//       res.status(500).json({ error: 'Upload failed' });
+//     }
+//   });
+// });
 
 
 // Example API: getData (auto-called on page load)
