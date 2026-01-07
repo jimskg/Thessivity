@@ -6,15 +6,6 @@ let dateFormat = "d-m-Y";
 let altFormat = "d-m-Y";
 
 
-//const GOOGLE_API_KEY = "AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM";
-
-const script = document.createElement('script');
-script.src = `https://maps.googleapis.com/maps/api/js?key=${getGoogleAPI()}&libraries=places&callback=initGoogleAutocomplete`;
-script.async = true;
-script.defer = true;
-document.head.appendChild(script);
-
-
 const vipDurationOptions = [
   { id: 'vip-placeholder', value: '', i18n: 'selectOne', disabled: true, selected: true, hidden: true},
   { id: 'vip-30', value: 30, i18n: 'vipDuration30' },
@@ -56,6 +47,12 @@ const audienceOptions = [
 
 // Example organizer suggestions
 const organizerChoices = ['Deloitte', 'Pfizer', 'Accenture'];
+
+const script = document.createElement('script');
+script.src = `https://maps.googleapis.com/maps/api/js?key=${getGoogleAPI()}&libraries=places&callback=initGoogleAutocomplete`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
 
 // -------------------- Utility Functions --------------------
 function t(key) {
@@ -502,7 +499,7 @@ function validateForm() {
     // Regex: starts with www., then at least one character, then a dot, then 2-24 letters for domainv
     const websitePattern = /^(https?:\/\/)?www\.[\w-]+\.[a-zA-Z]{2,24}$/;
     if (!websitePattern.test(websiteValue)) {
-      showFieldError('website', t('errorWebsiteInvalid'));
+      showFieldError('website', 'errorWebsiteInvalid');
       valid = false;
     } else {
       clearFieldError('website');
@@ -528,11 +525,11 @@ function validateForm() {
       showFieldError('orgName', 'errorOrganizerNameRequired');
       valid = false;
     } else clearFieldError('orgName');
-    if (!orgPhoneInput.value.trim()) {
+    if (!orgPhoneInput.value.trim() || !isValidPhone(orgPhoneInput.value.trim())) {
       showFieldError('orgPhone', 'errorOrganizerPhoneRequired');
       valid = false;
     } else clearFieldError('orgPhone');
-    if (!isValidEmail(orgEmailInput.value.trim())) {
+    if (!orgEmailInput.value.trim() || !isValidEmail(orgEmailInput.value.trim())) {
       showFieldError('orgEmail', 'errorOrganizerEmailRequired');
       valid = false;
     } else clearFieldError('orgEmail');
@@ -548,6 +545,14 @@ function validateForm() {
   // }
 
   return valid;
+}
+
+function isValidPhone(phone) {
+  // Accepts either:
+  // 10 digits: 0123456789
+  // OR +(1-3 digits) followed by 10 digits: +201234567890
+  const regex = /^(\+\d{1,3}\d{10}|\d{10})$/
+  return regex.test(phone);
 }
 
 function isValidEmail(email) {
