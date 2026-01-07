@@ -653,7 +653,7 @@ function initFormSubmission(quill) {
       dateValue = dateRanges.map(({ from, to }) => `${from}:${to}`).join(',');
     }
     
-    --- File Upload ---
+    //--- File Upload ---
     const fileInput = document.getElementById('fileInput');
 
     let imageUrl = '';
