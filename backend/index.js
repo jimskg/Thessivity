@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3000;
 // Initialize B2 client
 const b2 = new B2({
   applicationKeyId: process.env.B2_KEY_ID,       // from Backblaze
-  applicationKey: process.env.B2_APP_KEY         // from Backblaze
+  applicationKey: process.env.B2_APPLICATION_KEY         // from Backblaze
 });
 
 // Allow frontend calls
