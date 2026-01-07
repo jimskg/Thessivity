@@ -2,8 +2,6 @@ require('dotenv').config();
 
 const B2 = require('backblaze-b2');
 const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -13,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-const upload = multer({ dest: 'tmp/' }); // temp folder for uploads
+//const upload = multer({ dest: 'tmp/' }); // temp folder for uploads
 
 // Initialize B2 client
 const b2 = new B2({
@@ -32,37 +30,43 @@ app.get('/', (req, res) => {
   res.send('Salesforce backend is running');
 });
 
-app.post('/uploadImage', upload.single('file'), async (req, res) => {
-  try {
-    const file = req.file;
+const formidable = require('formidable');
+
+app.post('/uploadImage', (req, res) => {
+  const form = new formidable.IncomingForm();
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) return res.status(500).json({ error: 'Form parsing failed' });
+
+    const file = files.file;
     if (!file) return res.status(400).json({ error: 'No file uploaded' });
 
-    await b2.authorize(); // authorizes session
+    try {
+      await b2.authorize();
 
-    
-    const fileName = `events/${Date.now()}_${file.originalFilename}`;
-    const fileBuffer = fs.readFileSync(file.filepath);
+      const fileName = `events/${Date.now()}_${file.originalFilename}`;
+      const fileBuffer = fs.readFileSync(file.filepath);
 
-    // Upload file
-    const uploadResponse = await b2.uploadFile({
-      bucketId: process.env.B2_BUCKET_ID,        // your bucket ID
-      fileName: fileName,
-      data: fileBuffer
-    });
+      const uploadResponse = await b2.uploadFile({
+        bucketId: process.env.B2_BUCKET_ID,
+        fileName,
+        data: fileBuffer
+      });
 
-    // Remove temp file
-    fs.unlinkSync(file.path);
+      // Remove temp file
+      fs.unlinkSync(file.filepath);
 
-    // Public URL
-    //const publicUrl = `https://f002.backblazeb2.com/file/${process.env.B2_BUCKET_NAME}/${uploadResponse.data.fileName}`;
-    const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+      // Cloudflare public URL
+      const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
 
-    res.json({ url: publicUrl });
-  } catch (err) {
-    console.error('B2 Upload error:', err);
-    res.status(500).json({ error: 'Upload failed' });
-  }
+      res.json({ url: publicUrl });
+    } catch (err) {
+      console.error('B2 Upload error:', err);
+      res.status(500).json({ error: 'Upload failed' });
+    }
+  });
 });
+
 
 // Example API: getData (auto-called on page load)
 app.get('/getData', async (req, res) => {
