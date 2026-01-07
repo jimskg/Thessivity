@@ -578,39 +578,6 @@ function initFormSubmission(quill) {
     openLoadingSpinner();
     e.preventDefault();
 
-    // --- File Upload ---
-    const fileInput = document.getElementById('fileInput');
-
-    let imageUrl = '';
-
-    if (fileInput?.files.length) {
-      const file = fileInput.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-
-      try {
-        const uploadResponse = await fetch('https://thessivity.onrender.com/uploadImage', {
-          method: 'POST',
-          body: formData
-        });
-
-        const uploadData = await uploadResponse.json();
-
-        if (uploadData.url) {
-          imageUrl = uploadData.url;
-        } else {
-          alert('Upload failed');
-          return;
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Upload failed');
-        return;
-      }
-    }
-    closeLoadingSpinner();
-    return;
-
     // --- Gather Values ---
     const title = document.getElementById('title').value.trim();
     const category = document.getElementById('category').value;
@@ -686,36 +653,36 @@ function initFormSubmission(quill) {
       dateValue = dateRanges.map(({ from, to }) => `${from}:${to}`).join(',');
     }
     
-    // --- File Upload ---
-    // const fileInput = document.getElementById('fileInput');
+    --- File Upload ---
+    const fileInput = document.getElementById('fileInput');
 
-    // let imageUrl = '';
+    let imageUrl = '';
 
-    // if (fileInput?.files.length) {
-    //   const file = fileInput.files[0];
-    //   const formData = new FormData();
-    //   formData.append('file', file);
+    if (fileInput?.files.length) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
 
-    //   try {
-    //     const uploadResponse = await fetch('https://thessivity.onrender.com/uploadImage', {
-    //       method: 'POST',
-    //       body: formData
-    //     });
+      try {
+        const uploadResponse = await fetch('https://thessivity.onrender.com/uploadImage', {
+          method: 'POST',
+          body: formData
+        });
 
-    //     const uploadData = await uploadResponse.json();
+        const uploadData = await uploadResponse.json();
 
-    //     if (uploadData.url) {
-    //       imageUrl = uploadData.url;
-    //     } else {
-    //       alert('Upload failed');
-    //       return;
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //     alert('Upload failed');
-    //     return;
-    //   }
-    // }
+        if (uploadData.url) {
+          imageUrl = uploadData.url;
+        } else {
+          alert('Upload failed');
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Upload failed');
+        return;
+      }
+    }
 
     // --- Build JSON ---
     const eventData = {

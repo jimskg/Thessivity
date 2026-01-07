@@ -40,40 +40,25 @@ app.get('/', (req, res) => {
 const formidable = require('formidable');
 
 app.post('/uploadImage', (req, res) => {
-  console.log('Received /uploadImage request');
-
   const form = new formidable.IncomingForm();
-
   form.parse(req, async (err, fields, files) => {
-    console.log('Form parsing complete');
     if (err) {
-      console.error('Form parsing error:', err);
       return res.status(500).json({ error: 'Form parsing failed', details: err });
     }
 
     const file = files.file;
     if (!file) {
-      console.warn('No file uploaded');
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
     console.log('File received:', file.originalFilename, file.filepath, file.size);
 
     try {
-      console.log('Authorizing B2...');
       const authResponse = await b2.authorize();
-      console.log('B2 Authorization response:', authResponse.data);
-
       // Get upload URL for the bucket
-      console.log('Getting B2 upload URL...');
       const uploadUrlResponse = await b2.getUploadUrl({ bucketId: process.env.B2_BUCKET_ID });
-      console.log('Upload URL response:', uploadUrlResponse.data);
-
       const fileName = `events/${Date.now()}_${file.originalFilename}`;
-      console.log('Uploading file as:', fileName);
-
       const fileBuffer = fs.readFileSync(file.filepath);
-      console.log('File buffer length:', fileBuffer.length);
 
       const uploadResponse = await b2.uploadFile({
         uploadUrl: uploadUrlResponse.data.uploadUrl,
@@ -82,13 +67,11 @@ app.post('/uploadImage', (req, res) => {
         data: fileBuffer
       });
 
-      console.log('Upload response:', uploadResponse.data);
-
-      // Remove temp file
       fs.unlinkSync(file.filepath);
-      console.log('Temporary file removed');
 
       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+      //https://images.jimskg.com/events/1767746924560_thessivity_logo_white.png
+      //https://event-images.s3.eu-central-003.backblazeb2.com/events/1767746924560_thessivity_logo_white.png
       console.log('File available at:', publicUrl);
 
       res.json({ url: publicUrl });
@@ -98,42 +81,6 @@ app.post('/uploadImage', (req, res) => {
     }
   });
 });
-
-// app.post('/uploadImage', (req, res) => {
-//   const form = new formidable.IncomingForm();
-
-//   form.parse(req, async (err, fields, files) => {
-//     if (err) return res.status(500).json({ error: 'Form parsing failed' });
-
-//     const file = files.file;
-//     if (!file) return res.status(400).json({ error: 'No file uploaded' });
-
-//     try {
-//       await b2.authorize();
-
-//       const fileName = `events/${Date.now()}_${file.originalFilename}`;
-//       const fileBuffer = fs.readFileSync(file.filepath);
-
-//       const uploadResponse = await b2.uploadFile({
-//         bucketId: process.env.B2_BUCKET_ID,
-//         fileName,
-//         data: fileBuffer
-//       });
-
-//       // Remove temp file
-//       fs.unlinkSync(file.filepath);
-
-//       // Cloudflare public URL
-//       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
-
-//       res.json({ url: publicUrl });
-//     } catch (err) {
-//       console.error('B2 Upload error:', err);
-//       res.status(500).json({ error: 'Upload failed' });
-//     }
-//   });
-// });
-
 
 // Example API: getData (auto-called on page load)
 app.get('/getData', async (req, res) => {
