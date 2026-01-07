@@ -265,7 +265,7 @@ const LABELS = {
     errorOrganizerEmailRequired: "Please enter a valid organizer email",
     errorOrganizerAddressRequired: "Please enter organizer address",
     errorDateModeRequired: 'Please select a date mode',
-    errorDownForMaintenance: 'Site Down for Maintenance. Please check back later'
+    errorDownForMaintenance: 'Site Down for Maintenance. Please check back later.'
   }
 };
 
