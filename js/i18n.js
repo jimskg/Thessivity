@@ -131,6 +131,7 @@ const LABELS = {
     errorOrganizerEmailRequired: "Παρακαλώ εισάγετε ένα έγκυρο e-mail διοργανωτή",
     errorOrganizerAddressRequired: "Παρακαλώ εισάγετε τη διεύθυνση διοργανωτή",
     errorDateModeRequired: 'Παρακαλώ επιλέξτε τρόπο ημερομηνίας',
+    errorDownForMaintenance: 'Εκτός λειτουργίας λόγω συντήρησης. Παρακαλούμε δοκιμάστε αργότερα.'
   },
   en: {
     description: 'Description',
@@ -263,7 +264,8 @@ const LABELS = {
     errorOrganizerPhoneRequired: "Please enter organizer phone",
     errorOrganizerEmailRequired: "Please enter a valid organizer email",
     errorOrganizerAddressRequired: "Please enter organizer address",
-    errorDateModeRequired: 'Please select a date mode'
+    errorDateModeRequired: 'Please select a date mode',
+    errorDownForMaintenance: 'Site Down for Maintenance. Please check back later'
   }
 };
 

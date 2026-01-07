@@ -235,14 +235,20 @@ document.addEventListener("DOMContentLoaded", async function () {
       // renderEvents(mockEvents.events);
       //fallbackImage = mockEvents.settings.fallbackImage;
       if (data.error == undefined){
-        fallbackImage = data.settings.fallbackImage;
-        realEvents = data;
-        translateStaticTexts(data.settings);
-        setWhereOptions(data.events);
-        renderEvents(data.events, true);
-        renderFilters();
-        ensureTilesContainer();
-        translatePage(currentLanguage);
+
+        if (!data.settings.offlineSite){
+          fallbackImage = data.settings.fallbackImage;
+          realEvents = data;
+          translateStaticTexts(data.settings);
+          setWhereOptions(data.events);
+          renderEvents(data.events, true);
+          renderFilters();
+          ensureTilesContainer();
+          translatePage(currentLanguage);
+        } else {
+          buildErrorScreen(LABELS[currentLanguage]['errorDownForMaintenance']);
+        }
+        
       } else {
         buildErrorScreen(data.error);
       }
