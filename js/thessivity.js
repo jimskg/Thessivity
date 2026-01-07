@@ -152,15 +152,15 @@ document.addEventListener("DOMContentLoaded", async function () {
       main: { text: 'Where', i18n: 'filterWhereTitle' },
       secondary: { text: 'Everywhere', i18n: 'filterWhereEverywhere' },
       options: [
-        { text: 'All', i18n: 'filterWhereEverywhere', id: 'all' },
-        { text: 'Option A', i18n: 'filterWhereOptionA' },
-        { text: 'Option B', i18n: 'filterWhereOptionB' },
-        { text: 'Option C', i18n: 'filterWhereOptionC' },
-        { text: 'Option D', i18n: 'filterWhereOptionD' },
-        { text: 'Option E', i18n: 'filterWhereOptionE' },
-        { text: 'Option F', i18n: 'filterWhereOptionF' },
-        { text: 'Option G', i18n: 'filterWhereOptionG' },
-        { text: 'Option H', i18n: 'filterWhereOptionH' }
+        { text: 'All', i18n: 'filterWhereEverywhere', id: 'all' }
+        // { text: 'Option A', i18n: 'filterWhereOptionA' },
+        // { text: 'Option B', i18n: 'filterWhereOptionB' },
+        // { text: 'Option C', i18n: 'filterWhereOptionC' },
+        // { text: 'Option D', i18n: 'filterWhereOptionD' },
+        // { text: 'Option E', i18n: 'filterWhereOptionE' },
+        // { text: 'Option F', i18n: 'filterWhereOptionF' },
+        // { text: 'Option G', i18n: 'filterWhereOptionG' },
+        // { text: 'Option H', i18n: 'filterWhereOptionH' }
       ]
     },
     {
@@ -238,6 +238,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         fallbackImage = data.settings.fallbackImage;
         realEvents = data;
         translateStaticTexts(data.settings);
+        setWhereOptions(data.events);
         renderEvents(data.events, true);
         renderFilters();
         ensureTilesContainer();
@@ -267,6 +268,37 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (text !== undefined && text !== null) node.textContent = text;
     if (html !== undefined && html !== null) node.innerHTML = html;
     return node;
+  }
+
+  function setWhereOptions(events) {
+    const whereDropdown = dropdowns.find(
+      d => d.main.i18n === 'filterWhereTitle'
+    );
+
+    const staticOption = whereDropdown.options[0]; // Everywhere
+
+    const dynamicOptions = buildWhereOptions(events);
+
+    whereDropdown.options = [
+      staticOption,
+      ...dynamicOptions
+    ];
+  }
+
+  function buildWhereOptions(events) {
+    // Get unique location names
+    const uniqueLocations = [...new Set(
+      events
+        .map(e => e.Location_Name__c)
+        .filter(Boolean)
+    )];
+
+    // Convert to dropdown options
+    return uniqueLocations.map(location => ({
+      text: location,
+      //i18n: normalizeI18n(location)
+      i18n: location
+    }));
   }
 
   function buildErrorScreen(errorMessage){
@@ -605,8 +637,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (!cb.checked) {
           if (activeFilters.when?.value === cb.dataset.value) {
             activeFilters.when = null;
+            updateWhenButton('filterWhenAnytime');
             renderTiles();
             filterEvents();
+            closeAllFilterDropdownsAndCalendars(new Event('click'));
           }
           return;
         }
@@ -616,7 +650,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (isAll) {
           activeFilters.when = null;
-          updateWhenButton(LABELS[currentLanguage].filterWhenAnytime);
+          updateWhenButton('filterWhenAnytime');
           renderTiles();
           filterEvents();
           closeAllFilterDropdownsAndCalendars(new Event('click'));
@@ -624,7 +658,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         activeFilters.when = { type: 'preset', value: cb.dataset.value };
-        updateWhenButton(LABELS[currentLanguage][cb.dataset.value]);
+        updateWhenButton(cb.dataset.value);
         renderTiles();
         filterEvents();
         closeAllFilterDropdownsAndCalendars(new Event('click'));
@@ -658,9 +692,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   return panel;
 }
-
-
-
   
   document.getElementById('gr-li')?.addEventListener('click', () => {
       fetchData();
@@ -770,10 +801,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Filter search
     document.querySelectorAll('.filter-search-input').forEach(input => {
       input.addEventListener('input', function () {
-        const filter = this.value.toLowerCase();
+        //const filter = this.value.toLowerCase();
+        const filter = normalizeTonesLowerCase(this.value);
         const lis = this.closest('.filter-dropdown-panel').querySelectorAll('.filter-list-activities li');
         lis.forEach(li => {
-          const text = li.textContent.toLowerCase();
+          //const text = li.textContent.toLowerCase();
+          const text = normalizeTonesLowerCase(li.textContent);
           li.style.display = text.includes(filter) ? 'block' : 'none';
         });
       });
@@ -1063,8 +1096,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     ['category', 'where'].forEach(type => {
       activeFilters[type].forEach(valueKey => {
         if (!SKIP_TILES.includes(valueKey)) {
+          let label = LABELS[currentLanguage][valueKey] ? LABELS[currentLanguage][valueKey] : valueKey;
           container.appendChild(
-            createTile(type, valueKey, LABELS[currentLanguage][valueKey])
+            createTile(type, valueKey, label)
           );
         }
       });
@@ -1158,7 +1192,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  function updateWhenButton(text) {
+  function updateWhenButton(value) {
     const container = [...document.querySelectorAll('.filter-button-container')]
       .find(c =>
         c.querySelector('.filter-button-main-description')?.dataset.i18n === 'filterWhenTitle'
@@ -1166,12 +1200,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     if (!container) return;
 
-    container.querySelector('.filter-button-secondary-description').textContent = text;
+    container.querySelector('.filter-button-secondary-description').dataset.i18n = value;
   }
 
 
   function resetWhenUI() {
-    updateWhenButton('Anytime');
+    updateWhenButton('filterWhenAnytime');
     document.querySelectorAll('.custom-checkbox').forEach(cb => cb.checked = false);
   }
 
@@ -1189,6 +1223,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       // WHERE
       const activeWhere = [...activeFilters.where].filter(v => !SKIP_TILES.includes(v));
       if (activeWhere.length) {
+        if (!event.Location_Name__c) return false;
+        //if (!activeWhere.includes(normalizeI18n(event.Location_Name__c))) return false;
         if (!activeWhere.includes(event.Location_Name__c)) return false;
       }
 
@@ -1319,20 +1355,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
 
-    if (presetKey === 'filterWhenToday') {
-      return matchesRange(dates, today, today);
-    }
-
-    if (presetKey === 'filterWhenTomorrow') {
-      const t = new Date(today);
-      t.setDate(t.getDate() + 1);
-      return matchesRange(dates, t, t);
-    }
-
-    if (presetKey === 'filterWhenWeekend') {
-      // optional
-    }
-
     switch (presetKey) {
       case 'filterWhenToday':
         return matchesRange(dates, today, today);
@@ -1341,12 +1363,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         return matchesRange(dates, tomorrow, tomorrow);
 
       case 'filterWhenWeekend': {
-        const { start, end } = getWeekendRange(dayOfWeek);
+        const { start, end } = getWeekendRange(dayOfWeek, today);
         return matchesRange(dates, start, end);
       }
 
       case 'filterWhenNextWeek': {
-        const { start, end } = getNextWeekRange(dayOfWeek);
+        const { start, end } = getNextWeekRange(dayOfWeek, today);
         return matchesRange(dates, start, end);
       }
 
@@ -1358,7 +1380,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  function getWeekendRange(dayOfWeek) {
+  function getWeekendRange(dayOfWeek, today) {
     // Assuming weekend = Saturday & Sunday
     const saturday = new Date(today);
     saturday.setDate(today.getDate() + ((6 - dayOfWeek + 7) % 7)); // next Saturday
@@ -1371,7 +1393,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     return { start: saturday, end: sunday };
   }
 
-  function getNextWeekRange(dayOfWeek) {
+  function getNextWeekRange(dayOfWeek, today) {
     const monday = new Date(today);
     monday.setDate(today.getDate() + ((8 - dayOfWeek) % 7)); // next Monday
     monday.setHours(0, 0, 0, 0);

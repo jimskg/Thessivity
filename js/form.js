@@ -432,7 +432,7 @@ function validateForm() {
   } else clearFieldError('location');
 
   // Event Address
-  if (!document.getElementById('eventAddress').value.trim()) {
+  if (!document.getElementById('eventAddress').value.trim() || !document.getElementById('eventLat').value.trim() || !document.getElementById('eventLng').value.trim()) {
     showFieldError('eventAddress', 'errorEventAddressRequired');
     valid = false;
   } else clearFieldError('eventAddress');
@@ -536,7 +536,7 @@ function validateForm() {
       showFieldError('orgEmail', 'errorOrganizerEmailRequired');
       valid = false;
     } else clearFieldError('orgEmail');
-    if (!orgAddressInput.value.trim()) {
+    if (!orgAddressInput.value.trim() || !document.getElementById('orgLat').value.trim() || !document.getElementById('orgLng').value.trim()) {
       showFieldError('orgAddress', 'errorOrganizerAddressRequired');
       valid = false;
     } else clearFieldError('orgAddress');

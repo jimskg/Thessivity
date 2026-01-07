@@ -9,6 +9,21 @@
     return d.toLocaleDateString(currentLanguage, {day: 'numeric', month: 'short', year: 'numeric'});
   }
 
+  function normalizeI18n(text) {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+  }
+
+  function normalizeTonesLowerCase(text) {
+    return text
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
   function getValidImage(url, fallbackImage) {
     return new Promise((resolve) => {
       if (!url) {
