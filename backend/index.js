@@ -64,6 +64,11 @@ app.post('/uploadImage', (req, res) => {
       const authResponse = await b2.authorize();
       console.log('B2 Authorization response:', authResponse.data);
 
+      // Get upload URL for the bucket
+      console.log('Getting B2 upload URL...');
+      const uploadUrlResponse = await b2.getUploadUrl({ bucketId: process.env.B2_BUCKET_ID });
+      console.log('Upload URL response:', uploadUrlResponse.data);
+
       const fileName = `events/${Date.now()}_${file.originalFilename}`;
       console.log('Uploading file as:', fileName);
 
@@ -71,7 +76,8 @@ app.post('/uploadImage', (req, res) => {
       console.log('File buffer length:', fileBuffer.length);
 
       const uploadResponse = await b2.uploadFile({
-        bucketId: process.env.B2_BUCKET_ID,
+        uploadUrl: uploadUrlResponse.data.uploadUrl,
+        uploadAuthToken: uploadUrlResponse.data.authorizationToken,
         fileName,
         data: fileBuffer
       });
@@ -82,21 +88,12 @@ app.post('/uploadImage', (req, res) => {
       fs.unlinkSync(file.filepath);
       console.log('Temporary file removed');
 
-      // Cloudflare public URL
-      if (!process.env.CLOUDFLARE_SUBDOMAIN) {
-        console.error('CLOUDFLARE_SUBDOMAIN is missing!');
-        return res.status(500).json({ error: 'Missing CLOUDFLARE_SUBDOMAIN env variable' });
-      }
-
       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
       console.log('File available at:', publicUrl);
 
       res.json({ url: publicUrl });
     } catch (err) {
       console.error('B2 Upload error:', err);
-      if (err.code === 'ERR_INVALID_URL') {
-        console.error('Check that B2_KEY_ID, B2_APPLICATION_KEY, and B2_BUCKET_ID are all correctly set.');
-      }
       res.status(500).json({ error: 'Upload failed', details: err.message });
     }
   });
