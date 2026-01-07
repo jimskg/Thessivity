@@ -652,29 +652,37 @@ function initFormSubmission(quill) {
     if (dateRanges.length >=1){
       dateValue = dateRanges.map(({ from, to }) => `${from}:${to}`).join(',');
     }
-    // closeLoadingSpinner();
-    // return;
+    
     // --- File Upload ---
     const fileInput = document.getElementById('fileInput');
-    let imageUrl = '';
-    // if (fileInput?.files.length) {
-    //   const file = fileInput.files[0];
-    //   const formData = new FormData();
-    //   formData.append('file', file);
 
-    //   try {
-    //     const uploadResponse = await fetch('https://your-cloudflare-r2-endpoint/upload', {
-    //       method: 'POST',
-    //       body: formData
-    //     });
-    //     const uploadData = await uploadResponse.json();
-    //     imageUrl = uploadData.url;
-    //   } catch(err) {
-    //     console.error(err);
-    //     alert('Image upload failed');
-    //     return;
-    //   }
-    // }
+    let imageUrl = '';
+
+    if (fileInput?.files.length) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const uploadResponse = await fetch('https://thessivity.onrender.com/uploadImage', {
+          method: 'POST',
+          body: formData
+        });
+
+        const uploadData = await uploadResponse.json();
+
+        if (uploadData.url) {
+          imageUrl = uploadData.url;
+        } else {
+          alert('Upload failed');
+          return;
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Upload failed');
+        return;
+      }
+    }
 
     // --- Build JSON ---
     const eventData = {

@@ -1,3 +1,9 @@
+require('dotenv').config();
+
+const B2 = require('backblaze-b2');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -5,6 +11,15 @@ const getAccessToken = require('./jwtAuth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+
+const upload = multer({ dest: 'tmp/' }); // temp folder for uploads
+
+// Initialize B2 client
+const b2 = new B2({
+  applicationKeyId: process.env.B2_KEY_ID,       // from Backblaze
+  applicationKey: process.env.B2_APP_KEY         // from Backblaze
+});
 
 // Allow frontend calls
 app.use(cors());
@@ -15,6 +30,38 @@ app.use(express.urlencoded({ extended: true })); // optional: parse form bodies
 // Health check
 app.get('/', (req, res) => {
   res.send('Salesforce backend is running');
+});
+
+app.post('/uploadImage', upload.single('file'), async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) return res.status(400).json({ error: 'No file uploaded' });
+
+    await b2.authorize(); // authorizes session
+
+    
+    const fileName = `events/${Date.now()}_${file.originalFilename}`;
+    const fileBuffer = fs.readFileSync(file.filepath);
+
+    // Upload file
+    const uploadResponse = await b2.uploadFile({
+      bucketId: process.env.B2_BUCKET_ID,        // your bucket ID
+      fileName: fileName,
+      data: fileBuffer
+    });
+
+    // Remove temp file
+    fs.unlinkSync(file.path);
+
+    // Public URL
+    //const publicUrl = `https://f002.backblazeb2.com/file/${process.env.B2_BUCKET_NAME}/${uploadResponse.data.fileName}`;
+    const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+
+    res.json({ url: publicUrl });
+  } catch (err) {
+    console.error('B2 Upload error:', err);
+    res.status(500).json({ error: 'Upload failed' });
+  }
 });
 
 // Example API: getData (auto-called on page load)
