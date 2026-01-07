@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const B2 = require('backblaze-b2');
+// const B2 = require('backblaze-b2');
 const fs = require('fs');
 const express = require('express');
 const fetch = require('node-fetch');
@@ -22,10 +22,10 @@ console.log('DROPBOX_ACCESS_TOKEN:', process.env.DROPBOX_ACCESS_TOKEN);
 console.log('================');
 
 // Initialize B2 client
-const b2 = new B2({
-  applicationKeyId: process.env.B2_KEY_ID,       // from Backblaze
-  applicationKey: process.env.B2_APPLICATION_KEY         // from Backblaze
-});
+// const b2 = new B2({
+//   applicationKeyId: process.env.B2_KEY_ID,       // from Backblaze
+//   applicationKey: process.env.B2_APPLICATION_KEY         // from Backblaze
+// });
 
 // Allow frontend calls
 app.use(cors());
@@ -140,48 +140,48 @@ app.post('/uploadImage', (req, res) => {
   });
 });
 
-app.post('/uploadImageWrong', (req, res) => {
-  const form = new formidable.IncomingForm();
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(500).json({ error: 'Form parsing failed', details: err });
-    }
+// app.post('/uploadImageWrong', (req, res) => {
+//   const form = new formidable.IncomingForm();
+//   form.parse(req, async (err, fields, files) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Form parsing failed', details: err });
+//     }
 
-    const file = files.file;
-    if (!file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
+//     const file = files.file;
+//     if (!file) {
+//       return res.status(400).json({ error: 'No file uploaded' });
+//     }
 
-    console.log('File received:', file.originalFilename, file.filepath, file.size);
+//     console.log('File received:', file.originalFilename, file.filepath, file.size);
 
-    try {
-      const authResponse = await b2.authorize();
-      // Get upload URL for the bucket
-      const uploadUrlResponse = await b2.getUploadUrl({ bucketId: process.env.B2_BUCKET_ID });
-      const fileName = `events/${Date.now()}_${file.originalFilename}`;
-      const fileBuffer = fs.readFileSync(file.filepath);
+//     try {
+//       const authResponse = await b2.authorize();
+//       // Get upload URL for the bucket
+//       const uploadUrlResponse = await b2.getUploadUrl({ bucketId: process.env.B2_BUCKET_ID });
+//       const fileName = `events/${Date.now()}_${file.originalFilename}`;
+//       const fileBuffer = fs.readFileSync(file.filepath);
 
-      const uploadResponse = await b2.uploadFile({
-        uploadUrl: uploadUrlResponse.data.uploadUrl,
-        uploadAuthToken: uploadUrlResponse.data.authorizationToken,
-        fileName,
-        data: fileBuffer
-      });
+//       const uploadResponse = await b2.uploadFile({
+//         uploadUrl: uploadUrlResponse.data.uploadUrl,
+//         uploadAuthToken: uploadUrlResponse.data.authorizationToken,
+//         fileName,
+//         data: fileBuffer
+//       });
 
-      fs.unlinkSync(file.filepath);
+//       fs.unlinkSync(file.filepath);
 
-      const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
-      //https://images.jimskg.com/events/1767746924560_thessivity_logo_white.png
-      //https://event-images.s3.eu-central-003.backblazeb2.com/events/1767746924560_thessivity_logo_white.png
-      console.log('File available at:', publicUrl);
+//       const publicUrl = `${process.env.CLOUDFLARE_SUBDOMAIN}/${fileName}`;
+//       //https://images.jimskg.com/events/1767746924560_thessivity_logo_white.png
+//       //https://event-images.s3.eu-central-003.backblazeb2.com/events/1767746924560_thessivity_logo_white.png
+//       console.log('File available at:', publicUrl);
 
-      res.json({ url: publicUrl });
-    } catch (err) {
-      console.error('B2 Upload error:', err);
-      res.status(500).json({ error: 'Upload failed', details: err.message });
-    }
-  });
-});
+//       res.json({ url: publicUrl });
+//     } catch (err) {
+//       console.error('B2 Upload error:', err);
+//       res.status(500).json({ error: 'Upload failed', details: err.message });
+//     }
+//   });
+// });
 
 // Example API: getData (auto-called on page load)
 app.get('/getData', async (req, res) => {

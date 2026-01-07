@@ -38,6 +38,10 @@
     });
   }
 
+  function getGoogleAPI(){
+    return "AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM";
+  }
+
   function getCurrentDate(){
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');

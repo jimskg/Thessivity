@@ -6,10 +6,10 @@ let dateFormat = "d-m-Y";
 let altFormat = "d-m-Y";
 
 
-const GOOGLE_API_KEY = "AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM";
+//const GOOGLE_API_KEY = "AIzaSyDuJGX7mZ45UxWwctaRSfa6LNq7qPM7_fM";
 
 const script = document.createElement('script');
-script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places&callback=initGoogleAutocomplete`;
+script.src = `https://maps.googleapis.com/maps/api/js?key=${getGoogleAPI()}&libraries=places&callback=initGoogleAutocomplete`;
 script.async = true;
 script.defer = true;
 document.head.appendChild(script);
