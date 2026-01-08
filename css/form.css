@@ -123,7 +123,9 @@
   }
 
   .file-wrapper::after {
-    content: "\1F4C1";
+    /* content: "\1F5BF"; */
+    /* content: "\1F4C1"; */
+    content: "📁";
     position: absolute;
     right: 10px;
     font-size: 20px;
